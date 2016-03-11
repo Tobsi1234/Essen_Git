@@ -1,6 +1,6 @@
 <?php
-	$verbindung = mysql_connect("localhost", "tobsi", "55775577") or die ("Fehler im System");
-	mysql_select_db("tobsi") or die ("Datenbank nicht verfügbar");
+
+	require('password.php');
 	
 	$name = htmlspecialchars($_GET["name"]);
 	$essen = htmlspecialchars($_GET["essen"]);
@@ -26,7 +26,4 @@
 	
 	$sqlu1 = "UPDATE tabbez SET essen='$essen' WHERE d_ID='$d_ID' AND n_ID='$n_ID'";
 	$result4 = mysql_query($sqlu1);
-
-	mysql_close($verbindung);
-
 ?>

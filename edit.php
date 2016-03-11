@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 ?>
 <!DOCTYPE html>
@@ -210,8 +210,7 @@ session_start();
         <!-- First Featurette -->
         <div class="featurette" id="about">
 			<?php
-			$verbindung = mysql_connect ("localhost", "tobsi", "55775577") or die ("Fehler im System");
-			mysql_select_db("tobsi") or die ("Verbindung zur DB nicht möglich. ");
+			require('password.php');
 			?>
 			<div>
 				<form id="form1" name="form1" action="" method="post" onsubmit="form_essen(); return false;">
@@ -241,10 +240,6 @@ session_start();
 			</div>
 			<br><br>
 			<script> name_ausgeben(); headline();</script>
-
-			<?php	
-			mysql_close($verbindung);
-			?>
 			</div>
         </div>
     </div>
@@ -258,5 +253,4 @@ session_start();
 
 			
 </body>
-
 </html>
