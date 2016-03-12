@@ -147,7 +147,7 @@ session_start();
 --> 
 </script>
 </head>
-<body>
+<body> <!-- test -->
 <?php
 	if ((!($_SESSION['username']=="Tobias" and $_SESSION['password']=="Tobias_1a2s3d")) && (!($_SESSION['username']=="Dominik" and $_SESSION['password']=="Dominik_1a2s3d")) && (!($_SESSION['username']=="Quentin" and $_SESSION['password']=="Quentin_1a2s3d"))&& (!($_SESSION['username']=="Tilo" and $_SESSION['password']=="Tilo_1a2s3d")))
 	{
