@@ -1,9 +1,8 @@
 <?php
 $sqlhost = "localhost";
-$sqluser = "";
+$sqluser = "root";
 $sqlpass = "";
-
-mysql_connect($sqlhost, $sqluser, $sqlpass) or die ("DB-system nicht verfügbar");
-mysql_select_db("tobsi") or die ("Datenbank nicht verfügbar");
+$connection = mysqli_connect($sqlhost, $sqluser, $sqlpass) or die ("DB-system nicht verfügbar");
+mysqli_select_db($connection, "tobsi") or die ("Datenbank nicht verfügbar");
 
 ?>

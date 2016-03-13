@@ -3,5 +3,5 @@
 	
 	$name = htmlspecialchars($_GET["name"]);
 	$sqli1 = "INSERT INTO tabessen (value) VALUES ('$name')";
-	$result1 = mysql_query($sqli1);
+	$result1 = mysqli_query($connection, $sqli1);
 ?>

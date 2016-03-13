@@ -8,22 +8,22 @@
 
 	
 	$sqli1 = "INSERT INTO tabname (name) VALUES ('$name')";
-	$result1 = mysql_query($sqli1);
+	$result1 = mysqli_query($connection, $sqli1);
 	
 	$sqls1 = "SELECT n_ID FROM tabname WHERE name='$name'";
-	$row1 = mysql_fetch_object(mysql_query($sqls1));
+	$row1 = mysqli_fetch_object(mysqli_query($connection, $sqls1));
 	$n_ID = $row1->n_ID;
 	
 	$sqli2 = "INSERT INTO tabdatum (datum) VALUES ('$datum')";
-	$result2 = mysql_query($sqli2);
+	$result2 = mysqli_query($connection, $sqli2);
 	
 	$sqls2 = "SELECT d_ID FROM tabdatum WHERE datum='$datum'";
-	$row2 = mysql_fetch_object(mysql_query($sqls2));
+	$row2 = mysqli_fetch_object(mysqli_query($connection, $sqls2));
 	$d_ID = $row2->d_ID;
 
 	$sqli3 = "INSERT INTO tabbez (n_ID, d_ID, essen) VALUES ('$n_ID', '$d_ID', '$essen')";
-	$result3 = mysql_query($sqli3);
+	$result3 = mysqli_query($connection, $sqli3);
 	
 	$sqlu1 = "UPDATE tabbez SET essen='$essen' WHERE d_ID='$d_ID' AND n_ID='$n_ID'";
-	$result4 = mysql_query($sqlu1);
+	$result4 = mysqli_query($connection, $sqlu1);
 ?>

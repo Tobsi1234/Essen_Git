@@ -36,8 +36,8 @@ session_start();
 		
 		<?php
 		if (isset($_GET["username"]) && isset($_GET["password"] )) {
-		$_SESSION['username'] = $_GET['username'];
-		$_SESSION['password'] = $_GET['password'];
+		$_SESSION["username"] = $_GET["username"];
+		$_SESSION["password"] = $_GET["password"];
 		}
 		?>	
 	}   
@@ -149,7 +149,16 @@ session_start();
 </head>
 <body> <!-- test -->
 <?php
-	if ((!($_SESSION['username']=="Tobias" and $_SESSION['password']=="Tobias_1a2s3d")) && (!($_SESSION['username']=="Dominik" and $_SESSION['password']=="Dominik_1a2s3d")) && (!($_SESSION['username']=="Quentin" and $_SESSION['password']=="Quentin_1a2s3d"))&& (!($_SESSION['username']=="Tilo" and $_SESSION['password']=="Tilo_1a2s3d")))
+
+	$currentUsername = null;
+	$currentPassword = null;
+	if (isset($_SESSION["username"]) && isset($_SESSION["password"] )) {
+
+	$currentUsername = $_SESSION["username"];
+	$currentPassword = $_SESSION["password"];
+	}
+
+	if ((!($currentUsername=="Tobias" and $currentPassword=="Tobias_1a2s3d")) && (!($currentUsername=="Dominik" and $currentPassword=="Dominik_1a2s3d")) && (!($currentUsername=="Quentin" and $currentPassword=="Quentin_1a2s3d"))&& (!($currentUsername=="Tilo" and $currentPassword=="Tilo_1a2s3d")))
 	{
 		  echo("Lädt...");
 		  echo "<script type='text/javascript'>myFunction();</script>";
@@ -209,18 +218,18 @@ session_start();
 			Ergebnis von heute : <div id="essenErgebnis"> </div><br><br>
 			<?php			
 			$abfrage1 = "SELECT * FROM tabdatum ORDER BY d_ID DESC";
-			$ergebnis1 = mysql_query($abfrage1);
-			//$datum = mysql_result(mysql_query("SELECT datum FROM tabelle1 LIMIT 1"),0);
+			$ergebnis1 = mysqli_query($connection, $abfrage1);
+			//$datum = mysqli_result(mysqli_query($connection, "SELECT datum FROM tabelle1 LIMIT 1"),0);
 			//echo "Essenswünsche am ". $datum . "<br><br>";
-			while ($row1 = mysql_fetch_object($ergebnis1))
+			while ($row1 = mysqli_fetch_object($ergebnis1))
 				{	
 					?>
 					<p>
 					Datum: <?php echo $row1->datum; ?> <br>
 					<?php
 						$abfrage2 = "SELECT name, essen FROM tabname, tabbez WHERE tabname.n_ID = tabbez.n_ID AND tabbez.d_ID = '$row1->d_ID'";
-						$ergebnis2 = mysql_query($abfrage2);
-						while ($row2 = mysql_fetch_object($ergebnis2))
+						$ergebnis2 = mysqli_query($connection, $abfrage2);
+						while ($row2 = mysqli_fetch_object($ergebnis2))
 							{	
 						?>
 						<p>

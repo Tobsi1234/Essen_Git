@@ -220,8 +220,8 @@ session_start();
 				<label for="name"> Essensmöglichkeiten: </label> 
 				<?php
 				$abfrage0 = "SELECT * FROM tabessen";
-				$ergebnis0 = mysql_query($abfrage0);
-				while ($row0 = mysql_fetch_object($ergebnis0))
+				$ergebnis0 = mysqli_query($connection, $abfrage0);
+				while ($row0 = mysqli_fetch_object($ergebnis0))
 					{
 						?>
 						<input type="radio" id="essen" name="essen" value="<?php echo $row0->value; ?>" checked="checked" style="margin-left:15px"> <label for=""><?php echo $row0->value; ?> </label>
