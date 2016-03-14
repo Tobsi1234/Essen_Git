@@ -152,3 +152,16 @@ INSERT INTO `tabbez` (`n_ID`, `d_ID`, `essen`) VALUES
 (40, 74, 'Food Lounge'),
 (87, 74, 'DÃ¶ner');
 
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `tabbez`
+--
+
+CREATE TABLE IF NOT EXISTS `tabchat` (
+	`c_ID` int(11) NOT NULL AUTO_INCREMENT,
+	`name` varchar(30) NOT NULL,
+	`nachricht` text NOT NULL,
+	`ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	  PRIMARY KEY (`c_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

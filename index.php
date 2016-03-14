@@ -45,67 +45,11 @@ session_start();
 </script>
 <script language="javascript"> 
 <!--
-	var name, refHeadline, refEssen, refDatum, refEssenErgebnis, refNeu, essen, heute, tag, monat, jahr, datum_heute;
+	var XMLreq, name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht;
 	var essenNamen = [];
-	var abbruch = 0;
 	function name_ausgeben() {
 		name = "<?php echo $_SESSION['username'] ?>";
 		//alert("Hallo " + name);
-	}
-
-	function headline() {
-		refHeadline;
-		refHeadline = document.getElementById('headline');
-		refHeadline.innerHTML = "<h2>Guten Appetit</h2>";
-	}
-	
-	function form_name() {
-		document.getElementById('name').value = name;
-	}
-	
-	function form_neu() {
-		if (window.XMLHttpRequest) {
-			XMLreq = new XMLHttpRequest();
-		} else if (window.ActiveXObject) {
-			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		refNeu = document.form2.name;
-		neu = refNeu.value;
-		if(neu) {
-			URL = 'neu_DB.php?name=' + neu;
-			XMLreq.open('GET', URL, false); 
-			XMLreq.send(null);
-		
-			alert(name + " hat " + neu + " hinzugefügt. Danke!");
-		}
-		else {
-			alert("Keine Auswahl");
-		}
-		return false;
-		
-	}
-	function form_essen() {
-		
-		if (window.XMLHttpRequest) {
-			XMLreq = new XMLHttpRequest();
-		} else if (window.ActiveXObject) {
-			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		refEssen = document.form1.essen;
-		essen = radioWert(refEssen);
-		//alert(name + " wählt: " + essen);
-		
-		URL = 'essen_DB.php?name=' + name + '&essen=' + essen + '&datum=' + tag + '.' + monat + '.' + jahr;
-		XMLreq.open('GET', URL, false); 
-		XMLreq.send(null);
-		alert(name + " hat " + essen + " gewählt. Danke!");
-		return false;
-	}
-	
-	function radioWert(rObj) {
-    //gibt den ausgewählten RadioButton zurück
-    for (var i=0; i<rObj.length; i++) if (rObj[i].checked) return rObj[i].value;
-    return false;
 	}
 	
 	function datum() {
@@ -143,6 +87,47 @@ session_start();
 			var rand = Math.floor(Math.random() * essenNamen.length);
 			refEssenErgebnis.innerHTML = essenNamen[rand];
 		}	*/	
+	}
+	
+	function chat_speichern() {
+		if (window.XMLHttpRequest) {
+			XMLreq = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		refChatEingabe = document.form1.nachricht;
+		nachricht = refChatEingabe.value;
+		if(nachricht) {
+			URL = 'chat_speichern.php?nachricht=' + nachricht + '&name=' + name;
+			XMLreq.open('GET', URL, false); 
+			XMLreq.send(null);
+		
+			//alert(name + " hat " + nachricht + " hinzugefügt. Danke!");
+			chat_laden();
+			refChatEingabe.value = "";
+		}
+		else {
+			//alert("Keine Nachricht :( ");
+		}
+		return false;
+	}
+	
+	function chat_laden() {
+		refChatAusgabe = document.getElementById('chat_ausgabe');
+
+		if (window.XMLHttpRequest) {
+			XMLreq = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		XMLreq.onreadystatechange=function() {
+			if (XMLreq.readyState==4 && XMLreq.status==200) {
+				refChatAusgabe.innerHTML = XMLreq.responseText;
+			}
+		}
+		XMLreq.open('GET','chat_laden.php',true);
+		XMLreq.send();
+		window.setTimeout(chat_laden, 1000); //läd chat_laden() jede sekunde aus
 	}
 --> 
 </script>
@@ -195,6 +180,7 @@ session_start();
         <div class="headline">
             <div class="container">
 				<div id="headline">
+				<h2>Guten Appetit</h2>
 				</div>
 				<div id="datum" style="float:right">
 				<script> datum();</script>
@@ -212,8 +198,18 @@ session_start();
 			require('password.php');
 			?>
 			<br><br>
-			<script> name_ausgeben(); headline();</script>
-
+			<script> name_ausgeben();</script>
+			<div id="chat_border" style="border: 1px black solid; width: 400px; height: 300px; overflow: auto">
+				<div id="chat_ausgabe" style="height:265px; overflow:auto;"></div>
+				<hr style="width: 100%; height: 1px; margin: 0 auto; background: black;" />
+				<div id="chat_eingabe">
+					<form id="form1" name="form1" action="" method="post" onsubmit="chat_speichern(); return false;">
+					<input id="nachricht" type="text" placeholder="schreiben..." /> 
+					<button type="submit">Senden</button>
+					</form>
+				</div>
+			</div>
+			<script>chat_laden();</script> <!-- läd chat jede sekunde neu -->
 			<div>
 			Ergebnis von heute : <div id="essenErgebnis"> </div><br><br>
 			<?php			

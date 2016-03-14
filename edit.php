@@ -45,7 +45,7 @@ session_start();
 </script>
 <script language="javascript"> 
 <!--
-	var name, refEssen, refDatum, refNeu, refMenu1, essen, heute, tag, monat, jahr, datum_heute;
+	var XMLreq, name, refEssen, refDatum, refNeu, refMenu1, essen, heute, tag, monat, jahr, datum_heute;
 	function name_ausgeben() {
 		name = "<?php echo $_SESSION['username'] ?>";
 		//alert("Hallo " + name);
@@ -95,9 +95,9 @@ session_start();
 	}
 	
 	function radioWert(rObj) {
-    //gibt den ausgewählten RadioButton zurück
-    for (var i=0; i<rObj.length; i++) if (rObj[i].checked) return rObj[i].value;
-    return false;
+		//gibt den ausgewählten RadioButton zurück
+		for (var i=0; i<rObj.length; i++) if (rObj[i].checked) return rObj[i].value;
+		return false;
 	}
 	
 	function f_datum_heute() {
@@ -239,7 +239,7 @@ session_start();
 				</form><br><br>
 			</div>
 			<br><br>
-			<script> name_ausgeben(); headline();</script>
+			<script> name_ausgeben(); </script>
 			</div>
         </div>
     </div>
