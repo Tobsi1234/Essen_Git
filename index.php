@@ -105,6 +105,7 @@ session_start();
 			//alert(name + " hat " + nachricht + " hinzugefügt. Danke!");
 			chat_laden();
 			refChatEingabe.value = "";
+			window.setTimeout(scrollen, 400);
 		}
 		else {
 			//alert("Keine Nachricht :( ");
@@ -128,6 +129,14 @@ session_start();
 		XMLreq.open('GET','chat_laden.php',true);
 		XMLreq.send();
 		window.setTimeout(chat_laden, 1000); //läd chat_laden() jede sekunde aus
+	}
+	function scrollen() {
+		refChatAusgabe = document.getElementById('chat_ausgabe');
+		refChatAusgabe.scrollTop = refChatAusgabe.scrollHeight;	
+	}
+	
+	function scrollen_verspätet(){
+		window.setTimeout(scrollen, 200);
 	}
 --> 
 </script>
@@ -209,7 +218,9 @@ session_start();
 					</form>
 				</div>
 			</div>
-			<script>chat_laden();</script> <!-- läd chat jede sekunde neu -->
+			<script>
+			chat_laden(); // läd chat jede sekunde neu.
+			</script> 
 			<div>
 			Ergebnis von heute : <div id="essenErgebnis"> </div><br><br>
 			<?php			
@@ -249,8 +260,9 @@ session_start();
 			</div>
         </div>
     </div>
-	<script> essenErgebnis(); </script>
-
+	<script> essenErgebnis(); 
+	scrollen_verspätet();
+	</script>
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
