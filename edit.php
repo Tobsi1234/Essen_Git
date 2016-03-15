@@ -224,7 +224,7 @@ session_start();
 				while ($row0 = mysqli_fetch_object($ergebnis0))
 					{
 						?>
-						<input type="radio" id="essen" name="essen" value="<?php echo $row0->value; ?>" checked="checked" style="margin-left:15px"> <label for=""><?php echo $row0->value; ?> </label>
+						<input type="radio" id="essen" name="essen" value="<?php echo $row0->essen; ?>" checked="checked" style="margin-left:15px"> <label for=""><?php echo $row0->essen; ?> </label>
 						<?php
 					}
 					?>
