@@ -175,7 +175,16 @@ session_start();
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="edit.php">Bearbeiten</a>
+                        <a href="edit.php">Abstimmung</a>
+                    </li>
+					<li>
+                        <a href="">Essen hinzufügen</a>
+                    </li>
+					<li>
+                        <a href="">Verlauf</a>
+                    </li>
+					<li>
+                        <a href="">Einstellungen</a>
                     </li>
                 </ul>
             </div>
