@@ -45,7 +45,7 @@ session_start();
 </script>
 <script language="javascript"> 
 <!--
-	var XMLreq, name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht;
+	var XMLreq, name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht, json1, json2;
 	var essenNamen = [];
 	function name_ausgeben() {
 		name = "<?php echo $_SESSION['username'] ?>";
@@ -123,11 +123,19 @@ session_start();
 		}
 		XMLreq.onreadystatechange=function() {
 			if (XMLreq.readyState==4 && XMLreq.status==200) {
-				refChatAusgabe.innerHTML = XMLreq.responseText;
+				json1 = XMLreq.responseText;
+				json2 = JSON.parse(json1);
+				//var json3 = JSON.parse(json2);
+				//for(var i=0; i<Object.keys(json2).length; i++) {
+					//var nachricht = json2.nachricht;
+				var json3 = JSON.parse(json2[1]);
+				refChatAusgabe.innerHTML = json3.nachricht;
+				//}
 			}
 		}
 		XMLreq.open('GET','chat_laden.php',true);
 		XMLreq.send();
+		
 		window.setTimeout(chat_laden, 1000); //läd chat_laden() jede sekunde aus
 	}
 	function scrollen() {
