@@ -29,7 +29,7 @@ session_start();
 </script>
 <script language="javascript"> 
 <!--
-	var XMLreq, name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht, json1, json2;
+	var XMLreq, name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht, json1, json2, json3, jsonNeu2, jsonNeu2, jsonNeu3;
 	var essenNamen = [];
 	function name_ausgeben() {
 		name = "<?php echo $_SESSION['username'] ?>";
@@ -89,7 +89,7 @@ session_start();
 			//alert(name + " hat " + nachricht + " hinzugefügt. Danke!");
 			chat_laden();
 			refChatEingabe.value = "";
-			window.setTimeout(scrollen, 400);
+			window.setTimeout(scrollen, 100);
 		}
 		else {
 			//alert("Keine Nachricht :( ");
@@ -109,19 +109,48 @@ session_start();
 			if (XMLreq.readyState==4 && XMLreq.status==200) {
 				json1 = XMLreq.responseText;
 				json2 = JSON.parse(json1);
-				//var json3 = JSON.parse(json2);
-				//for(var i=0; i<Object.keys(json2).length; i++) {
-					//var nachricht = json2.nachricht;
-				var json3 = JSON.parse(json2[1]);
-				refChatAusgabe.innerHTML = json3.nachricht;
-				//}
+				refChatAusgabe.innerHTML = "";
+				for(var i=0; i<Object.keys(json2).length; i++) {
+					json3 = JSON.parse(json2[i]);
+					refChatAusgabe.innerHTML += "<b>" + json3.name + "</b>: " + json3.nachricht + "<br>";
+				}
+				json3 = JSON.parse(json2[Object.keys(json2).length - 1]);
 			}
 		}
 		XMLreq.open('GET','chat_laden.php',true);
 		XMLreq.send();
-		
-		window.setTimeout(chat_laden, 1000); //läd chat_laden() jede sekunde aus
 	}
+	
+	function chat_nachladen() {
+		refChatAusgabe = document.getElementById('chat_ausgabe');
+
+		if (window.XMLHttpRequest) {
+			XMLreq = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		XMLreq.onreadystatechange=function() {
+			if (XMLreq.readyState==4 && XMLreq.status==200) {
+				jsonNeu1 = XMLreq.responseText;
+				jsonNeu2 = JSON.parse(jsonNeu1);
+				var jsonTest = json3.nachricht;
+				jsonNeu3 = JSON.parse(jsonNeu2[Object.keys(jsonNeu2).length - 1]);
+				if (jsonTest != jsonNeu3.nachricht) {
+					refChatAusgabe.innerHTML = "";
+					chat_laden();					
+					window.setTimeout(scrollen, 100);
+				}
+			}
+		}
+		XMLreq.open('GET','chat_laden.php',true);
+		XMLreq.send();
+		window.setTimeout(chat_nachladen, 500);
+	}
+		
+	function chat_verspätet() {
+		window.setTimeout(chat_nachladen, 500);
+	}
+	
 	function scrollen() {
 		refChatAusgabe = document.getElementById('chat_ausgabe');
 		refChatAusgabe.scrollTop = refChatAusgabe.scrollHeight;	
@@ -189,6 +218,7 @@ session_start();
 			</div>
 			<script>
 			chat_laden(); // läd chat jede sekunde neu.
+			chat_verspätet();
 			</script> 
 			<div>
 			Ergebnis von heute : <div id="essenErgebnis"> </div><br><br>
