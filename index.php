@@ -9,24 +9,7 @@ session_start();
 	include ("includes/includeHead.php");
 ?>
 
-<script language="javascript">
-<!--
-	var username, password;	
-	function myFunction() {
-		username = prompt("Please enter your name");
-		password = prompt("Please enter your password");
 
-		window.location.href = "index.php?username=" + username + "&password=" + password;
-		
-		<?php
-		if (isset($_GET["username"]) && isset($_GET["password"] )) {
-		$_SESSION["username"] = $_GET["username"];
-		$_SESSION["password"] = $_GET["password"];
-		}
-		?>	
-	}   
--->
-</script>
 <script language="javascript"> 
 <!--
 	var XMLreq, name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht, json1, json2, json3, jsonNeu2, jsonNeu2, jsonNeu3;
@@ -166,19 +149,7 @@ session_start();
 
 <?php
 
-	$currentUsername = null;
-	$currentPassword = null;
-	if (isset($_SESSION["username"]) && isset($_SESSION["password"] )) {
 
-	$currentUsername = $_SESSION["username"];
-	$currentPassword = $_SESSION["password"];
-	}
-
-	if ((!($currentUsername=="Tobias" and $currentPassword=="Tobias_1a2s3d")) && (!($currentUsername=="Dominik" and $currentPassword=="Dominik_1a2s3d")) && (!($currentUsername=="Quentin" and $currentPassword=="Quentin_1a2s3d"))&& (!($currentUsername=="Tilo" and $currentPassword=="Tilo_1a2s3d")))
-	{
-		  echo("Lädt...");
-		  echo "<script type='text/javascript'>myFunction();</script>";
-	}
 	include ("includes/includeBody.php");
 ?>
 	

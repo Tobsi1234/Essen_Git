@@ -9,24 +9,6 @@ session_start();
 	include ("includes/includeHead.php");
 ?>  
 
-<script language="javascript">
-<!--
-	var username, password;
-	function myFunction() {
-		username = prompt("Please enter your name");
-		password = prompt("Please enter your password");
-
-		window.location.href = "index.php?username=" + username + "&password=" + password;
-		
-		<?php
-		if (isset($_GET["username"]) && isset($_GET["password"] )) {
-		$_SESSION['username'] = $_GET['username'];
-		$_SESSION['password'] = $_GET['password'];
-		}
-		?>	
-	}
--->
-</script>
 <script language="javascript"> 
 <!--
 	var XMLreq, name, refEssen, refDatum, refNeu, refMenu1, essen, heute, tag, monat, jahr, datum_heute;
@@ -136,11 +118,6 @@ session_start();
 </head>
 <body>
 <?php
-	if ((!($_SESSION['username']=="Tobias" and $_SESSION['password']=="Tobias_1a2s3d")) && (!($_SESSION['username']=="Dominik" and $_SESSION['password']=="Dominik_1a2s3d")) && (!($_SESSION['username']=="Quentin" and $_SESSION['password']=="Quentin_1a2s3d")) && (!($_SESSION['username']=="Tilo" and $_SESSION['password']=="Tilo_1a2s3d")))
-	{
-		  echo("Lädt...");
-		  echo "<script type='text/javascript'>myFunction();</script>";
-	}
 	include ("includes/includeBody.php");
 ?>
 

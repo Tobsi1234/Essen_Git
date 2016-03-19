@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="de">
 <body>
+<?php
+	$currentUsername = null;
+	$currentPassword = null;
+	if (isset($_SESSION["username"]) && isset($_SESSION["password"] )) {
+
+	$currentUsername = $_SESSION["username"];
+	$currentPassword = $_SESSION["password"];
+	}
+
+	if ((!($currentUsername=="Tobias" and $currentPassword=="Tobias_1a2s3d")) && (!($currentUsername=="Dominik" and $currentPassword=="Dominik_1a2s3d")) && (!($currentUsername=="Quentin" and $currentPassword=="Quentin_1a2s3d"))&& (!($currentUsername=="Tilo" and $currentPassword=="Tilo_1a2s3d")))
+	{
+		  echo("Lädt...");
+		  echo "<script type='text/javascript'>myFunction();</script>";
+	}
+?>
 <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
