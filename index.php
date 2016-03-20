@@ -204,7 +204,7 @@ session_start();
 					<p>
 					Datum: <?php echo $row1->datum; ?> <br>
 					<?php
-						$abfrage2 = "SELECT name, essen FROM tabname, tabbez WHERE tabname.n_ID = tabbez.n_ID AND tabbez.d_ID = '$row1->d_ID'";
+						$abfrage2 = "SELECT name, essen FROM tabperson, tabbez WHERE tabperson.p_ID = tabbez.p_ID AND tabbez.d_ID = '$row1->d_ID'";
 						$ergebnis2 = mysqli_query($connection, $abfrage2);
 						while ($row2 = mysqli_fetch_object($ergebnis2))
 							{	

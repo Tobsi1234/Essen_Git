@@ -156,12 +156,12 @@ session_start();
 				<script> form_name(); </script> <br><br>
 				<label for="name"> Essensmöglichkeiten: </label> 
 				<?php
-				$abfrage0 = "SELECT * FROM tabessen";
+				$abfrage0 = "SELECT * FROM tabessen ORDER BY name ASC";
 				$ergebnis0 = mysqli_query($connection, $abfrage0);
 				while ($row0 = mysqli_fetch_object($ergebnis0))
 					{
 						?>
-						<input type="radio" id="essen" name="essen" value="<?php echo $row0->essen; ?>" checked="checked" style="margin-left:15px"> <label for=""><?php echo $row0->essen; ?> </label>
+						<input type="radio" id="essen" name="essen" value="<?php echo $row0->name; ?>" checked="checked" style="margin-left:15px"> <label for=""><?php echo $row0->name; ?> </label>
 						<?php
 					}
 					?>

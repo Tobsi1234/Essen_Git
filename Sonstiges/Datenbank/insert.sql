@@ -16,7 +16,7 @@ INSERT INTO `tabdatum` (`d_ID`, `datum`) VALUES
 -- Daten für Tabelle `tabessen`
 --
 
-INSERT INTO `tabessen` (`essen`) VALUES
+INSERT INTO `tabessen` (`name`) VALUES
 ('BÃ¤cker'),
 ('clown'),
 ('Dahoim'),
@@ -41,7 +41,7 @@ INSERT INTO `tabessen` (`essen`) VALUES
 -- Daten für Tabelle `tabname`
 --
 
-INSERT INTO `tabname` (`n_ID`, `name`) VALUES
+INSERT INTO `tabperson` (`p_ID`, `name`) VALUES
 (1, 'Dominik'),
 (2, 'Quentin'),
 (3, 'Tilo'),
@@ -51,7 +51,7 @@ INSERT INTO `tabname` (`n_ID`, `name`) VALUES
 -- Daten für Tabelle `tabbez`
 --
 
-INSERT INTO `tabbez` (`n_ID`, `d_ID`, `essen`) VALUES
+INSERT INTO `tabbez` (`p_ID`, `d_ID`, `essen`) VALUES
 (4, 1, 'McDonalds'),
 (4, 2, 'Food Lounge');
 
