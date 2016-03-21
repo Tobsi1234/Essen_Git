@@ -80,3 +80,31 @@ CREATE TABLE IF NOT EXISTS `tabchat` (
 	`ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	  PRIMARY KEY (`c_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tabellenstruktur für Tabelle `tablocation`
+--
+
+CREATE TABLE IF NOT EXISTS `tablocation` (
+	`l_ID` int(11) NOT NULL AUTO_INCREMENT,
+	`name` varchar(30) NOT NULL,
+	`link` varchar(100) NOT NULL,
+    `p_ID` int(11) NOT NULL,
+	  PRIMARY KEY (`l_ID`),
+      CONSTRAINT `constraint_benutzer` FOREIGN KEY (`p_ID`) REFERENCES `tabperson` (`p_ID`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+
+--
+-- Tabellenstruktur für Tabelle `tablocessen`
+--
+
+CREATE TABLE IF NOT EXISTS `tablocessen` (
+  `l_ID` int(11) NOT NULL,
+  `e_ID` int(11) NOT NULL,
+  PRIMARY KEY (`l_ID`,`e_ID`),
+  CONSTRAINT `constraint_location` FOREIGN KEY (`l_ID`) REFERENCES `tablocation` (`l_ID`) ON UPDATE CASCADE,
+  CONSTRAINT `constraint_essen` FOREIGN KEY (`e_ID`) REFERENCES `tabessen` (`e_ID`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
