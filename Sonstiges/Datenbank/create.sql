@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `tabessen` (
   `name` varchar(50) NOT NULL,
   `p_ID` int(11),
   PRIMARY KEY (`e_ID`),
+  UNIQUE KEY (`name`),
   CONSTRAINT `constraint_person` FOREIGN KEY (`p_ID`) REFERENCES `tabperson` (`p_ID`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

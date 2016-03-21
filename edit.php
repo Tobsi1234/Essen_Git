@@ -22,23 +22,18 @@ session_start();
 	}
 	
 	function form_neu() {
-		if (window.XMLHttpRequest) {
-			XMLreq = new XMLHttpRequest();
-		} else if (window.ActiveXObject) {
-			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
-		}
+
 		refNeu = document.form2.name;
 		neu = refNeu.value;
 		if(neu) {
-			URL = 'neu_DB.php?name=' + neu;
-			XMLreq.open('GET', URL, false); 
-			XMLreq.send(null);
-		
-			alert(name + " hat " + neu + " hinzugefügt. Danke!");
+			window.location.href = "edit.php?name=" + neu;		
+			//alert(name + " hat " + neu + " hinzugefügt. Danke!");
+			
 		}
 		else {
 			alert("Keine Auswahl");
 		}
+		
 		return false;
 		
 	}
@@ -121,6 +116,14 @@ session_start();
 	include ("includes/includeBody.php");
 ?>
 
+	<?php
+		require('password.php');
+		if (isset($_GET["name"])) {
+		$name = htmlspecialchars($_GET["name"]);
+		$sqli1 = "INSERT INTO tabessen (name) VALUES ('$name')";
+		$result1 = mysqli_query($connection, $sqli1);
+		}
+	?>
     <!-- Full Width Image Header -->
     <header class="header-image">
             <div class="container">
