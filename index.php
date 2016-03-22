@@ -72,7 +72,6 @@ session_start();
 			//alert(name + " hat " + nachricht + " hinzugefügt. Danke!");
 			chat_laden();
 			refChatEingabe.value = "";
-			window.setTimeout(scrollen, 100);
 		}
 		else {
 			//alert("Keine Nachricht :( ");
@@ -88,20 +87,19 @@ session_start();
 		} else if (window.ActiveXObject) {
 			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
 		}
-		XMLreq.onreadystatechange=function() {
-			if (XMLreq.readyState==4 && XMLreq.status==200) {
-				json1 = XMLreq.responseText;
-				json2 = JSON.parse(json1);
-				refChatAusgabe.innerHTML = "";
-				for(var i=0; i<Object.keys(json2).length; i++) {
-					json3 = JSON.parse(json2[i]);
-					refChatAusgabe.innerHTML += "<b>" + json3.name + "</b>: " + json3.nachricht + "<br>";
-				}
-				json3 = JSON.parse(json2[Object.keys(json2).length - 1]);
-			}
-		}
-		XMLreq.open('GET','chat_laden.php',true);
+		XMLreq.open('GET','chat_laden.php',false);
 		XMLreq.send();
+		if (XMLreq.readyState==4 && XMLreq.status==200) {
+			json1 = XMLreq.responseText;
+			json2 = JSON.parse(json1);
+			refChatAusgabe.innerHTML = "";
+			for(var i=0; i<Object.keys(json2).length; i++) {
+				json3 = JSON.parse(json2[i]);
+				refChatAusgabe.innerHTML += "<b>" + json3.name + "</b>: " + json3.nachricht + "<br>" + "<p style=\"font-size: 10px\" > am: " + json3.ts + "</p>";
+			}
+			json3 = JSON.parse(json2[Object.keys(json2).length - 1]);
+		}
+		scrollen();
 	}
 	
 	function chat_nachladen() {
@@ -112,6 +110,7 @@ session_start();
 		} else if (window.ActiveXObject) {
 			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
 		}
+
 		XMLreq.onreadystatechange=function() {
 			if (XMLreq.readyState==4 && XMLreq.status==200) {
 				jsonNeu1 = XMLreq.responseText;
@@ -121,7 +120,7 @@ session_start();
 				if (jsonTest != jsonNeu3.nachricht) {
 					refChatAusgabe.innerHTML = "";
 					chat_laden();					
-					window.setTimeout(scrollen, 100);
+					//window.setTimeout(scrollen, 100);
 				}
 			}
 		}

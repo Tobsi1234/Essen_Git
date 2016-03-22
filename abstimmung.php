@@ -11,7 +11,7 @@ session_start();
 
 <script language="javascript"> 
 <!--
-	var XMLreq, name, refEssen, refDatum, refNeu, refMenu1, essen, heute, tag, monat, jahr, datum_heute;
+	var XMLreq, name, refEssen, refDatum, refNeu, refMenu1, refVerfügbar, selectedEssen, essen, heute, tag, monat, jahr, datum_heute;
 	function name_ausgeben() {
 		name = "<?php echo $_SESSION['username'] ?>";
 		//alert("Hallo " + name);
@@ -54,11 +54,58 @@ session_start();
 		alert(name + " hat " + essen + " gewählt. Danke!");
 		return false;
 	}
-	
-	function radioWert(rObj) {
-		//gibt den ausgewählten RadioButton zurück
-		for (var i=0; i<rObj.length; i++) if (rObj[i].checked) return rObj[i].value;
+
+	function essen_zuweisen() {
+		var essenArr = [];
+		refEssen = document.form1.essen;
+		essenArr = checkboxWert(refEssen);
+
+		var box = document.getElementById("gewaehlte_essen");
+		for(var i=0; i<essenArr.length; i++) {
+			var meinEssen = essenArr[i];
+			
+			var error = false;
+
+			for (var j = 0; j<box.options.length; j++) {
+				if (box.options[j].text == meinEssen) {
+					error = true;
+				}
+			}
+			if(error == false) {
+				if(meinEssen && box.options.length < 2) {
+					element = document.createElement("option");
+					element.appendChild(document.createTextNode(meinEssen));
+					box.appendChild(element);
+				}
+				else {
+					alert("Höchstens 2 Essen pro Location");
+				}
+			}
+		}
 		return false;
+	}
+	
+	function essen_entfernen() {
+		box = document.getElementById("gewaehlte_essen");
+		box.remove(box.selectedIndex);
+	}
+	
+	function checkboxWert(rObj) {
+		//gibt die ausgewählten Checkboxen zurück
+		var arr = []
+		for (var i=0; i<rObj.length; i++) {
+			if (rObj[i].checked) {
+				if(rObj[i].value == "Sonstiges") {
+					refVerfügbar = document.form1.verfuegbare_essen;
+					selectedEssen = refVerfügbar.value;
+					arr[arr.length] = selectedEssen;
+				}
+				else {
+					arr[arr.length] = rObj[i].value;
+				}
+			}
+		}
+		return arr;
 	}
 	
 	function f_datum_heute() {
@@ -108,6 +155,7 @@ session_start();
 		refDatum.innerHTML = datum_heute;
 		return false;
 	}
+	
 --> 
 </script>
 </head>
@@ -158,19 +206,37 @@ session_start();
 				<input type="text" id="name" maxlength="30" value="Name" disabled="disabled" style="margin-left:20px;">
 				<script> form_name(); </script> <br><br>
 				<label for="name"> Essensmöglichkeiten: </label> 
+				<input type="checkbox" id="essen" name="essen" value="Bäcker" style="margin-left:15px"> <label for="">Bäcker </label>
+				<input type="checkbox" id="essen" name="essen" value="Döner" style="margin-left:15px"> <label for="">Döner </label>
+				<input type="checkbox" id="essen" name="essen" value="Pizza" style="margin-left:15px"> <label for="">Pizza </label>
+				<input type="checkbox" id="essen" name="essen" value="Sonstiges" style="margin-left:15px"> <label for=""></label>
+				
+				<select id="verfuegbare_essen">
 				<?php
 				$abfrage0 = "SELECT * FROM tabessen ORDER BY name ASC";
 				$ergebnis0 = mysqli_query($connection, $abfrage0);
 				while ($row0 = mysqli_fetch_object($ergebnis0))
 					{
 						?>
-						<input type="radio" id="essen" name="essen" value="<?php echo $row0->name; ?>" checked="checked" style="margin-left:15px"> <label for=""><?php echo $row0->name; ?> </label>
+						<!--<input type="checkbox" id="essen" name="essen" value="<?php echo $row0->name; ?>" style="margin-left:15px"> <label for=""><?php echo $row0->name; ?> </label>-->
+						
+						<option><?php echo $row0->name; ?> </option>
 						<?php
 					}
 					?>
+					</select>
+
+				<br><br>
+				<button type="button" onclick="essen_zuweisen();">Hinzufügen</button>
+				<br><br>
+				<select id="gewaehlte_essen" name="gewaehlte_essen" size="5">
+				</select>
+				<button type="button" onclick="essen_entfernen();">Entfernen</button>
+
 				<br><br>
 				<button type="submit">Auswahl speichern</button>
-				</form><br><br><br>
+				</form>
+				<br><br><br>
 				<form id="form2" name="form2" action="" method="post" onsubmit="form_neu(); return false;">
 				<label for="name"> Neue Essensmöglichkeit: </label> 
 				<input type="text" id="name" maxlength="30" value="" style="margin-left:23px;">
