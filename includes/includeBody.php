@@ -1,20 +1,32 @@
+<?php 
+$pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'test', 'test');
+ 
+if(isset($_GET['login'])) {
+	$email = $_POST['email'];
+	$passwort = $_POST['passwort'];
+	
+	$statement = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+	$result = $statement->execute(array('email' => $email));
+	$user = $statement->fetch();
+		
+	//Überprüfung des Passworts
+	if ($user !== false && password_verify($passwort, $user['passwort'])) {
+		$_SESSION['userid'] = $user['id'];
+		$_SESSION['email'] = $user['email'];
+		//die('Login erfolgreich. Weiter zu <a href="geheim.php">internen Bereich</a>');
+	} else {
+		$errorMessage = "E-Mail oder Passwort war ungültig<br>";
+	}	
+}
+?>
+
 <!DOCTYPE html>
 <html lang="de">
 <body>
-<?php
-	$currentUsername = null;
-	$currentPassword = null;
-	if (isset($_SESSION["username"]) && isset($_SESSION["password"] )) {
-
-	$currentUsername = $_SESSION["username"];
-	$currentPassword = $_SESSION["password"];
-	}
-
-	if ((!($currentUsername=="Tobias" and $currentPassword=="Tobias_1a2s3d")) && (!($currentUsername=="Dominik" and $currentPassword=="Dominik_1a2s3d")) && (!($currentUsername=="Quentin" and $currentPassword=="Quentin_1a2s3d"))&& (!($currentUsername=="Tilo" and $currentPassword=="Tilo_1a2s3d")))
-	{
-		  echo("Lädt...");
-		  echo "<script type='text/javascript'>myFunction();</script>";
-	}
+<?php 
+if(isset($errorMessage)) {
+	echo $errorMessage;
+}
 ?>
 <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -43,12 +55,30 @@
                     </li>
 					<li>
                         <a href="">Einstellungen</a>
-                    </li>
+                    </li>                    
+                    <li id="login">
+                        <a id="login-trigger" href="#">
+                            Einloggen <span>&#x25BC;</span>
+                        </a>
+                            <div id="login-content">
+                                 <form action="?login=1" method="post">
+                                    <fieldset id="inputs">
+                                        <input id="username" type="email" name="email" placeholder="E-Mail Adresse" required>   
+                                        <input id="password" type="password" name="passwort" placeholder="Passwort" required>
+                                    </fieldset>
+                                    <fieldset id="actions">
+                                        <input type="submit" id="submit" value="Einloggen">
+                                        <label><input type="checkbox" checked="checked">Eingeloggt bleiben?</label>
+                                        <label><a href="registrieren.php">Noch nicht registriert? </a></label>
+                                    </fieldset>
+                                </form>
+                            </div>                     
+        			</li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
-    </nav>
+    </nav>  
 </body>
 </html>
