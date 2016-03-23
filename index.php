@@ -176,11 +176,6 @@ session_start();
 			?>
 			<br><br>
 			<script> name_ausgeben();</script>
-            
-            <?php 
-			if(isset($_SESSION['userid'])) { //Prüfung ob eingeloggt
-			?>
-            
 			<div id="chat_border" style="border: 1px black solid; width: 400px; height: 300px; overflow: auto">
 				<div id="chat_ausgabe" style="height:265px; overflow:auto;"></div>
 				<hr style="width: 100%; height: 1px; margin: 0 auto; background: black;" />
@@ -194,8 +189,7 @@ session_start();
 			<script>
 			chat_laden(); // läd chat jede sekunde neu.
 			chat_verspätet();
-			</script>
-            <?php } ?> <!--gehört zur Einlogg Prüfung --> 
+			</script> 
 			<div>
 			Ergebnis von heute : <div id="essenErgebnis"> </div><br><br>
 			<?php			

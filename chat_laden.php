@@ -1,7 +1,4 @@
 <?php
-	if(!isset($_SESSION['userid'])) {
-		die('Bitte zuerst <a href="index.php">einloggen</a>');
-	}
 	require('password.php');
 	$arr = array();
 	$sqls1 = "SELECT * FROM tabchat";
