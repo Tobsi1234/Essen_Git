@@ -15,6 +15,8 @@
 
     <!-- Custom CSS -->
     <link href="css/one-page-wonder.css" rel="stylesheet">
+    
+    <link href="css/login.css" rel="stylesheet">
 	
 	<!-- jQuery -->
     <script src="js/jquery.js"></script>
@@ -47,6 +49,18 @@
 		?>	
 	}   
 -->
+</script>
+
+<script language="javascript">
+$(document).ready(function(){
+    $('#login-trigger').click(function() {
+        $(this).next('#login-content').slideToggle();
+        $(this).toggleClass('active');                    
+        
+        if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
+            else $(this).find('span').html('&#x25BC;')
+        })
+});
 </script>
 
 </head>
