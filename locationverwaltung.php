@@ -11,8 +11,8 @@ session_start();
 
 <script language="javascript"> 
 <!--
-	var XMLreq, referenz, meinEssen, name, element, box, error;
-	var zuzuweisendeEssen = [];
+	var XMLreq, referenz, meinEssen, name, element, box, error, locname, locpage;
+	var locessen = [];
 	function name_ausgeben() {
 		name = "<?php echo $_SESSION['username'] ?>";
 		//alert("Hallo " + name);
@@ -20,7 +20,27 @@ session_start();
 	
 	function loc_anlegen() {
 		alert("Ich lege eine Location an!");
-	} 
+		locname = document.getElementById("locname").value; // 
+		locpage = document.getElementById("locpage").value;
+		box = document.getElementById("gewaehlte_essen");
+		for (var i = 0; i<box.options.length; i++) {
+			locessen[i] = box.options[i].text;
+					// alert ("Name: "+locname+" Page: "+locpage+" Essensarray: "+locessen[i]);	
+		}
+		alert ("Nun zum PHP-Teil"); // bis hierher kommt er
+
+		$.ajax({
+			type: "POST",
+			url: "procedures.php",
+			data: {callFunction: 'insertLocations'},
+			dataType: 'text',
+			success:function(data) {
+				alert(data);
+			}
+		});
+		// window.location.href = "locationverwaltung.php";
+		alert ("Ich bin durchgesprungen");
+	}
 	function essen_zuweisen() {
 		// alert("Ich füge der Location ein Essen hinzu!");
 		if (window.XMLHttpRequest) {
@@ -62,7 +82,13 @@ session_start();
 <?php
 	include ("includes/includeBody.php");
 ?>
+<?php
 
+
+ 
+// per Argument in 'a' entscheiden welche Funktion aufgerufen werden soll
+
+?>
 
     <!-- Full Width Image Header -->
     <header class="header-image">
@@ -89,14 +115,14 @@ session_start();
 				<label for="locname">Name der Location:</label> 
 				<input type="text" id="locname" maxlength="30" value="" style="margin-left:23px;">
 				<br><br>
-				<label for="locname">Homepage: </label> 
+				<label for="locpage">Homepage: </label> 
 				<input type="text" id="locpage" maxlength="100" value="" style="margin-left:23px;">
 				<br><br>
 				<label for="verfuegbare_essen">Essensmöglichkeiten:</label>
 				<select id="verfuegbare_essen" name="verfuegbare_essen">
 					<option>Guten Morgen</option>
-					<option>Guten Abend</option>
 					<option>Burger</option>
+					<option>Guten Abend</option>
 					<option>Salami</option>
 					<option>Döner</option>
 					<option>Pizza</option>
@@ -112,20 +138,9 @@ session_start();
 				<button type="submit">Location speichern</button>
 			</form>
 			
-			<?php			
-
-			
-			?>
 			</div>
         </div>
     </div>
-	<script> essenErgebnis(); 
-	</script>
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.js"></script>
 
 
 			
