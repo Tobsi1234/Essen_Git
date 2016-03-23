@@ -16,7 +16,7 @@ if(!isset($_SESSION['userid'])) {
 <!--
 	var XMLreq, name, refEssen, refDatum, refNeu, refMenu1, refVerfügbar, selectedEssen, essen, heute, tag, monat, jahr, datum_heute;
 	function name_ausgeben() {
-		name = "<?php echo $_SESSION['username'] ?>";
+		name = "<?php echo $_SESSION['email'] ?>";
 		//alert("Hallo " + name);
 	}
 	
@@ -252,13 +252,6 @@ if(!isset($_SESSION['userid'])) {
 			</div>
         </div>
     </div>
-
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.js"></script>
-
 
 			
 </body>
