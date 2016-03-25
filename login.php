@@ -1,7 +1,7 @@
 <!-- NICHT MEHR BENÖTIGT -->
 <?php 
 session_start();
-$pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'root', '');
+require('password.php');
  
 if(isset($_GET['login'])) {
 	$email = $_POST['email'];

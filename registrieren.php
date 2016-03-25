@@ -1,6 +1,6 @@
 <?php 
 session_start();
-$pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'test', 'test');
+require('password.php');
 ?>
 <!DOCTYPE html> 
 <html> 

@@ -1,5 +1,5 @@
 <?php 
-$pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'test', 'test');
+require('password.php');
  
 if(isset($_GET['login'])) {
 	$email = $_POST['email'];

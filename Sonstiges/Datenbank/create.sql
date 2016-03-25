@@ -60,10 +60,13 @@ CREATE TABLE IF NOT EXISTS `tabessen` (
 CREATE TABLE IF NOT EXISTS `tabbez` (
   `p_ID` int(11) NOT NULL,
   `d_ID` int(11) NOT NULL,
-  `essen` varchar(30) NOT NULL,
+  `e_ID1` int(11) NOT NULL,
+  `e_ID2` int(11),
   PRIMARY KEY (`p_ID`,`d_ID`),
   CONSTRAINT `constraint_datum` FOREIGN KEY (`d_ID`) REFERENCES `tabdatum` (`d_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `constraint_name` FOREIGN KEY (`p_ID`) REFERENCES `tabperson` (`p_ID`) ON UPDATE CASCADE
+  CONSTRAINT `constraint_name` FOREIGN KEY (`p_ID`) REFERENCES `tabperson` (`p_ID`) ON UPDATE CASCADE,
+  CONSTRAINT `constraint_essen1` FOREIGN KEY (`e_ID1`) REFERENCES `tabessen` (`e_ID`) ON UPDATE CASCADE,
+  CONSTRAINT `constraint_essen2` FOREIGN KEY (`e_ID2`) REFERENCES `tabessen` (`e_ID`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

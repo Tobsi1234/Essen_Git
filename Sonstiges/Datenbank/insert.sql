@@ -47,12 +47,4 @@ INSERT INTO `tabperson` (`p_ID`, `name`) VALUES
 (3, 'Tilo'),
 (4, 'Tobias');
 
---
--- Daten für Tabelle `tabbez`
---
-
-INSERT INTO `tabbez` (`p_ID`, `d_ID`, `essen`) VALUES
-(4, 1, 'McDonalds'),
-(4, 2, 'Food Lounge');
-
 

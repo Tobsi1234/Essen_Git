@@ -15,7 +15,7 @@ session_start();
 	var XMLreq, name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht, json1, json2, json3, jsonNeu2, jsonNeu2, jsonNeu3;
 	var essenNamen = [];
 	function name_ausgeben() {
-		name = "<?php echo $_SESSION['username'] ?>";
+		name = "<?php echo $_SESSION['email'] ?>";
 		//alert("Hallo " + name);
 	}
 	
@@ -209,18 +209,18 @@ session_start();
 					<p>
 					Datum: <?php echo $row1->datum; ?> <br>
 					<?php
-						$abfrage2 = "SELECT name, essen FROM tabperson, tabbez WHERE tabperson.p_ID = tabbez.p_ID AND tabbez.d_ID = '$row1->d_ID'";
+						$abfrage2 = "SELECT name, e_ID1 FROM tabperson, tabbez WHERE tabperson.p_ID = tabbez.p_ID AND tabbez.d_ID = '$row1->d_ID'";
 						$ergebnis2 = mysqli_query($connection, $abfrage2);
 						while ($row2 = mysqli_fetch_object($ergebnis2))
 							{	
 						?>
 						<p>
 						Name: <?php echo $row2->name; ?> <br>
-						Essen: <?php echo $row2->essen; ?> <br> 
-						<script> 
+						Essen: <?php echo $row2->e_ID1; ?> <br> 
+						<script> //für Ergebnis Berechnung
 						if("<?php echo $row1->datum; ?>" == datum_heute) {
 							var i = essenNamen.length;
-							essenNamen[i] = "<?php echo $row2->essen; ?>" 
+							essenNamen[i] = "<?php echo $row2->e_ID1; ?>" 
 						}
 						</script>
 						</p>
