@@ -1,5 +1,5 @@
 <?php
-	require('password.php');
+	require('includes/includeDatabase.php');
 	$arr = array();
 	$stmt1 = $pdo->prepare("SELECT * FROM tabchat");
 	$stmt1->execute();

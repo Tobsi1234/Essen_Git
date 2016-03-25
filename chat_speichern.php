@@ -1,5 +1,5 @@
 <?php
-	require('password.php');
+	require('includes/includeDatabase.php');
 
 	$name = $_GET["name"];
 	$nachricht = htmlspecialchars($_GET["nachricht"]);

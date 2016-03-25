@@ -1,7 +1,7 @@
 <!-- NICHT MEHR BENÖTIGT -->
 <?php 
 session_start();
-require('password.php');
+require('includes/includeDatabase.php');
  
 if(isset($_GET['login'])) {
 	$email = $_POST['email'];

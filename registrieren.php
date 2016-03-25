@@ -1,5 +1,5 @@
 <?php 
-$pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'root', '');
+require('includes/includeDatabase.php');
 ?>
 <!DOCTYPE html> 
 <html> 

@@ -1,6 +1,6 @@
 <?php
 session_start();
-$pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'root', '');
+require('includes/includeDatabase.php');
 
 switch ($_POST['callFunction'])
 	{
@@ -19,7 +19,7 @@ function insertLocation($locname, $locpage, $locessen)
 	global $pdo;
 	$pdolocal = $pdo;
 
-	require('password.php');
+	require('includes/includeDatabase.php');
 	
 	$sqlInsLoc = $pdolocal->prepare("INSERT INTO tablocation (name, link, u_ID) VALUES (:locname, :locpage, :userid)");
 	$sqlInsLocRes = $sqlInsLoc->execute(array('locname' => $locname, 'locpage' => $locpage, 'userid' => $_SESSION['userid']));

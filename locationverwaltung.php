@@ -1,8 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['userid'])) {
-	die('Bitte zuerst <a href="index.php">einloggen</a>');
-}
+require("includes/includeDatabase.php");
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -97,7 +95,7 @@ if(!isset($_SESSION['userid'])) {
         <!-- First Featurette -->
         <div class="featurette" id="about">
 			<?php
-			require('password.php');
+			require('includes/includeDatabase.php');
 			?>
 			<br><br>
 			<div>
@@ -133,7 +131,7 @@ if(!isset($_SESSION['userid'])) {
 			
 			</div>
 			<div>
-				<h2>Location hinzufügen</h2>
+				<h2>Essen hinzufügen</h2>
 			</div>
         </div>
     </div>

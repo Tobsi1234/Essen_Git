@@ -1,6 +1,6 @@
 <?php
 
-	require('password.php');
+	require('includes/includeDatabase.php');
 	
 	$name = htmlspecialchars($_GET["name"]);
 	$essen1 = htmlspecialchars($_GET["essen1"]);

@@ -1,5 +1,6 @@
 <?php
 session_start();
+require("includes/includeDatabase.php");
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -172,7 +173,7 @@ session_start();
         <!-- First Featurette -->
         <div class="featurette" id="about">
 			<?php
-			require('password.php');
+			require('includes/includeDatabase.php');
 			?>
 			<br><br>
 			<script> name_ausgeben();</script>

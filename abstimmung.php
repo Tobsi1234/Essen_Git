@@ -1,8 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['userid'])) {
-	die('Bitte zuerst <a href="index.php">einloggen</a>');
-}
+require("includes/includeDatabase.php");
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -152,7 +150,7 @@ if(!isset($_SESSION['userid'])) {
 ?>
 
 	<?php
-		require('password.php');
+		require('includes/includeDatabase.php');
 		if (isset($_GET["name"])) {
 		$name = htmlspecialchars($_GET["name"]);
 		$sqli1 = "INSERT INTO tabessen (name) VALUES ('$name')";
@@ -185,7 +183,7 @@ if(!isset($_SESSION['userid'])) {
         <!-- First Featurette -->
         <div class="featurette" id="about">
 			<?php
-			require('password.php');
+			require('includes/includeDatabase.php');
 			?>
 			<div>
 				<form id="form1" name="form1" action="" method="post" onsubmit="form_essen(); return false;">

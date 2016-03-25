@@ -1,5 +1,5 @@
 <?php 
-require('password.php');
+require('includes/includeDatabase.php');
  
 if(isset($_GET['login'])) {
 	$email = $_POST['email'];
