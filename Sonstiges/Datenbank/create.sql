@@ -111,3 +111,22 @@ CREATE TABLE IF NOT EXISTS `tablocessen` (
   CONSTRAINT `constraint_location` FOREIGN KEY (`l_ID`) REFERENCES `tablocation` (`l_ID`) ON UPDATE CASCADE,
   CONSTRAINT `constraint_essen` FOREIGN KEY (`e_ID`) REFERENCES `tabessen` (`e_ID`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `passwort` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `vorname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `nachname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
