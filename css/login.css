@@ -69,7 +69,7 @@ nav #signup a:hover {
 nav #login-content {
   display: none;
   position: absolute;
-  top: 24px;
+  top: 50px;
   right: 0;
   z-index: 999;    
   background: #444;
