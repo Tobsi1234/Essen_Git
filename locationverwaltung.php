@@ -8,12 +8,7 @@ require("includes/includeDatabase.php");
 
 <?php
 	include ("includes/includeHead.php");
-	include ("procedures.php");
-<<<<<<< HEAD
-=======
-	
->>>>>>> origin/master
-	
+	include ("procedures.php");	
 ?>
 
 <script language="javascript"> 
