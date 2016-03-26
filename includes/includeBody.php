@@ -1,14 +1,9 @@
 <?php 
 
-
 $pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'root', '');
 
 require('includes/includeDatabase.php');
 
-
-require('includes/includeDatabase.php');
-
- 
 if(isset($_GET['login'])) {
 	$email = $_POST['email'];
 	$passwort = $_POST['passwort'];
@@ -20,7 +15,7 @@ if(isset($_GET['login'])) {
 	//Überprüfung des Passworts
 	if ($user !== false && password_verify($passwort, $user['passwort'])) {
 		$_SESSION['userid'] = $user['id'];
-		$_SESSION['email'] = $user['email'];
+		$_SESSION['email'] = $user['email'];  
 		//die('Login erfolgreich. Weiter zu <a href="geheim.php">internen Bereich</a>');
 	} else {
 		$errorMessage = "E-Mail oder Passwort war ungültig<br>";

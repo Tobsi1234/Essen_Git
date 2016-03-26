@@ -1,5 +1,9 @@
 <?php
-session_start();
+
+    if(!isset($_SESSION)) 
+    { 
+        session_start(); 
+    } 
 require('includes/includeDatabase.php');
 
 switch ($_POST['callFunction'])

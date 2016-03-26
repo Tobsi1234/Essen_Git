@@ -1,14 +1,9 @@
 <?php 
-
-
 session_start();
 $pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'root', '');
 
 require('includes/includeDatabase.php');
-
-
-require('includes/includeDatabase.php');
-
+	include ("includes/includeHead.php");
 ?>
 <!DOCTYPE html> 
 <html> 
@@ -59,8 +54,13 @@ if(isset($_GET['register'])) {
 		$result = $statement->execute(array('email' => $email, 'passwort' => $passwort_hash));
 		
 		if($result) {		
-			echo 'Du wurdest erfolgreich registriert. <a href="login.php">Zum Login</a>';
+			//echo 'Du wurdest erfolgreich registriert. <a href="index.php">Zur Startseite</a>';
 			$showFormular = false;
+			?>
+			<div class="alert alert-success fade in">
+  				Du wurdest erfolgreich <strong>registriert</strong>! <a href="index.php">Zur Startseite</a>
+			</div>
+            <?php
 		} else {
 			echo 'Beim Abspeichern ist leider ein Fehler aufgetreten<br>';
 		}
@@ -69,20 +69,20 @@ if(isset($_GET['register'])) {
  
 if($showFormular) {
 ?>
- 
-<form action="?register=1" method="post">
-E-Mail:<br>
-<input type="email" size="40" maxlength="250" name="email"><br><br>
- 
-Dein Passwort:<br>
-<input type="password" size="40"  maxlength="250" name="passwort"><br>
- 
-Passwort wiederholen:<br>
-<input type="password" size="40" maxlength="250" name="passwort2"><br><br>
- 
-<input type="submit" value="Abschicken">
-</form>
- 
+<div id="register">
+    <form action="?register=1" method="post">
+    E-Mail:<br>
+    <input type="email" size="40" maxlength="250" name="email"><br><br>
+     
+    Dein Passwort:<br>
+    <input type="password" size="40"  maxlength="250" name="passwort"><br><br>
+     
+    Passwort wiederholen:<br>
+    <input type="password" size="40" maxlength="250" name="passwort2"><br><br>
+     
+    <input type="submit" value="Abschicken">
+    </form>
+</div> 
 <?php
 } //Ende von if($showFormular)
 ?>
