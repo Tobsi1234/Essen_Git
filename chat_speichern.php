@@ -1,10 +1,8 @@
 <?php
-	require('password.php');
-	if(!isset($_SESSION['userid'])) {
-		die('Bitte zuerst <a href="index.php">einloggen</a>');
-	}
+	require('includes/includeDatabase.php');
+
 	$name = $_GET["name"];
 	$nachricht = htmlspecialchars($_GET["nachricht"]);
-	$sqli1 = "INSERT INTO tabchat (name, nachricht) VALUES ('$name', '$nachricht')";
-	$result1 = mysqli_query($connection, $sqli1);
+	$stmt1 = $pdo->prepare("INSERT INTO tabchat (name, nachricht) VALUES (:name, :nachricht)");
+	$result1 = $stmt1->execute(array('name' => $name, 'nachricht' => $nachricht));
 ?>

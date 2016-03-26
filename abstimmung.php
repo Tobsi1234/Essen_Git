@@ -1,8 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['userid'])) {
-	die('Bitte zuerst <a href="index.php">einloggen</a>');
-}
+require("includes/includeDatabase.php");
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -16,7 +14,7 @@ if(!isset($_SESSION['userid'])) {
 <!--
 	var XMLreq, name, refEssen, refDatum, refNeu, refMenu1, refVerfügbar, selectedEssen, essen, heute, tag, monat, jahr, datum_heute;
 	function name_ausgeben() {
-		name = "<?php echo $_SESSION['username'] ?>";
+		name = "<?php echo $_SESSION['email'] ?>";
 		//alert("Hallo " + name);
 	}
 	
@@ -47,50 +45,22 @@ if(!isset($_SESSION['userid'])) {
 		} else if (window.ActiveXObject) {
 			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
 		}
-		refEssen = document.form1.essen;
-		essen = radioWert(refEssen);
-		//alert(name + " wählt: " + essen);
 		
-		URL = 'essen_DB.php?name=' + name + '&essen=' + essen + '&datum=' + tag + '.' + monat + '.' + jahr;
-		XMLreq.open('GET', URL, false); 
-		XMLreq.send(null);
-		alert(name + " hat " + essen + " gewählt. Danke!");
-		return false;
-	}
-
-	function essen_zuweisen() {
 		var essenArr = [];
 		refEssen = document.form1.essen;
 		essenArr = checkboxWert(refEssen);
-
-		var box = document.getElementById("gewaehlte_essen");
-		for(var i=0; i<essenArr.length; i++) {
-			var meinEssen = essenArr[i];
-			
-			var error = false;
-
-			for (var j = 0; j<box.options.length; j++) {
-				if (box.options[j].text == meinEssen) {
-					error = true;
-				}
-			}
-			if(error == false) {
-				if(meinEssen && box.options.length < 2) {
-					element = document.createElement("option");
-					element.appendChild(document.createTextNode(meinEssen));
-					box.appendChild(element);
-				}
-				else {
-					alert("Höchstens 2 Essen pro Location");
-				}
-			}
+		if(essenArr.length > 0 && essenArr.length < 3) {
+			if(essenArr.length == 1) URL = 'essen_DB.php?name=' + name + '&essen1=' + essenArr[0] + '&essen2=' + '' + '&datum=' + tag + '.' + monat + '.' + jahr;
+			else URL = 'essen_DB.php?name=' + name + '&essen1=' + essenArr[0] + '&essen2=' + essenArr[1] + '&datum=' + tag + '.' + monat + '.' + jahr;
+			XMLreq.open('GET', URL, false); 
+			XMLreq.send(null);
+			alert(name + " hat " + essenArr[0] + " und " + essenArr[1] + " gewählt. Danke!");
 		}
-		return false;
-	}
-	
-	function essen_entfernen() {
-		box = document.getElementById("gewaehlte_essen");
-		box.remove(box.selectedIndex);
+		else {
+			alert("Bitte wähle mindestens ein, höchstens zwei Essen aus.");
+		}
+
+		return false; 
 	}
 	
 	function checkboxWert(rObj) {
@@ -98,7 +68,7 @@ if(!isset($_SESSION['userid'])) {
 		var arr = []
 		for (var i=0; i<rObj.length; i++) {
 			if (rObj[i].checked) {
-				if(rObj[i].value == "Sonstiges") {
+				if(rObj[i].value == "Sonstiges1" || rObj[i].value == "Sonstiges2"  ) {
 					refVerfügbar = document.form1.verfuegbare_essen;
 					selectedEssen = refVerfügbar.value;
 					arr[arr.length] = selectedEssen;
@@ -109,6 +79,18 @@ if(!isset($_SESSION['userid'])) {
 			}
 		}
 		return arr;
+	}
+	
+	function validate(){
+
+		if ($('#sonstiges1').is(':checked')){
+			$('#sonstiges2').css('display', 'inline-block');
+			$('#verfuegbare_essen2').css('display','inline-block');
+
+		}else{
+			$('#sonstiges2').css('display', 'none');
+			$('#verfuegbare_essen2').css('display','none');
+		}
 	}
 	
 	function f_datum_heute() {
@@ -168,7 +150,7 @@ if(!isset($_SESSION['userid'])) {
 ?>
 
 	<?php
-		require('password.php');
+		require('includes/includeDatabase.php');
 		if (isset($_GET["name"])) {
 		$name = htmlspecialchars($_GET["name"]);
 		$sqli1 = "INSERT INTO tabessen (name) VALUES ('$name')";
@@ -201,7 +183,7 @@ if(!isset($_SESSION['userid'])) {
         <!-- First Featurette -->
         <div class="featurette" id="about">
 			<?php
-			require('password.php');
+			require('includes/includeDatabase.php');
 			?>
 			<div>
 				<form id="form1" name="form1" action="" method="post" onsubmit="form_essen(); return false;">
@@ -209,10 +191,10 @@ if(!isset($_SESSION['userid'])) {
 				<input type="text" id="name" maxlength="30" value="Name" disabled="disabled" style="margin-left:20px;">
 				<script> form_name(); </script> <br><br>
 				<label for="name"> Essensmöglichkeiten: </label> 
-				<input type="checkbox" id="essen" name="essen" value="Bäcker" style="margin-left:15px"> <label for="">Bäcker </label>
-				<input type="checkbox" id="essen" name="essen" value="Döner" style="margin-left:15px"> <label for="">Döner </label>
-				<input type="checkbox" id="essen" name="essen" value="Pizza" style="margin-left:15px"> <label for="">Pizza </label>
-				<input type="checkbox" id="essen" name="essen" value="Sonstiges" style="margin-left:15px"> <label for=""></label>
+				<input type="checkbox" id="bäcker" name="essen" value="Bäcker" style="margin-left:15px"> <label for="">Bäcker </label>
+				<input type="checkbox" id="döner" name="essen" value="Döner" style="margin-left:15px"> <label for="">Döner </label>
+				<input type="checkbox" id="pizza" name="essen" value="Pizza" style="margin-left:15px"> <label for="">Pizza </label>
+				<input type="checkbox" id="sonstiges1" name="essen" value="Sonstiges1" style="margin-left:15px" onclick="validate();"> <label for=""></label>
 				
 				<select id="verfuegbare_essen">
 				<?php
@@ -227,15 +209,24 @@ if(!isset($_SESSION['userid'])) {
 						<?php
 					}
 					?>
-					</select>
-
-				<br><br>
-				<button type="button" onclick="essen_zuweisen();">Hinzufügen</button>
-				<br><br>
-				<select id="gewaehlte_essen" name="gewaehlte_essen" size="5">
 				</select>
-				<button type="button" onclick="essen_entfernen();">Entfernen</button>
 
+				<input type="checkbox" id="sonstiges2" name="essen" value="Sonstiges2" style="margin-left:15px; display:none;" >
+
+				<select id="verfuegbare_essen2" style="display:none">
+				<?php
+				$abfrage0 = "SELECT * FROM tabessen ORDER BY name ASC";
+				$ergebnis0 = mysqli_query($connection, $abfrage0);
+				while ($row0 = mysqli_fetch_object($ergebnis0))
+					{
+						?>
+						<!--<input type="checkbox" id="essen" name="essen" value="<?php echo $row0->name; ?>" style="margin-left:15px"> <label for=""><?php echo $row0->name; ?> </label>-->
+						
+						<option><?php echo $row0->name; ?> </option>
+						<?php
+					}
+					?>
+				</select>
 				<br><br>
 				<button type="submit">Auswahl speichern</button>
 				</form>
@@ -252,13 +243,6 @@ if(!isset($_SESSION['userid'])) {
 			</div>
         </div>
     </div>
-
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.js"></script>
-
 
 			
 </body>

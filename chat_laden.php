@@ -1,15 +1,12 @@
 <?php
-	if(!isset($_SESSION['userid'])) {
-		die('Bitte zuerst <a href="index.php">einloggen</a>');
-	}
-	require('password.php');
+	require('includes/includeDatabase.php');
 	$arr = array();
-	$sqls1 = "SELECT * FROM tabchat";
-	$result1 = mysqli_query($connection, $sqls1);
-	while($row1 = mysqli_fetch_object($result1)){
-		$nachricht = $row1->nachricht;
-		$name = $row1->name;
-		$ts = $row1->ts;
+	$stmt1 = $pdo->prepare("SELECT * FROM tabchat");
+	$stmt1->execute();
+	foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row1){
+		$nachricht = $row1['nachricht'];
+		$name = $row1['name'];
+		$ts = $row1['ts'];
 		$message = array(
 			"name" => $name,
 			"nachricht" => $nachricht,

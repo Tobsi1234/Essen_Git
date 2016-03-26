@@ -1,8 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['userid'])) {
-	die('Bitte zuerst <a href="index.php">einloggen</a>');
-}
+require("includes/includeDatabase.php");
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -10,20 +8,18 @@ if(!isset($_SESSION['userid'])) {
 
 <?php
 	include ("includes/includeHead.php");
+	// include ("procedures.php");
+	
 ?>
 
 <script language="javascript"> 
 <!--
 	var XMLreq, referenz, meinEssen, name, element, box, error, locname, locpage;
 	var locessen = [];
-	function name_ausgeben() {
-		name = "<?php echo $_SESSION['username'] ?>";
-		//alert("Hallo " + name);
-	}
 	
 	function loc_anlegen() {
 		alert("Ich lege eine Location an!");
-		locname = document.getElementById("locname").value; // 
+		locname = document.getElementById("locname").value;
 		locpage = document.getElementById("locpage").value;
 		box = document.getElementById("gewaehlte_essen");
 		for (var i = 0; i<box.options.length; i++) {
@@ -35,13 +31,13 @@ if(!isset($_SESSION['userid'])) {
 		$.ajax({
 			type: "POST",
 			url: "procedures.php",
-			data: {callFunction: 'insertLocations'},
+			data: {callFunction: 'insertLocation', p1: locname, p2: locpage, p3: locessen},
 			dataType: 'text',
 			success:function(data) {
 				alert(data);
 			}
 		});
-		// window.location.href = "locationverwaltung.php";
+		// window.location.href = "procedures.php";
 		alert ("Ich bin durchgesprungen");
 	}
 	function essen_zuweisen() {
@@ -85,13 +81,6 @@ if(!isset($_SESSION['userid'])) {
 <?php
 	include ("includes/includeBody.php");
 ?>
-<?php
-
-
- 
-// per Argument in 'a' entscheiden welche Funktion aufgerufen werden soll
-
-?>
 
     <!-- Full Width Image Header -->
     <header class="header-image">
@@ -106,10 +95,9 @@ if(!isset($_SESSION['userid'])) {
         <!-- First Featurette -->
         <div class="featurette" id="about">
 			<?php
-			require('password.php');
+			require('includes/includeDatabase.php');
 			?>
 			<br><br>
-			<script> name_ausgeben();</script>
 			<div>
 			<h2>Location hinzufügen</h2>
 			<div id="essenErgebnis"> </div><br><br>
@@ -141,6 +129,9 @@ if(!isset($_SESSION['userid'])) {
 				<button type="submit">Location speichern</button>
 			</form>
 			
+			</div>
+			<div>
+				<h2>Essen hinzufügen</h2>
 			</div>
         </div>
     </div>

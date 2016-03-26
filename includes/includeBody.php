@@ -1,5 +1,9 @@
 <?php 
-$pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'test', 'test');
+
+$pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'root', '');
+
+require('includes/includeDatabase.php');
+
  
 if(isset($_GET['login'])) {
 	$email = $_POST['email'];
