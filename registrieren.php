@@ -1,14 +1,14 @@
 <?php 
-<<<<<<< HEAD
+
 
 session_start();
 $pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'root', '');
 
 require('includes/includeDatabase.php');
 
-=======
+
 require('includes/includeDatabase.php');
->>>>>>> origin/master
+
 ?>
 <!DOCTYPE html> 
 <html> 

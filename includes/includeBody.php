@@ -1,13 +1,13 @@
 <?php 
-<<<<<<< HEAD
+
 
 $pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'root', '');
 
 require('includes/includeDatabase.php');
 
-=======
+
 require('includes/includeDatabase.php');
->>>>>>> origin/master
+
  
 if(isset($_GET['login'])) {
 	$email = $_POST['email'];
