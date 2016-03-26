@@ -9,16 +9,20 @@ require("includes/includeDatabase.php");
 <?php
 	include ("includes/includeHead.php");
 	include ("procedures.php");
+<<<<<<< HEAD
+=======
+	
+>>>>>>> origin/master
 	
 ?>
 
 <script language="javascript"> 
 <!--
-	var XMLreq, referenz, meinEssen, name, element, box, error, locname, locpage;
+	var XMLreq, referenz, meinEssen, name, element, box, error, locname, locpage, essenDropdown;
 	var locessen = [];
-	
+
 	function loc_anlegen() {
-		alert("Ich lege eine Location an!");
+		// alert("Ich lege eine Location an!");
 		locname = document.getElementById("locname").value;
 		locpage = document.getElementById("locpage").value;
 		box = document.getElementById("gewaehlte_essen");
@@ -26,7 +30,7 @@ require("includes/includeDatabase.php");
 			locessen[i] = box.options[i].text;
 					// alert ("Name: "+locname+" Page: "+locpage+" Essensarray: "+locessen[i]);	
 		}
-		alert ("Nun zum PHP-Teil"); // bis hierher kommt er
+		// alert ("Nun zum PHP-Teil"); // bis hierher kommt er
 
 		$.ajax({
 			type: "POST",
@@ -38,8 +42,17 @@ require("includes/includeDatabase.php");
 			}
 		});
 		// window.location.href = "procedures.php";
-		alert ("Ich bin durchgesprungen");
+		// alert ("Ich bin durchgesprungen");
 	}
+
+	function reloadEssen() {
+		box = document.getElementById("gewaehlte_essen");
+		alert ("Essen-laden");
+
+		essenDropdown = "<?php echo reloadEssen();?>";
+		alert (essenDropdown);
+	}
+	
 	function essen_zuweisen() {
 		// alert("Ich füge der Location ein Essen hinzu!");
 		if (window.XMLHttpRequest) {
@@ -76,6 +89,7 @@ require("includes/includeDatabase.php");
 	} 
 --> 
 </script>
+<script type="text/javascript">reloadEssen();</script>
 </head>
 <body>
 <?php

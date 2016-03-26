@@ -28,7 +28,7 @@ if(isset($_SESSION['userid'])) {
 }	
 	
 $url = $_SERVER['REQUEST_URI'];
-$checkLogin = false;
+
 $pagesToCheck = array('0' => "abstimmung.php", '1' => "locationverwaltung.php", '2' => "geheim.php");
 
 // Das Array und die Abfrage sorgen dafür, dass der Login-Check nur bei den obigen Seiten ausgeführt wird
@@ -36,6 +36,7 @@ $pagesToCheck = array('0' => "abstimmung.php", '1' => "locationverwaltung.php", 
 
 foreach($pagesToCheck as $value) {
 	if (strpos($url, $value) !== false) {
+<<<<<<< HEAD
 		$checkLogin = true;
 	}
 }
@@ -47,3 +48,12 @@ if ($checkLogin == true) {
 
 }
 ?>
+=======
+		if(!isset($_SESSION['userid'])) {
+		die('Bitte zuerst <a href="index.php">einloggen</a>');
+	}
+	}
+}
+
+?>
+>>>>>>> origin/master
