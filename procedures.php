@@ -1,7 +1,11 @@
 <?php
-session_start();
+if (!isset($_SESSION)) {
+	session_start();
+}
+
 require('includes/includeDatabase.php');
 
+if (isset($_POST['callFunction'])) {
 switch ($_POST['callFunction'])
 	{
 		case 'insertLocation':	
@@ -12,6 +16,7 @@ switch ($_POST['callFunction'])
 			echo "Das klappt nicht!";
 			break;
 	}
+}
 			
 function insertLocation($locname, $locpage, $locessen)
 {
@@ -55,9 +60,12 @@ function insertLocation($locname, $locpage, $locessen)
 function reloadEssen() {
 	global $pdo;
 	$pdolocal = $pdo;
+
+	$sqlInsEssen = $pdolocal->prepare("SELECT * FROM tabessen");
+	$sqlInsEssen->execute();
+	$sqlInsEssenRes = $sqlInsEssen->fetch();
 	
-	$sqlInsEssen = $pdolocal->prepare("INSERT INTO tabessen (name, p_ID) VALUES (:essenName, :userid)");
-	$sqlInsEssenRes = $sqlInsEssen->execute(array(':essenName' => $locname, ':userid' => $_SESSION['userid']));
+	return $sqlInsEssenRes;
 }
 
 
