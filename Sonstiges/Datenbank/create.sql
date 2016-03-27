@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `tablocation` (
 	`link` varchar(100) NOT NULL,
     `u_ID` int(10) NOT NULL,
 	  PRIMARY KEY (`l_ID`),
+	  UNIQUE KEY (`name`),
       CONSTRAINT `constraint_benutzer` FOREIGN KEY (`u_ID`) REFERENCES `users` (`u_ID`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
