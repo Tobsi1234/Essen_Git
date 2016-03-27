@@ -1,14 +1,6 @@
 <?php 
-
-
-$pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'root', '');
-
 require('includes/includeDatabase.php');
 
-
-require('includes/includeDatabase.php');
-
- 
 if(isset($_GET['login'])) {
 	$email = $_POST['email'];
 	$passwort = $_POST['passwort'];
@@ -19,15 +11,39 @@ if(isset($_GET['login'])) {
 		
 	//Überprüfung des Passworts
 	if ($user !== false && password_verify($passwort, $user['passwort'])) {
-		$_SESSION['userid'] = $user['id'];
-		$_SESSION['email'] = $user['email'];
+		$_SESSION['userid'] = $user['u_ID'];
+		$_SESSION['username'] = $user['username'];
+		$_SESSION['email'] = $user['email'];  
 		//die('Login erfolgreich. Weiter zu <a href="geheim.php">internen Bereich</a>');
 	} else {
 		$errorMessage = "E-Mail oder Passwort war ungültig<br>";
 	}	
 }
 ?>
+<script language="javascript">
 
+	function hideUnterseiten() {
+		$('.unterSeiten').hide();
+		$('#container').hide();
+		$('#loggedOutSeite').show();
+	}
+	function showUnterseiten() {
+		$('.unterSeiten').show();
+		$('#container').show();
+		$('#loggedOutSeite').hide();
+	}
+
+	function logoutchange() {
+		var username = "<?php if(isset($_SESSION['userid'])) echo($_SESSION['username']) ?>";
+		$('#login-trigger').html(username + ' <span>&#x25BC;</span>');
+		$('#login-content').html('<a href="einstellungen.php">Benutzereinstellungen</a></br></br><a href="logout.php">Logout</a>');
+		$('#login-content').css('width', '175px'); 
+	}
+	function loginalert() {
+		alert ("Bitte zuerst einloggen");
+		window.location = "index.php";	
+	}
+</script>
 <!DOCTYPE html>
 <html lang="de">
 <body>
@@ -35,6 +51,7 @@ if(isset($_GET['login'])) {
 if(isset($errorMessage)) {
 	echo $errorMessage;
 }
+
 ?>
 <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -52,16 +69,16 @@ if(isset($errorMessage)) {
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li>
+                    <li class="unterSeiten">
                         <a href="abstimmung.php">Abstimmung</a>
                     </li>
-					<li>
+					<li class="unterSeiten">
                         <a href="locationverwaltung.php">Essen hinzufügen</a>
                     </li>
-					<li>
+					<li class="unterSeiten">
                         <a href="">Verlauf</a>
                     </li>
-					<li>
+					<li class="unterSeiten">
                         <a href="">Einstellungen</a>
                     </li>                    
                     <li id="login">

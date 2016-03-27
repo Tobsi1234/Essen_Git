@@ -31,36 +31,17 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-	
-<script language="javascript">
-<!--
-	var username, password;	
-	function myFunction() {
-		username = prompt("Please enter your name");
-		password = prompt("Please enter your password");
-
-		window.location.href = "index.php?username=" + username + "&password=" + password;
-		
-		<?php
-		if (isset($_GET["username"]) && isset($_GET["password"] )) {
-		$_SESSION["username"] = $_GET["username"];
-		$_SESSION["password"] = $_GET["password"];
-		}
-		?>	
-	}   
--->
-</script>
 
 <script language="javascript">
-$(document).ready(function(){
-    $('#login-trigger').click(function() {
-        $(this).next('#login-content').slideToggle();
-        $(this).toggleClass('active');                    
-        
-        if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
-            else $(this).find('span').html('&#x25BC;')
-        })
-});
+	$(document).ready(function(){
+		$('#login-trigger').click(function() {
+			$(this).next('#login-content').slideToggle();
+			$(this).toggleClass('active');                    
+			
+			if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
+				else $(this).find('span').html('&#x25BC;')
+			})
+	});
 </script>
 
 </head>

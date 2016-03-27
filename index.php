@@ -10,13 +10,13 @@ require("includes/includeDatabase.php");
 	include ("includes/includeHead.php");
 ?>
 
-
 <script language="javascript"> 
 <!--
+
 	var XMLreq, name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht, json1, json2, json3, jsonNeu2, jsonNeu2, jsonNeu3;
 	var essenNamen = [];
 	function name_ausgeben() {
-		name = "<?php echo $_SESSION['email'] ?>";
+		name = "<?php if(isset($_SESSION['username']))echo $_SESSION['username'] ?>";
 		//alert("Hallo " + name);
 	}
 	
@@ -135,8 +135,10 @@ require("includes/includeDatabase.php");
 	}
 	
 	function scrollen() {
-		refChatAusgabe = document.getElementById('chat_ausgabe');
-		refChatAusgabe.scrollTop = refChatAusgabe.scrollHeight;	
+		if(name) {
+			refChatAusgabe = document.getElementById('chat_ausgabe');
+			refChatAusgabe.scrollTop = refChatAusgabe.scrollHeight;	
+		}
 	}
 	
 	function scrollen_verspätet(){
@@ -148,8 +150,6 @@ require("includes/includeDatabase.php");
 <body>
 
 <?php
-
-
 	include ("includes/includeBody.php");
 ?>
 	
@@ -168,7 +168,7 @@ require("includes/includeDatabase.php");
     </header>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container" id="container">
         
         <!-- First Featurette -->
         <div class="featurette" id="about">
@@ -177,11 +177,7 @@ require("includes/includeDatabase.php");
 			?>
 			<br><br>
 			<script> name_ausgeben();</script>
-            
-            <?php 
-			if(isset($_SESSION['userid'])) { //Prüfung ob eingeloggt
-			?>
-            
+                      
 			<div id="chat_border" style="border: 1px black solid; width: 400px; height: 300px; overflow: auto">
 				<div id="chat_ausgabe" style="height:265px; overflow:auto;"></div>
 				<hr style="width: 100%; height: 1px; margin: 0 auto; background: black;" />
@@ -196,7 +192,6 @@ require("includes/includeDatabase.php");
 			chat_laden(); // läd chat jede sekunde neu.
 			chat_verspätet();
 			</script>
-            <?php } ?> <!--gehört zur Einlogg Prüfung --> 
 			<div>
 			Ergebnis von heute : <div id="essenErgebnis"> </div><br><br>
 			<?php			
@@ -210,13 +205,13 @@ require("includes/includeDatabase.php");
 					<p>
 					Datum: <?php echo $row1->datum; ?> <br>
 					<?php
-						$abfrage2 = "SELECT name, e_ID1 FROM tabperson, tabbez WHERE tabperson.p_ID = tabbez.p_ID AND tabbez.d_ID = '$row1->d_ID'";
+						$abfrage2 = "SELECT username, e_ID1 FROM users, tabbez WHERE users.u_ID = tabbez.u_ID AND tabbez.d_ID = '$row1->d_ID'";
 						$ergebnis2 = mysqli_query($connection, $abfrage2);
 						while ($row2 = mysqli_fetch_object($ergebnis2))
 							{	
 						?>
 						<p>
-						Name: <?php echo $row2->name; ?> <br>
+						Name: <?php echo $row2->username; ?> <br>
 						Essen: <?php echo $row2->e_ID1; ?> <br> 
 						<script> //für Ergebnis Berechnung
 						if("<?php echo $row1->datum; ?>" == datum_heute) {
@@ -235,17 +230,18 @@ require("includes/includeDatabase.php");
 			?>
 			</div>
         </div>
+		<script> 
+			essenErgebnis(); 
+			scrollen_verspätet();
+		</script>
     </div>
-	<script> essenErgebnis(); 
-	scrollen_verspätet();
-	</script>
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+	<div id="loggedOutSeite">
+		<h1> Willkommen </h1>
+		<h2> Bitte logge dich ein :) </h2>
+	</div>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.js"></script>
-
-
-			
+	<?php 
+		include ("includes/includeFooter.php");		
+	?>	
 </body>
 </html>

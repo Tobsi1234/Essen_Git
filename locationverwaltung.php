@@ -9,8 +9,6 @@ require("includes/includeDatabase.php");
 <?php
 	include ("includes/includeHead.php");
 	include ("procedures.php");
-	reloadEssen();
-	
 ?>
 
 <script language="javascript"> 
@@ -168,7 +166,8 @@ require("includes/includeDatabase.php");
         </div>
     </div>
 <script>essen_laden();</script>
-
-			
+	<?php
+		include ("includes/includeFooter.php");
+	?>			
 </body>
 </html>

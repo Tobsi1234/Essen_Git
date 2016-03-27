@@ -1,19 +1,18 @@
 <?php 
 session_start();
+
 require('includes/includeDatabase.php');
 include ("includes/includeHead.php");
 ?>
 <!DOCTYPE html> 
 <html> 
 <head>
-  <title>Registrierung</title>	
+  <title>Benutzereinstellungen</title>	
 </head> 
 <body>
 
 <?php
 include ("includes/includeBody.php");
-
-
 	
 $showFormular = true; //Variable ob das Registrierungsformular anezeigt werden soll
  
@@ -81,7 +80,7 @@ if(isset($_GET['register'])) {
 if($showFormular) {
 ?>
 <div id="register">
-    <form class="form-horizontal" action="?register=1" method="post">
+    <form class="form-horizontal" action="" method="post">
 	<div class="form-group">
 		<label class="col-lg-4"> Benutzername: </label>
 		<div class="col-lg-8">
@@ -111,9 +110,13 @@ if($showFormular) {
 </div> 
 <?php
 } //Ende von if($showFormular)
-
-	include ("includes/includeFooter.php");
-	?>
+	
+// js funktionen befinden sich in includeBody
+if(!isset($_SESSION['userid'])) {
+	echo('<script language="javascript">hideUnterseiten();</script>');
+}
+else echo('<script language="javascript">showUnterseiten();</script>');
+?>
  
 </body>
 </html>
