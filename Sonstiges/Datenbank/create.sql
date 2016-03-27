@@ -99,21 +99,15 @@ CREATE TABLE IF NOT EXISTS `tabchat` (
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(10) unsigned NOT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `passwort` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `vorname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `nachname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `u_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `passwort` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
-  
-  ALTER TABLE `users`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`u_ID`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -125,9 +119,9 @@ CREATE TABLE IF NOT EXISTS `tablocation` (
 	`l_ID` int(11) NOT NULL AUTO_INCREMENT,
 	`name` varchar(30) NOT NULL,
 	`link` varchar(100) NOT NULL,
-    `u_ID` int(10) unsigned NOT NULL,
+    `u_ID` int(10) NOT NULL,
 	  PRIMARY KEY (`l_ID`),
-      CONSTRAINT `constraint_benutzer` FOREIGN KEY (`u_ID`) REFERENCES `users` (`id`) ON UPDATE CASCADE
+      CONSTRAINT `constraint_benutzer` FOREIGN KEY (`u_ID`) REFERENCES `users` (`u_ID`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -146,25 +140,5 @@ CREATE TABLE IF NOT EXISTS `tablocessen` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
 -- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `users`
---
-
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `passwort` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `vorname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `nachname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

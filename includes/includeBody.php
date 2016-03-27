@@ -11,7 +11,8 @@ if(isset($_GET['login'])) {
 		
 	//Überprüfung des Passworts
 	if ($user !== false && password_verify($passwort, $user['passwort'])) {
-		$_SESSION['userid'] = $user['id'];
+		$_SESSION['userid'] = $user['u_ID'];
+		$_SESSION['username'] = $user['username'];
 		$_SESSION['email'] = $user['email'];  
 		//die('Login erfolgreich. Weiter zu <a href="geheim.php">internen Bereich</a>');
 	} else {
@@ -19,6 +20,19 @@ if(isset($_GET['login'])) {
 	}	
 }
 ?>
+<script language="javascript">
+
+	function hideUnterseiten() {
+		$('.unterSeiten').hide();
+		$('#container').hide();
+		$('#loggedOutSeite').show();
+	}
+	function showUnterseiten() {
+		$('.unterSeiten').show();
+		$('#container').show();
+		$('#loggedOutSeite').hide();
+	}
+</script>
 <!DOCTYPE html>
 <html lang="de">
 <body>

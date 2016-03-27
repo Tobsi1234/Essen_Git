@@ -15,16 +15,6 @@ require("includes/includeDatabase.php");
 
 <script language="javascript"> 
 <!--
-	function hideUnterseiten() {
-		$('.unterSeiten').hide();
-		$('#container').hide();
-		$('#loggedOutSeite').show();
-	}
-	function showUnterseiten() {
-		$('.unterSeiten').show();
-		$('#container').show();
-		$('#loggedOutSeite').hide();
-	}
 
 	var XMLreq, name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht, json1, json2, json3, jsonNeu2, jsonNeu2, jsonNeu3;
 	var essenNamen = [];

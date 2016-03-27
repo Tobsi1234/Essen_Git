@@ -1,9 +1,8 @@
 <?php 
 session_start();
-$pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'root', '');
 
 require('includes/includeDatabase.php');
-	include ("includes/includeHead.php");
+include ("includes/includeHead.php");
 ?>
 <!DOCTYPE html> 
 <html> 
@@ -11,12 +10,17 @@ require('includes/includeDatabase.php');
   <title>Registrierung</title>	
 </head> 
 <body>
- 
+
 <?php
+include ("includes/includeBody.php");
+
+
+	
 $showFormular = true; //Variable ob das Registrierungsformular anezeigt werden soll
  
 if(isset($_GET['register'])) {
 	$error = false;
+	$username = htmlspecialchars($_POST['name']);
 	$email = $_POST['email'];
 	$passwort = $_POST['passwort'];
 	$passwort2 = $_POST['passwort2'];
@@ -25,10 +29,6 @@ if(isset($_GET['register'])) {
 		echo 'Bitte eine gültige E-Mail-Adresse eingeben<br>';
 		$error = true;
 	} 	
-	if(strlen($passwort) == 0) {
-		echo 'Bitte ein Passwort angeben<br>';
-		$error = true;
-	}
 	if($passwort != $passwort2) {
 		echo 'Die Passwörter müssen übereinstimmen<br>';
 		$error = true;
@@ -46,12 +46,24 @@ if(isset($_GET['register'])) {
 		}	
 	}
 	
+	//Überprüfe, dass der Benutzername noch nicht registriert wurde
+	if(!$error) { 
+		$statement = $pdo->prepare("SELECT * FROM users WHERE username = :username");
+		$result = $statement->execute(array('username' => $username));
+		$user = $statement->fetch();
+		
+		if($user !== false) {
+			echo 'Diesr Benutzername ist bereits vergeben<br>';
+			$error = true;
+		}	
+	}
+	
 	//Keine Fehler, wir können den Nutzer registrieren
 	if(!$error) {	
 		$passwort_hash = password_hash($passwort, PASSWORD_DEFAULT);
 		
-		$statement = $pdo->prepare("INSERT INTO users (email, passwort) VALUES (:email, :passwort)");
-		$result = $statement->execute(array('email' => $email, 'passwort' => $passwort_hash));
+		$statement = $pdo->prepare("INSERT INTO users (username, email, passwort) VALUES (:username, :email, :passwort)");
+		$result = $statement->execute(array('username' => $username, 'email' => $email, 'passwort' => $passwort_hash));
 		
 		if($result) {		
 			//echo 'Du wurdest erfolgreich registriert. <a href="index.php">Zur Startseite</a>';
@@ -70,21 +82,42 @@ if(isset($_GET['register'])) {
 if($showFormular) {
 ?>
 <div id="register">
-    <form action="?register=1" method="post">
-    E-Mail:<br>
-    <input type="email" size="40" maxlength="250" name="email"><br><br>
-     
-    Dein Passwort:<br>
-    <input type="password" size="40"  maxlength="250" name="passwort"><br><br>
-     
-    Passwort wiederholen:<br>
-    <input type="password" size="40" maxlength="250" name="passwort2"><br><br>
-     
-    <input type="submit" value="Abschicken">
+    <form class="form-horizontal" action="?register=1" method="post">
+	<div class="form-group">
+		<label class="col-lg-4"> Benutzername: </label>
+		<div class="col-lg-8">
+			<input class="form-control" type="text" maxlength="30" name="name" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-lg-4"> E-Mail: </label>
+		<div class="col-lg-8">
+			<input class="form-control" type="email" maxlength="50" name="email" required>
+		</div>
+	</div>
+    <div class="form-group">
+		<label class="col-lg-4">Passwort: </label>
+		<div class="col-lg-8">
+			<input class="form-control" type="password"  maxlength="20" name="passwort" required>
+		</div>
+	</div>
+    <div class="form-group">
+		<label class="col-lg-4">Passwort wiederholen: </label>
+		<div class="col-lg-8">
+			<input class="form-control" type="password"  maxlength="20" name="passwort2" required>
+		</div>
+	</div>
+    <input class="btn btn-default" type="submit" value="Abschicken">
     </form>
 </div> 
 <?php
 } //Ende von if($showFormular)
+	
+// js funktionen befinden sich in includeBody
+if(!isset($_SESSION['userid'])) {
+	echo('<script language="javascript">hideUnterseiten();</script>');
+}
+else echo('<script language="javascript">showUnterseiten();</script>');
 ?>
  
 </body>
