@@ -1,16 +1,8 @@
 <?php
-<<<<<<< HEAD
-
-    if(!isset($_SESSION)) 
-    { 
-        session_start(); 
-    } 
-=======
 if (!isset($_SESSION)) {
 	session_start();
 }
 
->>>>>>> origin/master
 require('includes/includeDatabase.php');
 
 if (isset($_POST['callFunction'])) {

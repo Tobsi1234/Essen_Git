@@ -33,27 +33,18 @@ $pagesToCheck = array('0' => "abstimmung.php", '1' => "locationverwaltung.php", 
 
 // Das Array und die Abfrage sorgen dafür, dass der Login-Check nur bei den obigen Seiten ausgeführt wird
 // Das bedeutet: Jede vom Benutzer aufrufbare Seite, bei dem er angemeldet sein muss, gehört in das Array rein!
-
+$checkLogin = false;
 foreach($pagesToCheck as $value) {
 	if (strpos($url, $value) !== false) {
-<<<<<<< HEAD
 		$checkLogin = true;
 	}
 }
 
-if ($checkLogin == true) {
+if ($checkLogin) {
 	if(!isset($_SESSION['userid'])) {
 		die('<script language="javascript">loginalert();</script>');
 	}
 
 }
 ?>
-=======
-		if(!isset($_SESSION['userid'])) {
-		die('Bitte zuerst <a href="index.php">einloggen</a>');
-	}
-	}
-}
 
-?>
->>>>>>> origin/master
