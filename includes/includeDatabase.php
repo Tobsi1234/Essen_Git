@@ -1,7 +1,8 @@
 <script language="javascript">
 
             function logoutchange() {
-				$('#login-trigger').html('Logout <span>&#x25BC;</span>');
+				var email = "<?php echo($_SESSION['email']) ?>";
+				$('#login-trigger').html(email + ' <span>&#x25BC;</span>');
 				$('#login-content').html('<a href="einstellungen.php">Benutzereinstellungen</a></br></br><a href="logout.php">Logout</a>');
 				$('#login-content').css('width', '175px'); 
                 

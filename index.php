@@ -9,14 +9,27 @@ require("includes/includeDatabase.php");
 <?php
 	include ("includes/includeHead.php");
 ?>
+<script language="javascript">
 
+</script>
 
 <script language="javascript"> 
 <!--
+	function hideUnterseiten() {
+		$('.unterSeiten').hide();
+		$('#container').hide();
+		$('#loggedOutSeite').show();
+	}
+	function showUnterseiten() {
+		$('.unterSeiten').show();
+		$('#container').show();
+		$('#loggedOutSeite').hide();
+	}
+
 	var XMLreq, name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht, json1, json2, json3, jsonNeu2, jsonNeu2, jsonNeu3;
 	var essenNamen = [];
 	function name_ausgeben() {
-		name = "<?php echo $_SESSION['email'] ?>";
+		name = "<?php if(isset($_SESSION['email']))echo $_SESSION['email'] ?>";
 		//alert("Hallo " + name);
 	}
 	
@@ -135,8 +148,10 @@ require("includes/includeDatabase.php");
 	}
 	
 	function scrollen() {
-		refChatAusgabe = document.getElementById('chat_ausgabe');
-		refChatAusgabe.scrollTop = refChatAusgabe.scrollHeight;	
+		if(name) {
+			refChatAusgabe = document.getElementById('chat_ausgabe');
+			refChatAusgabe.scrollTop = refChatAusgabe.scrollHeight;	
+		}
 	}
 	
 	function scrollen_verspätet(){
@@ -148,8 +163,6 @@ require("includes/includeDatabase.php");
 <body>
 
 <?php
-
-
 	include ("includes/includeBody.php");
 ?>
 	
@@ -168,7 +181,7 @@ require("includes/includeDatabase.php");
     </header>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container" id="container">
         
         <!-- First Featurette -->
         <div class="featurette" id="about">
@@ -177,11 +190,7 @@ require("includes/includeDatabase.php");
 			?>
 			<br><br>
 			<script> name_ausgeben();</script>
-            
-            <?php 
-			if(isset($_SESSION['userid'])) { //Prüfung ob eingeloggt
-			?>
-            
+                      
 			<div id="chat_border" style="border: 1px black solid; width: 400px; height: 300px; overflow: auto">
 				<div id="chat_ausgabe" style="height:265px; overflow:auto;"></div>
 				<hr style="width: 100%; height: 1px; margin: 0 auto; background: black;" />
@@ -196,7 +205,6 @@ require("includes/includeDatabase.php");
 			chat_laden(); // läd chat jede sekunde neu.
 			chat_verspätet();
 			</script>
-            <?php } ?> <!--gehört zur Einlogg Prüfung --> 
 			<div>
 			Ergebnis von heute : <div id="essenErgebnis"> </div><br><br>
 			<?php			
@@ -235,17 +243,22 @@ require("includes/includeDatabase.php");
 			?>
 			</div>
         </div>
+		<script> 
+			essenErgebnis(); 
+			scrollen_verspätet();
+		</script>
     </div>
-	<script> essenErgebnis(); 
-	scrollen_verspätet();
-	</script>
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+	<div id="loggedOutSeite">
+		<h1> Willkommen </h1>
+		<h2> Bitte logge dich ein :) </h2>
+	</div>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.js"></script>
-
-
-			
+	<?php 
+	// js funktionen befinden sich in includeBody
+		if(!isset($_SESSION['userid'])) {
+			echo('<script language="javascript">hideUnterseiten();</script>');
+		}
+		else echo('<script language="javascript">showUnterseiten();</script>');
+	?>	
 </body>
 </html>
