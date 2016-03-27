@@ -48,7 +48,3 @@ if ($checkLogin) {
 
 }
 ?>
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
