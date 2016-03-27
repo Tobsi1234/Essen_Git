@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 if (!isset($_SESSION)) {
 	session_start();
 }

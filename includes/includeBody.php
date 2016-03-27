@@ -1,7 +1,4 @@
 <?php 
-
-$pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'root', '');
-
 require('includes/includeDatabase.php');
 
 if(isset($_GET['login'])) {
@@ -22,7 +19,6 @@ if(isset($_GET['login'])) {
 	}	
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="de">
 <body>
@@ -47,16 +43,16 @@ if(isset($errorMessage)) {
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li>
+                    <li class="unterSeiten">
                         <a href="abstimmung.php">Abstimmung</a>
                     </li>
-					<li>
+					<li class="unterSeiten">
                         <a href="locationverwaltung.php">Essen hinzufügen</a>
                     </li>
-					<li>
+					<li class="unterSeiten">
                         <a href="">Verlauf</a>
                     </li>
-					<li>
+					<li class="unterSeiten">
                         <a href="">Einstellungen</a>
                     </li>                    
                     <li id="login">
