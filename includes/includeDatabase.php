@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <script language="javascript">
 
             function logoutchange() {
@@ -13,6 +14,8 @@
 			}
 </script>
 
+=======
+>>>>>>> origin/master
 <?php
 
 $sqlhost = "localhost";
@@ -22,6 +25,7 @@ $connection = mysqli_connect($sqlhost, $sqluser, $sqlpass) or die ("DB-system ni
 mysqli_select_db($connection, "tobsi") or die ("Datenbank nicht verfügbar");
 
 $pdo = new PDO('mysql:host=localhost;dbname=tobsi', 'root', '');
+<<<<<<< HEAD
 
 //Prüfen ob eingeloggt um Statuswechsel beim Login Feld zu machen.
 if(isset($_SESSION['userid'])) {
@@ -47,4 +51,6 @@ if ($checkLogin) {
 	}
 
 }
+=======
+>>>>>>> origin/master
 ?>

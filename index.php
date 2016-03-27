@@ -9,9 +9,6 @@ require("includes/includeDatabase.php");
 <?php
 	include ("includes/includeHead.php");
 ?>
-<script language="javascript">
-
-</script>
 
 <script language="javascript"> 
 <!--
@@ -244,11 +241,7 @@ require("includes/includeDatabase.php");
 	</div>
 
 	<?php 
-	// js funktionen befinden sich in includeBody
-		if(!isset($_SESSION['userid'])) {
-			echo('<script language="javascript">hideUnterseiten();</script>');
-		}
-		else echo('<script language="javascript">showUnterseiten();</script>');
+		include ("includes/includeFooter.php");		
 	?>	
 </body>
 </html>

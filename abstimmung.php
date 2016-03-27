@@ -270,7 +270,8 @@ require("includes/includeDatabase.php");
 			</div>
         </div>
     </div>
-
-			
+	<?php
+		include ("includes/includeFooter.php");
+	?>			
 </body>
 </html>
