@@ -1,6 +1,5 @@
 <?php 
 session_start();
-
 require('includes/includeDatabase.php');
 include ("includes/includeHead.php");
 ?>
@@ -112,13 +111,9 @@ if($showFormular) {
 </div> 
 <?php
 } //Ende von if($showFormular)
-	
-// js funktionen befinden sich in includeBody
-if(!isset($_SESSION['userid'])) {
-	echo('<script language="javascript">hideUnterseiten();</script>');
-}
-else echo('<script language="javascript">showUnterseiten();</script>');
-?>
+
+	include ("includes/includeFooter.php");
+	?>
  
 </body>
 </html>

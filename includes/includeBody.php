@@ -32,6 +32,17 @@ if(isset($_GET['login'])) {
 		$('#container').show();
 		$('#loggedOutSeite').hide();
 	}
+
+	function logoutchange() {
+		var username = "<?php if(isset($_SESSION['userid'])) echo($_SESSION['username']) ?>";
+		$('#login-trigger').html(username + ' <span>&#x25BC;</span>');
+		$('#login-content').html('<a href="einstellungen.php">Benutzereinstellungen</a></br></br><a href="logout.php">Logout</a>');
+		$('#login-content').css('width', '175px'); 
+	}
+	function loginalert() {
+		alert ("Bitte zuerst einloggen");
+		window.location = "index.php";	
+	}
 </script>
 <!DOCTYPE html>
 <html lang="de">
@@ -40,6 +51,7 @@ if(isset($_GET['login'])) {
 if(isset($errorMessage)) {
 	echo $errorMessage;
 }
+
 ?>
 <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
