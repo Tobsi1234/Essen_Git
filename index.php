@@ -19,7 +19,7 @@ require("includes/includeDatabase.php");
 	var XMLreq, name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht, json1, json2, json3, jsonNeu2, jsonNeu2, jsonNeu3;
 	var essenNamen = [];
 	function name_ausgeben() {
-		name = "<?php if(isset($_SESSION['email']))echo $_SESSION['email'] ?>";
+		name = "<?php if(isset($_SESSION['username']))echo $_SESSION['username'] ?>";
 		//alert("Hallo " + name);
 	}
 	
@@ -208,13 +208,13 @@ require("includes/includeDatabase.php");
 					<p>
 					Datum: <?php echo $row1->datum; ?> <br>
 					<?php
-						$abfrage2 = "SELECT name, e_ID1 FROM tabperson, tabbez WHERE tabperson.p_ID = tabbez.p_ID AND tabbez.d_ID = '$row1->d_ID'";
+						$abfrage2 = "SELECT username, e_ID1 FROM users, tabbez WHERE users.u_ID = tabbez.u_ID AND tabbez.d_ID = '$row1->d_ID'";
 						$ergebnis2 = mysqli_query($connection, $abfrage2);
 						while ($row2 = mysqli_fetch_object($ergebnis2))
 							{	
 						?>
 						<p>
-						Name: <?php echo $row2->name; ?> <br>
+						Name: <?php echo $row2->username; ?> <br>
 						Essen: <?php echo $row2->e_ID1; ?> <br> 
 						<script> //für Ergebnis Berechnung
 						if("<?php echo $row1->datum; ?>" == datum_heute) {

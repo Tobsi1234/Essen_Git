@@ -9,10 +9,24 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+--
+-- Tabellenstruktur für Tabelle `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `u_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `passwort` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`u_ID`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
 
 --
 -- Tabellenstruktur für Tabelle `tabperson`
@@ -65,13 +79,13 @@ CREATE TABLE IF NOT EXISTS `tabessen` (
 --
 
 CREATE TABLE IF NOT EXISTS `tabbez` (
-  `p_ID` int(11) NOT NULL,
+  `u_ID` int(11) NOT NULL,
   `d_ID` int(11) NOT NULL,
   `e_ID1` int(11) NOT NULL,
   `e_ID2` int(11),
-  PRIMARY KEY (`p_ID`,`d_ID`),
+  PRIMARY KEY (`u_ID`,`d_ID`),
   CONSTRAINT `constraint_datum` FOREIGN KEY (`d_ID`) REFERENCES `tabdatum` (`d_ID`) ON UPDATE CASCADE,
-  CONSTRAINT `constraint_name` FOREIGN KEY (`p_ID`) REFERENCES `tabperson` (`p_ID`) ON UPDATE CASCADE,
+  CONSTRAINT `constraint_name` FOREIGN KEY (`u_ID`) REFERENCES `users` (`u_ID`) ON UPDATE CASCADE,
   CONSTRAINT `constraint_essen1` FOREIGN KEY (`e_ID1`) REFERENCES `tabessen` (`e_ID`) ON UPDATE CASCADE,
   CONSTRAINT `constraint_essen2` FOREIGN KEY (`e_ID2`) REFERENCES `tabessen` (`e_ID`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -94,22 +108,6 @@ CREATE TABLE IF NOT EXISTS `tabchat` (
 
 -- --------------------------------------------------------
 
---
--- Tabellenstruktur für Tabelle `users`
---
-
-CREATE TABLE IF NOT EXISTS `users` (
-  `u_ID` int(10) NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `passwort` varchar(255) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`u_ID`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
 
 --
 -- Tabellenstruktur für Tabelle `tablocation`

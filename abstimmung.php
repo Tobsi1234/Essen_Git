@@ -14,7 +14,9 @@ require("includes/includeDatabase.php");
 <!--
 	var XMLreq, name, refEssen, refDatum, refNeu, refMenu1, refVerfügbar, selectedEssen, essen, heute, tag, monat, jahr, datum_heute;
 	function name_ausgeben() {
-		name = "<?php echo $_SESSION['email'] ?>";
+		name = "<?php echo $_SESSION['username'] ?>";
+		u_ID = "<?php echo $_SESSION['userid'] ?>";
+
 		//alert("Hallo " + name);
 	}
 	
@@ -49,11 +51,31 @@ require("includes/includeDatabase.php");
 		var essenArr = [];
 		refEssen = document.form1.essen;
 		essenArr = checkboxWert(refEssen);
+		var datum = tag + '.' + monat + '.' + jahr;
 		if(essenArr.length > 0 && essenArr.length < 3) {
-			if(essenArr.length == 1) URL = 'essen_DB.php?name=' + name + '&essen1=' + essenArr[0] + '&essen2=' + '' + '&datum=' + tag + '.' + monat + '.' + jahr;
-			else URL = 'essen_DB.php?name=' + name + '&essen1=' + essenArr[0] + '&essen2=' + essenArr[1] + '&datum=' + tag + '.' + monat + '.' + jahr;
-			XMLreq.open('GET', URL, false); 
-			XMLreq.send(null);
+			if(essenArr.length == 1) {
+				$.ajax({
+					type: "POST",
+					url: "procedures.php",
+					data: {callFunction: 'abstimmen', u_ID: u_ID, essen1: essenArr[0], datum: datum},
+					dataType: 'text',
+					success:function(data) {
+						//alert(data);
+					}
+				});
+			}
+			else {
+			$.ajax({
+					type: "POST",
+					url: "procedures.php",
+					data: {callFunction: 'abstimmen', u_ID: u_ID, essen1: essenArr[0], essen2: essenArr[1], datum: datum},
+					dataType: 'text',
+					success:function(data) {
+						//alert(data);
+					}
+				});
+			}
+
 			alert(name + " hat " + essenArr[0] + " und " + essenArr[1] + " gewählt. Danke!");
 		}
 		else {
