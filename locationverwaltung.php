@@ -33,7 +33,6 @@ require("includes/includeDatabase.php");
 			data: {callFunction: 'insertLocation', p1: locname, p2: locpage, p3: locessen},
 			dataType: 'text',
 			success:function(data) {
-				alert(data);
 			}
 		});
 	}
