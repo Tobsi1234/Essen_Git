@@ -8,14 +8,14 @@ require("includes/includeDatabase.php");
 
 <?php
 	include ("includes/includeHead.php");
-	include ("procedures.php");	
-
+	include ("procedures.php");
 ?>
 
 <script language="javascript"> 
 <!--
-	var XMLreq, referenz, meinEssen, name, element, box, error, locname, locpage, essenDropdown;
+	var XMLreq, referenz, meinEssen, name, element, box, error, locname, locpage, essenName;
 	var locessen = [];
+	var essenDropdown = [];
 
 	function loc_anlegen() {
 		// alert("Ich lege eine Location an!");
@@ -26,7 +26,6 @@ require("includes/includeDatabase.php");
 			locessen[i] = box.options[i].text;
 					// alert ("Name: "+locname+" Page: "+locpage+" Essensarray: "+locessen[i]);	
 		}
-		// alert ("Nun zum PHP-Teil"); // bis hierher kommt er
 
 		$.ajax({
 			type: "POST",
@@ -34,19 +33,37 @@ require("includes/includeDatabase.php");
 			data: {callFunction: 'insertLocation', p1: locname, p2: locpage, p3: locessen},
 			dataType: 'text',
 			success:function(data) {
-				alert(data);
 			}
 		});
-		// window.location.href = "procedures.php";
-		// alert ("Ich bin durchgesprungen");
+	}
+	
+	function essen_anlegen() {
+		essenName = document.getElementById("essenName").value;
+		
+		$.ajax({
+			type: "POST",
+			url: "procedures.php",
+			data: {callFunction: 'insertEssen', p1: essenName},
+			dataType: 'text',
+			success:function(data) {
+				window.location.reload();
+			}
+		});
+		
+		// window.location.reload();
+		
 	}
 
-	function reloadEssen() {
-		box = document.getElementById("gewaehlte_essen");
-		alert ("Essen-laden");
-
-		essenDropdown = "<?php echo reloadEssen();?>";
-		alert (essenDropdown);
+	function essen_laden() {
+		box = document.getElementById("verfuegbare_essen");
+		
+		essenDropdown = <?php echo json_encode(reloadEssen(), JSON_PRETTY_PRINT);?>;
+		
+		for (var i = 0; i<essenDropdown.length; i++) {
+			element = document.createElement("option");
+			element.appendChild(document.createTextNode(essenDropdown[i]['name']));
+			box.appendChild(element);
+		}
 	}
 	
 	function essen_zuweisen() {
@@ -85,7 +102,7 @@ require("includes/includeDatabase.php");
 	} 
 --> 
 </script>
-<script type="text/javascript">reloadEssen();</script>
+
 </head>
 <body>
 <?php
@@ -110,7 +127,7 @@ require("includes/includeDatabase.php");
 			<br><br>
 			<div>
 			<h2>Location hinzufügen</h2>
-			<div id="essenErgebnis"> </div><br><br>
+			<div> </div><br><br>
 
 			<form id="newloc" name="newloc" action="" method="post" onsubmit="loc_anlegen(); return false;">
 				<label for="locname">Name der Location:</label> 
@@ -121,12 +138,6 @@ require("includes/includeDatabase.php");
 				<br><br>
 				<label for="verfuegbare_essen">Essensmöglichkeiten:</label>
 				<select id="verfuegbare_essen" name="verfuegbare_essen">
-					<option>Guten Morgen</option>
-					<option>Burger</option>
-					<option>Guten Abend</option>
-					<option>Salami</option>
-					<option>Döner</option>
-					<option>Pizza</option>
 				</select>
 				<button type="button" onclick="essen_zuweisen();">Hinzufügen</button>
 				<br><br>
@@ -140,11 +151,20 @@ require("includes/includeDatabase.php");
 			</form>
 			
 			</div>
-			<div>
+			<div id ="neuesEssen">
+				<br><br>
 				<h2>Essen hinzufügen</h2>
+				<br><br>
+				<form id="newessen" name="newessen" action="" method="post" onsubmit="essen_anlegen(); return false;">
+				<label for="essenName">Name des Essens:</label> 
+				<input type="text" id="essenName" maxlength="30" value="" style="margin-left:23px;">
+				<button type="submit">Essen speichern</button>
+				<br><br><br><br><br><br><br><br><br><br>
+				</form>
 			</div>
         </div>
     </div>
+<script>essen_laden();</script>
 	<?php
 		include ("includes/includeFooter.php");
 	?>			

@@ -64,10 +64,10 @@ CREATE TABLE IF NOT EXISTS `tabdatum` (
 CREATE TABLE IF NOT EXISTS `tabessen` (
   `e_ID` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
-  `p_ID` int(11),
+  `u_ID` int(10) NOT NULL,
   PRIMARY KEY (`e_ID`),
   UNIQUE KEY (`name`),
-  CONSTRAINT `constraint_person` FOREIGN KEY (`p_ID`) REFERENCES `tabperson` (`p_ID`) ON UPDATE CASCADE
+  CONSTRAINT `constraint_person` FOREIGN KEY (`u_ID`) REFERENCES `users` (`u_ID`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -108,7 +108,6 @@ CREATE TABLE IF NOT EXISTS `tabchat` (
 
 -- --------------------------------------------------------
 
-
 --
 -- Tabellenstruktur für Tabelle `tablocation`
 --
@@ -119,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `tablocation` (
 	`link` varchar(100) NOT NULL,
     `u_ID` int(10) NOT NULL,
 	  PRIMARY KEY (`l_ID`),
+	  UNIQUE KEY (`name`),
       CONSTRAINT `constraint_benutzer` FOREIGN KEY (`u_ID`) REFERENCES `users` (`u_ID`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

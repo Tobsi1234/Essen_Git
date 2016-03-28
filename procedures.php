@@ -17,14 +17,21 @@ switch ($_POST['callFunction'])
 			else abstimmen($_POST['u_ID'], $_POST['essen1'], "", $_POST['datum']);
 		break;
 
+		case 'insertEssen':	
+			insertEssen($_POST['p1']);
+		break;
+		
+		case 'reloadEssen':	
+			reloadEssen();
+		break;
+		
 		default:
-			echo "Das klappt nicht!";
+			echo "Keine Funktion zum Aufrufen gefunden!";
 			break;
 	}
 }
 			
-function insertLocation($locname, $locpage, $locessen)
-{
+function insertLocation($locname, $locpage, $locessen) {
 
 	global $pdo;
 	$pdolocal = $pdo;
@@ -34,45 +41,48 @@ function insertLocation($locname, $locpage, $locessen)
 	$sqlInsLoc = $pdolocal->prepare("INSERT INTO tablocation (name, link, u_ID) VALUES (:locname, :locpage, :userid)");
 	$sqlInsLocRes = $sqlInsLoc->execute(array('locname' => $locname, 'locpage' => $locpage, 'userid' => $_SESSION['userid']));
 	
-	
-	/*$sqlInsLocEssen = $pdolocal->prepare("INSERT INTO tablocessen (name, link, p_ID) VALUES (:locname, :locpage, :userid)");
-	$sqlInsLocEssenRes = $sqlInsLocEssen->execute(array(':locname' => $locname, ':locpage' => $locpage, ':userid' => $_SESSION['userid']));*/
-	
-	/*$sqlInsLoc = $pdolocal->prepare("INSERT INTO tablocation (name, link, p_ID) VALUES (:locname, :locpage, :userid)");
-	$sqlInsLocRes = $statement->execute(array(':locname' => $locname, ':locpage' => $locpage, ':userid' => $_SESSION['userid']));*/
-	
-	// $sql2 = "INSERT INTO tablocation (name, link, p_ID) VALUES ('$locname', '$locpage', 2)";
-	// echo $result1;
-	/*
-	$sqls1 = "SELECT p_ID FROM tabperson WHERE name='$name'";
-	$row1 = mysqli_fetch_object(mysqli_query($connection, $sqls1));
-	$p_ID = $row1->p_ID;
-	
-	$sqli2 = "INSERT INTO tabdatum (datum) VALUES ('$datum')";
-	$result2 = mysqli_query($connection, $sqli2);
-	
-	$sqls2 = "SELECT d_ID FROM tabdatum WHERE datum='$datum'";
-	$row2 = mysqli_fetch_object(mysqli_query($connection, $sqls2));
-	$d_ID = $row2->d_ID;
+	$sqlInsLocEssen = $pdolocal->prepare("INSERT INTO tablocessen (l_ID, e_ID) VALUES (:l_ID, :e_ID)");
+		
+	$sqlGetLocId = $pdolocal->prepare("SELECT l_ID FROM tablocation WHERE name = :locname AND link = :locpage AND u_ID = :userid");
+	$sqlGetLocId->execute(array('locname' => $locname, 'locpage' => $locpage, 'userid' => $_SESSION['userid']));
+	$sqlGetLocIdRes = $sqlGetLocId->fetch();
 
-	$sqli3 = "INSERT INTO tabbez (p_ID, d_ID, essen) VALUES ('$p_ID', '$d_ID', '$essen')";
-	$result3 = mysqli_query($connection, $sqli3);
+	foreach ($locessen as $value) {
+		
+		$sqlGetEssenId = $pdolocal->prepare("SELECT e_ID FROM tabessen WHERE name = :essenName");
+		$sqlGetEssenId->execute(array('essenName' => $value));
+		$sqlGetEssenIdRes = $sqlGetEssenId->fetch();
+		
+		$sqlInsLocEssenRes = $sqlInsLocEssen->execute(array(':l_ID' => $sqlGetLocIdRes['l_ID'], ':e_ID' => $sqlGetEssenIdRes['e_ID']));
+	}
 	
-	$sqlu1 = "UPDATE tabbez SET essen='$essen' WHERE d_ID='$d_ID' AND p_ID='$p_ID'";
-	$result4 = mysqli_query($connection, $sqlu1);*/
+	
 }
 
-function reloadEssen() {
+function insertEssen($essenName) {
+
 	global $pdo;
 	$pdolocal = $pdo;
 
-	$sqlInsEssen = $pdolocal->prepare("SELECT * FROM tabessen");
-	$sqlInsEssen->execute();
-	$sqlInsEssenRes = $sqlInsEssen->fetch();
+	require('includes/includeDatabase.php');
 	
-	return $sqlInsEssenRes;
+	$sqlInsEssen = $pdolocal->prepare("INSERT INTO tabessen (name, u_ID) VALUES (:essenName, :userid)");
+	$sqlInsEssenRes = $sqlInsEssen->execute(array('essenName' => $essenName, 'userid' => $_SESSION['userid']));
+	
+	header("Location: locationverwaltung.php");
 }
 
+function reloadEssen() {
+	
+	global $pdo;
+	$pdolocal = $pdo;
+	
+	$sqlSelEssen = $pdolocal->prepare("SELECT name FROM tabessen");
+	$sqlSelEssen->execute();
+	$sqlSelEssenRes = $sqlSelEssen->fetchAll();
+	
+	return $sqlSelEssenRes;
+}
 
 function abstimmen($u_ID, $essen1, $essen2, $datum) {
 	require('includes/includeDatabase.php');
@@ -122,6 +132,5 @@ function abstimmen($u_ID, $essen1, $essen2, $datum) {
 		$stmt10->execute(array('u_ID' => $u_ID[0], 'd_ID' => $d_ID[0], 'e_ID1' => $e_ID1[0], 'e_ID2' => $e_ID2[0]));
 	}
 }
-
 
 ?>
