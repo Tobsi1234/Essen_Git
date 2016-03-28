@@ -13,7 +13,7 @@
 		
 	$url = $_SERVER['REQUEST_URI'];
 	$checkLogin = false;
-	$pagesToCheck = array('0' => "abstimmung.php", '1' => "locationverwaltung.php", '2' => "geheim.php");
+	$pagesToCheck = array('0' => "abstimmung.php", '1' => "locationverwaltung.php", '2' => "geheim.php", '3' =>"benutzereinstellungen.php");
 
 	// Das Array und die Abfrage sorgen dafür, dass der Login-Check nur bei den obigen Seiten ausgeführt wird
 	// Das bedeutet: Jede vom Benutzer aufrufbare Seite, bei dem er angemeldet sein muss, gehört in das Array rein!
