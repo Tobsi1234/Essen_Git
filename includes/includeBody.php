@@ -36,7 +36,7 @@ if(isset($_GET['login'])) {
 	function logoutchange() {
 		var username = "<?php if(isset($_SESSION['userid'])) echo($_SESSION['username']) ?>";
 		$('#login-trigger').html(username + ' <span>&#x25BC;</span>');
-		$('#login-content').html('<a href="einstellungen.php">Benutzereinstellungen</a></br></br><a href="logout.php">Logout</a>');
+		$('#login-content').html('<a href="benutzereinstellungen.php">Benutzereinstellungen</a></br></br><a href="logout.php">Logout</a>');
 		$('#login-content').css('width', '175px'); 
 	}
 	function loginalert() {
