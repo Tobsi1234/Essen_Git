@@ -70,6 +70,7 @@ if(isset($_GET['register'])) {
 			?>
 			<div class="alert alert-success fade in">
   				Du wurdest erfolgreich <strong>registriert</strong>! <a href="index.php">Zur Startseite</a>
+                <meta http-equiv="refresh" content="5; URL=index.php">
 			</div>
             <?php
 		} else {
