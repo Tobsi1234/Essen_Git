@@ -24,22 +24,6 @@ require("includes/includeDatabase.php");
 		document.getElementById('name').value = name;
 	}
 	
-	function form_neu() {
-
-		refNeu = document.forms['form2'].name;
-		neu = refNeu.value;
-		if(neu) {
-			window.location.href = "abstimmung.php?name=" + neu;		
-			//alert(name + " hat " + neu + " hinzugefügt. Danke!");
-			
-		}
-		else {
-			alert("Keine Auswahl");
-		}
-		
-		return false;
-		
-	}
 	function form_essen() {
 		
 		if (window.XMLHttpRequest) {
@@ -265,13 +249,7 @@ require("includes/includeDatabase.php");
 						<br><br>
 						<button type="submit" class="btn btn-primary">Auswahl speichern</button>
 					</form>
-					<br><br><br>
-					<form class="form-inline" id="form2" name="form2" action="" method="post" onsubmit="form_neu(); return false;">
-					<label for="name"> Neue Essensmöglichkeit: </label> 
-					<input class="form-control" type="text" id="name" maxlength="30" value="" style="margin-left:23px;">
-					<br><br>
-					<button type="submit" class="btn btn-primary">Essensmöglichkeit hinzufügen</button>
-					</form>
+
 					<br><br>
 				</div>
 				<div class="col-md-4 col-md-offset-1">
