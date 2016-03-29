@@ -153,7 +153,7 @@ require("includes/includeDatabase.php");
 	include ("includes/includeBody.php");
 ?>
 	
-    <!-- Full Width Image Header -->
+    <!-- Full Width Image Header 
     <header class="header-image">
         <div class="headline">
             <div class="container">
@@ -166,33 +166,19 @@ require("includes/includeDatabase.php");
             </div>
         </div>
     </header>
-
+	-->
     <!-- Page Content -->
     <div class="container" id="container">
         
         <!-- First Featurette -->
         <div class="featurette" id="about">
-			<?php
-			require('includes/includeDatabase.php');
-			?>
+
 			<br><br>
 			<script> name_ausgeben();</script>
-                      
-			<div id="chat_border" style="border: 1px black solid; width: 400px; height: 300px; overflow: auto">
-				<div id="chat_ausgabe" style="height:265px; overflow:auto;"></div>
-				<hr style="width: 100%; height: 1px; margin: 0 auto; background: black;" />
-				<div id="chat_eingabe">
-					<form id="form1" name="form1" action="" method="post" onsubmit="chat_speichern(); return false;">
-					<input id="nachricht" type="text" placeholder="schreiben..." /> 
-					<button type="submit">Senden</button>
-					</form>
-				</div>
+			<div class="col-md-6">
+			<div id="headline">
+			<h1>Auswertung: </h1><br>
 			</div>
-			<script>
-			chat_laden(); // läd chat jede sekunde neu.
-			chat_verspätet();
-			</script>
-			<div>
 			Ergebnis von heute : <div id="essenErgebnis"> </div><br><br>
 			<?php			
 			$abfrage1 = "SELECT * FROM tabdatum ORDER BY d_ID DESC";
@@ -229,8 +215,24 @@ require("includes/includeDatabase.php");
 				}
 			?>
 			</div>
+			<div class="col-md-4 col-md-offset-2">
+				<div id="chat_border" style="border: 1px black solid; height: 500px; overflow: auto; ">
+					<div id="chat_ausgabe" style="height:455px; overflow:auto;"></div>
+					<hr style="width: 100%; height: 1px; margin: 0 auto; margin-bottom: 2px; background: black;" />
+					<div id="chat_eingabe" style="margin-left: 10px">
+						<form class="form-inline" role="form" id="form1" name="form1" action="" method="post" onsubmit="chat_speichern(); return false;">
+						<input class="form-control" id="nachricht" style="width:65%;" type="text" placeholder="schreiben..."/> 
+						<button class="btn btn-dafualt" type="submit">Senden</button>
+						</form>
+					</div>
+				</div>
+			</div>
         </div>
+		<br><br>
+
 		<script> 
+			chat_laden(); // läd chat jede sekunde neu.
+			chat_verspätet();
 			essenErgebnis(); 
 			scrollen_verspätet();
 		</script>
