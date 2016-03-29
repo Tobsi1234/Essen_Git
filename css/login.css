@@ -26,7 +26,7 @@ fieldset {
 }
 .inputuser {
 
-    width: 257px;
+    width: 255px;
     height: 34px;
     padding: 6px 12px;
     font-size: 14px;
@@ -45,19 +45,20 @@ fieldset {
 
   
 .labeluser {
-	padding-left:15px;
+	padding-left:5px;
 }
 
 .labelemail {
-	padding-left:75px;
+	padding-left:15px;
+	padding-top:20px;
 }
 
 
 .passwort {
-    display: block;
-    width:100%;
+
     height: 34px;
-    padding: 6px 12px;
+    padding: 6px 2px;
+	width: 255px;
     font-size: 14px;
     line-height: 1.42857143;
     color: #555;
@@ -76,13 +77,39 @@ fieldset {
 	/*padding-left:500px;*/
 position:relative;
 top: 50px;
-left: 25%;
+left: 35%;
+right: 25%;
 border-radius: 25px;
 border: 2px solid #73AD21;
 padding: 20px;
 margin: 100px;
-width: 800px;
-height: 300px; 
+margin-left:0px;
+width:420px;
+height: 320px; 
+}
+
+.userdelete {
+	/*padding-left:500px;*/
+position:relative;
+top: 50px;
+left: 35%;
+right: 25%;
+border-radius: 25px;
+border: 2px solid #73AD21;
+padding: 20px;
+margin: 100px;
+margin-left:0px;
+width:420px;
+height: 339px; 
+}
+
+.usertable {
+	border:hidden;
+}
+.usertable, td {
+	padding: 5px;
+	border:none;
+	background-color:white;
 }
   
 /*----------------------*/

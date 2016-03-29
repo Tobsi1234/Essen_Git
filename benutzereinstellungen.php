@@ -14,57 +14,62 @@
 	include("includes/includeBody.php");
 ?>
 
+<!-- Passwort ändern -->
 <div class="userchange">
       <form class="form-horizontal" action="?pwchange=1" method="post">
        <fieldset>
   		<legend>Passwort ändern</legend>
-      <div class="form-group">
-      	<div class="labelrechts">
-          <label class="labeluser"> Benutzername: </label>
-          <input class="inputuser" type="text" id="name" maxlength="30" value="<?php echo($_SESSION['username']) ?>" disabled="disabled">
-          <label class="labelemail"> E-Mail: </label>
-          <input class="inputuser" type="text" id="name" maxlength="30" value="<?php echo($_SESSION['email']) ?>" disabled="disabled">
-          </div>
-      </div><br>
-      <div class="form-group">
-          <label class="col-lg-4">altes Passwort: </label>
-          <div class="col-lg-8">
-              <input class="passwort" type="password"  maxlength="20" name="passwort" required>
-          </div>
-      </div>
-      <div class="form-group">
-          <label class="col-lg-4">neues Passwort: </label>
-          <div class="col-lg-8">
-              <input class="passwort" type="password"  maxlength="20" name="passwort2" required>
-          </div>
-      </div>
-      <input class="btn btn-default" type="submit" value="speichern">
+         <table class="usertable">
+            <tbody>
+              <tr>
+                <td><label>Benutzername:</label></td>
+                <td><input class="inputuser" type="text" id="name" maxlength="30" value="<?php echo($_SESSION['username']) ?>" disabled="disabled"></td>
+              </tr>
+              <tr>
+                <td><label>E-Mail:</label></td>
+                <td><input class="inputuser" type="text" id="name" maxlength="30" value="<?php echo($_SESSION['email']) ?>" disabled="disabled"></td>
+              </tr>
+              <tr>
+                <td><label>altes Passwort: </label></td>
+                <td><input class="passwort" type="password"  maxlength="20" name="passwort" required></td>
+              </tr>
+              <tr>
+                <td><label>neues Passwort: </label></td>
+                <td><input class="passwort" type="password"  maxlength="20" name="passwort2" required></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td style="text-align:right"><input class="btn btn-default" type="submit" value="speichern"></td>
+              </tr>
+            </tbody>
+  		</table>
       </fieldset>
       </form>
 </div>
 
-<div class="userchange">
-      <form class="form-horizontal" action="?pwchange=1" method="post">
-      <fieldset>
+<!-- Benutzerkonto löschen -->
+<div class="userdelete">
+      <form class="form-horizontal" action="?userdelete=1" method="post">
+       <fieldset>
   		<legend>Benutzerkonto löschen</legend>
-      <div class="form-group">
-      	<div class="labelrechts">
-          <label class="labeluser"> Benutzername: </label>
-          <input class="inputuser" type="text" id="name" maxlength="30" value="<?php echo($_SESSION['username']) ?>" disabled="disabled">
-          <label class="labelemail"> E-Mail: </label>
-          <input class="inputuser" type="text" id="name" maxlength="30" value="<?php echo($_SESSION['email']) ?>" disabled="disabled">
-          </div>
-      </div><br>
-      <div class="form-group">
-          <label class="col-lg-4">Passwort zur Sicherheit eingeben: </label>
-          <div class="col-lg-8">
-              <input class="passwort" type="password"  maxlength="20" name="passwort" required>
-          </div>
-      </div>
-      <div class="form-group">
-          <p class="labeluser">Ich bin damit einverstanden, dass mein Benutzerkonto endgültig <big>gelöscht</big> wird.</p>
-      </div>
-      <input class="btn btn-default" type="submit" value="löschen">
+         <table class="usertable">
+            <tbody>
+              <tr>
+                <td><label>Benutzername:</label></td>
+                <td><input class="inputuser" type="text" id="name" maxlength="30" value="<?php echo($_SESSION['username']) ?>" disabled="disabled"></td>
+              </tr>
+              <tr>
+                <td><label>E-Mail:</label></td>
+                <td><input class="inputuser" type="text" id="name" maxlength="30" value="<?php echo($_SESSION['email']) ?>" disabled="disabled"></td>
+              </tr>
+              <tr>
+                <td><label>Passwort zur Sicherheit eingeben:</label></td>
+                <td><input class="passwort" type="password"  maxlength="20" name="passwort" required></td>
+              </tr>  
+            </tbody>
+  		</table>
+        <p class="labeluser">Ich bin damit einverstanden, dass mein Benutzerkonto endgültig gelöscht wird.</p>
+        <input class="btn btn-default" type="submit" value="löschen" style="float:right; margin-right:8px">
       </fieldset>
       </form>
 </div>
