@@ -12,6 +12,41 @@
 
 <?php
 	include("includes/includeBody.php");
+	
+	if(isset($_GET['userdelete'])) {
+		$error = false;
+		$userid = $_SESSION['userid'];	
+		$email = $_SESSION['email'];
+		$passwort = $_POST['passwort'];
+				
+		$statement = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+		$result = $statement->execute(array('email' => $email));
+		$user = $statement->fetch();
+		
+		//Überprüfung des Passworts
+		if ($user !== false && password_verify($passwort, $user['passwort'])) {
+			//die('Konto löschen erfolgreich');
+			$stmt1 = $pdo->prepare("DELETE FROM users WHERE email = :email");
+			$stmt1->bindParam(':email', $_SESSION['email'], PDO::PARAM_INT);
+			$stmt1->execute();
+			session_destroy();
+			?>
+				<div class="alert alert-success fade in">
+  					Das Konto wurde erfolgreich <strong>gelöscht</strong>! 
+                    <meta http-equiv="refresh" content="0; URL=index.php">
+                    <a href="index.php">Zur Startseite</a>
+				</div>
+            <?php
+		} 
+		else {
+			$errorMessage = "Passwort war ungültig<br>";
+		}
+	}
+	
+	if(isset($errorMessage)) {
+		echo $errorMessage;
+	}
+
 ?>
 
 <!-- Passwort ändern -->
