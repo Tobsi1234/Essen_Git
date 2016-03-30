@@ -272,7 +272,6 @@ require("includes/includeDatabase.php");
 		<script> 
 			chat_laden(); // läd chat jede sekunde neu.
 			chat_verspätet();
-			essenErgebnis(); 
 			scrollen_verspätet();
 		</script>
     </div>

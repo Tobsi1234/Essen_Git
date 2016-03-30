@@ -82,11 +82,11 @@ require("includes/includeDatabase.php");
     </header>
 	-->
     <!-- Page Content -->
-    <div class="container" id="container">
+    <div class="container" id="container" style="display: none">
         
         <!-- First Featurette -->
         <div class="featurette" id="about">
-
+	
 			<br><br>
 			<script> name_ausgeben();</script>
 			<div class="col-md-7">
@@ -151,7 +151,7 @@ require("includes/includeDatabase.php");
 			scrollen_verspätet();
 		</script>
     </div>
-	<div id="loggedOutSeite">
+	<div id="loggedOutSeite" style="display: none">
 		<h1> Willkommen </h1>
 		<h2> Bitte logge dich ein :) </h2>
 	</div>
