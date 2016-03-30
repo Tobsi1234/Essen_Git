@@ -42,13 +42,46 @@
 			$errorMessage = "Passwort war ungültig<br>";
 		}
 	}
+
+    if(isset($_GET['pwchange'])) {
+        $error = false;
+        $userid = $_SESSION['userid'];
+        $email = $_SESSION['email'];
+        $passwort = $_POST['passwort'];
+        $passwort2 = $_POST['passwort2'];
+
+        $stmt3 = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+        $result3 = $stmt3->execute(array('email' => $email));
+        $user = $stmt3->fetch();
+
+        //Überprüfung des Passworts
+        if ($user !== false && password_verify($passwort, $user['passwort'])) {
+
+
+            $passwort_hash = password_hash($passwort2, PASSWORD_DEFAULT);
+
+            $stmt2 = $pdo->prepare("UPDATE users SET passwort = :passwort");
+            $result2 = $stmt2->execute(array('passwort' => $passwort_hash));
+            $_SESSION['passwort'] = $passwort2;
+            ?>
+            <div class="alert alert-success fade in">
+                Das Passwort wurde erfolgreich <strong>geändert</strong>!
+            </div>
+            <?php
+        }
+        else {
+            $errorMessage = "Passwort war ungültig<br>";
+        }
+    }
+
+
+
 	
 	if(isset($errorMessage)) {
 		echo $errorMessage;
 	}
 
 ?>
-
 <!-- Passwort ändern -->
 <div class="userchange">
       <form class="form-horizontal" action="?pwchange=1" method="post">
