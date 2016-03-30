@@ -10,7 +10,7 @@ require("includes/includeDatabase.php");
 	include ("includes/includeHead.php");
 ?>
 
-<script language="javascript"> 
+<script language="javascript">
 <!--
 
 	var XMLreq, name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht, json1, json2, json3, jsonNeu2, jsonNeu2, jsonNeu3;
@@ -19,18 +19,18 @@ require("includes/includeDatabase.php");
 		name = "<?php if(isset($_SESSION['username']))echo $_SESSION['username'] ?>";
 		//alert("Hallo " + name);
 	}
-	
+
 	function datum() {
 		heute = new Date();
 		tag = heute.getDate();
 		monat = heute.getMonth() + 1;
 		jahr = heute.getFullYear();
-		datum_heute = tag + "." + monat + "." + jahr;
+		datum_heute = jahr + "-0" + monat + "-" + tag;
 		refDatum = document.getElementById('datum');
-		refDatum.innerHTML = datum_heute;
+		//refDatum.innerHTML = datum_heute;
 		//$.post('index.php', {variable: datum_heute});
 	}
-	
+
 	function essenErgebnis() {
 		refEssenErgebnis = document.getElementById('essenErgebnis');
 		var count = 1, temp = 0, tempCount;
@@ -54,11 +54,11 @@ require("includes/includeDatabase.php");
 /*		else {
 			var rand = Math.floor(Math.random() * essenNamen.length);
 			refEssenErgebnis.innerHTML = essenNamen[rand];
-		}	*/	
+		}	*/
 	}
-	
 
---> 
+
+-->
 </script>
 </head>
 <body>
@@ -66,8 +66,8 @@ require("includes/includeDatabase.php");
 <?php
 	include ("includes/includeBody.php");
 ?>
-	
-    <!-- Full Width Image Header 
+
+    <!-- Full Width Image Header
     <header class="header-image">
         <div class="headline">
             <div class="container">
@@ -75,18 +75,19 @@ require("includes/includeDatabase.php");
 				<h2>Guten Appetit</h2>
 				</div>
 				<div id="datum" style="float:right">
-				<script> datum();</script>
 				</div>
             </div>
         </div>
     </header>
 	-->
+	<script> datum();</script>
+
     <!-- Page Content -->
     <div class="container" id="container" style="display: none">
-        
+
         <!-- First Featurette -->
         <div class="featurette" id="about">
-	
+
 			<br><br>
 			<script> name_ausgeben();</script>
 			<div class="col-md-7">
@@ -94,35 +95,35 @@ require("includes/includeDatabase.php");
 				<h1>Auswertung: </h1><br>
 				</div>
 				Ergebnis von heute : <div id="essenErgebnis"> </div><br><br>
-				<?php			
-				$abfrage1 = "SELECT * FROM tabdatum ORDER BY d_ID DESC";
+				<?php
+				$abfrage1 = "SELECT datum FROM abstimmen ORDER BY datum DESC";
 				$ergebnis1 = mysqli_query($connection, $abfrage1);
 				//$datum = mysqli_result(mysqli_query($connection, "SELECT datum FROM tabelle1 LIMIT 1"),0);
 				//echo "Essenswünsche am ". $datum . "<br><br>";
 				while ($row1 = mysqli_fetch_object($ergebnis1))
-					{	
+					{
 						?>
 						<p>
 						Datum: <?php echo $row1->datum; ?> <br>
 						<?php
-							$abfrage2 = "SELECT username, e_ID1 FROM users, tabbez WHERE users.u_ID = tabbez.u_ID AND tabbez.d_ID = '$row1->d_ID'";
+							$abfrage2 = "SELECT username, e_ID1 FROM users, abstimmen WHERE users.u_ID = abstimmen.u_ID AND abstimmen.datum = '$row1->datum'";
 							$ergebnis2 = mysqli_query($connection, $abfrage2);
 							while ($row2 = mysqli_fetch_object($ergebnis2))
-								{	
+								{
 							?>
 							<p>
 							Name: <?php echo $row2->username; ?> <br>
-							Essen: <?php echo $row2->e_ID1; ?> <br> 
+							Essen: <?php echo $row2->e_ID1; ?> <br>
 							<script> //für Ergebnis Berechnung
 							if("<?php echo $row1->datum; ?>" == datum_heute) {
 								var i = essenNamen.length;
-								essenNamen[i] = "<?php echo $row2->e_ID1; ?>" 
+								essenNamen[i] = "<?php echo $row2->e_ID1; ?>"
 							}
 							</script>
 							</p>
 							<?php
 							}
-						?>					
+						?>
 						</p>
 						<hr>
 						<?php
@@ -130,24 +131,26 @@ require("includes/includeDatabase.php");
 				?>
 			</div>
 			<div class="col-md-4 col-md-offset-1">
-				<div id="chat_border">
-					<div id="chat_ausgabe"></div>
-					<hr id="chat_hr"/>
-					<div id="chat_eingabe" style="margin-left: 10px">
-						<form class="form-inline" role="form" id="form1" name="form1" action="" method="post" onsubmit="chat_speichern(); return false;">
-						<input class="form-control" id="nachricht" type="text" placeholder="schreiben..."/> 
-						<button class="btn btn-dafualt" type="submit">Senden</button>
-						</form>
+				<div class = "panel panel-primary" id="chat_border">
+					<div class="panel-heading">Chat</div>
+					<div class="panel-body">
+						<div id="chat_ausgabe"></div>
+						<div id="chat_eingabe" style="margin-left: 10px">
+							<form class="form-inline" role="form" id="formChat" name="formChat" action="" method="post" onsubmit="chat_speichern(); return false;">
+								<input class="form-control" id="nachricht" type="text" placeholder="schreiben..."/>
+								<button class="btn btn-dafualt" type="submit">Senden</button>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
         </div>
 		<br><br>
 
-		<script> 
+		<script>
 			chat_laden(); // läd chat jede sekunde neu.
 			chat_verspätet();
-			essenErgebnis(); 
+			essenErgebnis();
 			scrollen_verspätet();
 		</script>
     </div>
@@ -156,8 +159,8 @@ require("includes/includeDatabase.php");
 		<h2> Bitte logge dich ein :) </h2>
 	</div>
 
-	<?php 
-		include ("includes/includeFooter.php");		
-	?>	
+	<?php
+		include ("includes/includeFooter.php");
+	?>
 </body>
 </html>

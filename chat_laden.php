@@ -1,7 +1,7 @@
 <?php
 	require('includes/includeDatabase.php');
 	$arr = array();
-	$stmt1 = $pdo->prepare("SELECT * FROM tabchat");
+	$stmt1 = $pdo->prepare("SELECT * FROM chat");
 	$stmt1->execute();
 	foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row1){
 		$nachricht = $row1['nachricht'];

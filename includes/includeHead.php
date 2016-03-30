@@ -49,7 +49,7 @@
 		} else if (window.ActiveXObject) {
 			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
 		}
-		refChatEingabe = document.form1.nachricht;
+		refChatEingabe = document.forms['formChat'].nachricht;
 		nachricht = refChatEingabe.value;
 		if(nachricht) {
 			URL = 'chat_speichern.php?nachricht=' + nachricht + '&name=' + name;

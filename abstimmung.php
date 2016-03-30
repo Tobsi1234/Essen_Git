@@ -35,7 +35,7 @@ require("includes/includeDatabase.php");
 		var essenArr = [];
 		refEssen = document.forms['form1'].essen;
 		essenArr = checkboxWert(refEssen);
-		var datum = tag + '.' + monat + '.' + jahr;
+		var datum = jahr + "-" + monat + "-" + tag;
 		if(essenArr.length > 0 && essenArr.length < 3) {
 			if(essenArr.length == 1) {
 				$.ajax({
@@ -110,7 +110,7 @@ require("includes/includeDatabase.php");
 		//refDatum = document.getElementById('datum');
 		//refDatum.innerHTML = datum_heute;
 		refMenu1 = document.getElementById('menu1');
-		refMenu1.innerHTML = datum_heute;
+		//refMenu1.innerHTML = datum_heute;
 		return false;
 	}
 	function f_datum_morgen() {
@@ -156,24 +156,15 @@ require("includes/includeDatabase.php");
 <?php
 	include ("includes/includeBody.php");
 ?>
-
-	<?php
-		require('includes/includeDatabase.php');
-		if (isset($_GET["name"])) {
-		$name = htmlspecialchars($_GET["name"]);
-		$sqli1 = "INSERT INTO tabessen (name) VALUES ('$name')";
-		$result1 = mysqli_query($connection, $sqli1);
-		}
-	?>
-    <!-- Full Width Image Header 
+ 	<!-- Full Width Image Header
     <header class="header-image">
             <div class="container">
 				<br><br><br>
 				<div id="datum" style="float:right">
-				<script> f_datum();</script>
 				</div>
             </div>
     </header> -->
+	<script> f_datum();</script>
 
     <!-- Page Content -->
     <div class="container">
@@ -217,7 +208,7 @@ require("includes/includeDatabase.php");
 						
 						<select class="form-control" id="verfuegbare_essen">
 						<?php
-						$abfrage0 = "SELECT * FROM tabessen ORDER BY name ASC";
+						$abfrage0 = "SELECT * FROM essen ORDER BY name ASC";
 						$ergebnis0 = mysqli_query($connection, $abfrage0);
 						while ($row0 = mysqli_fetch_object($ergebnis0))
 							{
@@ -234,7 +225,7 @@ require("includes/includeDatabase.php");
 
 						<select class="form-control" id="verfuegbare_essen2" style="display:none">
 						<?php
-						$abfrage0 = "SELECT * FROM tabessen ORDER BY name ASC";
+						$abfrage0 = "SELECT * FROM essen ORDER BY name ASC";
 						$ergebnis0 = mysqli_query($connection, $abfrage0);
 						while ($row0 = mysqli_fetch_object($ergebnis0))
 							{
@@ -253,15 +244,16 @@ require("includes/includeDatabase.php");
 					<br><br>
 				</div>
 				<div class="col-md-4 col-md-offset-1">
-					<div id="chat_border">
-						<div id="chat_ausgabe">
-						</div>
-						<hr id="chat_hr"/>
-						<div id="chat_eingabe" style="margin-left: 10px">
-							<form class="form-inline" role="form" id="form1" name="form1" action="" method="post" onsubmit="chat_speichern(); return false;">
-							<input class="form-control" id="nachricht" type="text" placeholder="schreiben..."/> 
-							<button class="btn btn-dafualt" type="submit">Senden</button>
-							</form>
+					<div class = "panel panel-primary" id="chat_border">
+						<div class="panel-heading">Chat</div>
+						<div class="panel-body">
+							<div id="chat_ausgabe"></div>
+							<div id="chat_eingabe" style="margin-left: 10px">
+								<form class="form-inline" role="form" id="formChat" name="formChat" action="" method="post" onsubmit="chat_speichern(); return false;">
+									<input class="form-control" id="nachricht" type="text" placeholder="schreiben..."/>
+									<button class="btn btn-dafualt" type="submit">Senden</button>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
