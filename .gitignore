@@ -46,3 +46,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 password.php
+*.xml
+.idea/Essen_Git.iml
