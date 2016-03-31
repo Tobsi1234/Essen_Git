@@ -14,10 +14,9 @@ if(isset($_GET['login'])) {
 		$_SESSION['userid'] = $user['u_ID'];
 		$_SESSION['username'] = $user['username'];
 		$_SESSION['email'] = $user['email'];  
-		//die('Login erfolgreich. Weiter zu <a href="geheim.php">internen Bereich</a>');
 	} else {
 		$errorMessage = "E-Mail oder Passwort war ungültig<br>";
-	}	
+	}
 }
 ?>
 <script language="javascript">
@@ -49,7 +48,11 @@ if(isset($_GET['login'])) {
 <body>
 <?php 
 if(isset($errorMessage)) {
-	echo $errorMessage;
+	?>
+	<div class="alert alert-danger">
+		<?php echo $errorMessage; ?>
+	</div>
+<?php
 }
 
 ?>
@@ -79,7 +82,7 @@ if(isset($errorMessage)) {
                         <a href="">Verlauf</a>
                     </li>
 					<li class="unterSeiten" style="display: none">
-                        <a href="">Einstellungen</a>
+                        <a href="gruppeneinstellungen.php">Einstellungen</a>
                     </li>                    
                     <li id="login">
                         <a id="login-trigger" href="#">
