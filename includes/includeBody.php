@@ -82,7 +82,7 @@ if(isset($errorMessage)) {
                         <a href="">Verlauf</a>
                     </li>
 					<li class="unterSeiten" style="display: none">
-                        <a href="gruppeneinstellungen.php">Einstellungen</a>
+                        <a href="gruppeneinstellungen.php">Meine Gruppe</a>
                     </li>                    
                     <li id="login">
                         <a id="login-trigger" href="#">

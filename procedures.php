@@ -24,7 +24,15 @@ switch ($_POST['callFunction'])
 		case 'reloadEssen':	
 			reloadEssen();
 		break;
-		
+
+		case 'emailPrüfen':
+			emailPrüfen($_POST['email']);
+		break;
+
+		case 'gruppeErstellen':
+			gruppeErstellen($_POST['name'], $_POST['u_ID']);
+		break;
+
 		default:
 			echo "Keine Funktion zum Aufrufen gefunden!";
 			break;
@@ -124,6 +132,34 @@ function abstimmen($u_ID, $essen1, $essen2, $datum) {
 		$stmt10 = $pdo->prepare("UPDATE abstimmen SET e_ID1 = :e_ID1, e_ID2 = :e_ID2 WHERE datum = :datum AND u_ID = :u_ID");
 		$stmt10->execute(array('u_ID' => $u_ID[0], 'datum' => $datum, 'e_ID1' => $e_ID1[0], 'e_ID2' => $e_ID2[0]));
 	}
+}
+
+function emailPrüfen($email) {
+
+	require('includes/includeDatabase.php');
+
+	$stmt1 = $pdo->prepare("SELECT username FROM users WHERE email = :email");
+	$stmt1->execute(array('email' => $email));
+	$email = $stmt1->fetch();
+	//if(!isset($email[0])) echo "null";
+	echo $email[0];
+
+}
+
+function gruppeErstellen($name, $u_ID) {
+
+	require('includes/includeDatabase.php');
+
+	$stmt1 = $pdo->prepare("INSERT INTO gruppe (name, u_ID) VALUES (:name, :u_ID)");
+	$stmt1->execute(array('name' => $name, 'u_ID' => $u_ID));
+
+	$stmt2 = $pdo->prepare("SELECT g_ID FROM gruppe WHERE name = :name");
+	$stmt2->execute(array('name' => $name));
+	$g_ID = $stmt2->fetch();
+
+	$stmt3 = $pdo->prepare("UPDATE users SET g_ID = :g_ID WHERE u_ID = :u_ID");
+	$stmt3->execute(array('g_ID' => $g_ID[0], 'u_ID' => $u_ID));
+
 }
 
 ?>
