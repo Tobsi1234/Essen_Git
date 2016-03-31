@@ -110,12 +110,13 @@ require("includes/includeDatabase.php");
 		//refDatum = document.getElementById('datum');
 		//refDatum.innerHTML = datum_heute;
 		refMenu1 = document.getElementById('menu1');
-		//refMenu1.innerHTML = datum_heute;
+		refMenu1.innerHTML = datum_heute;
 		return false;
 	}
 	function f_datum_morgen() {
 		heute = new Date();
-		tag = heute.getDate() + 1;
+		heute.setDate(heute.getDate() + 1);
+		tag = heute.getDate();
 		monat = heute.getMonth() + 1;
 		jahr = heute.getFullYear();
 		datum_morgen = tag + "." + monat + "." + jahr;
@@ -127,7 +128,8 @@ require("includes/includeDatabase.php");
 	}
 	function f_datum_uebermorgen() {
 		heute = new Date();
-		tag = heute.getDate() + 2;
+		heute.setDate(heute.getDate() + 2);
+		tag = heute.getDate();
 		monat = heute.getMonth() + 1;
 		jahr = heute.getFullYear();
 		datum_uebermorgen = tag + "." + monat + "." + jahr;
@@ -200,10 +202,11 @@ require("includes/includeDatabase.php");
 							<input class="form-control" type="text" id="name" maxlength="30" value="Name" disabled="disabled" style="margin-left:20px;">
 						</div>
 						<script> form_name(); </script> <br><br>
-						<label for="name"> Essensmöglichkeiten: </label> 
+						<label for=""> Top 3 Essen: </label> 
 						<input class="form-control" type="checkbox" id="bäcker" name="essen" value="Bäcker" style="margin-left:15px"> <label for="">Bäcker </label>
 						<input class="form-control" type="checkbox" id="döner" name="essen" value="Döner" style="margin-left:15px"> <label for="">Döner </label>
 						<input class="form-control" type="checkbox" id="pizza" name="essen" value="Pizza" style="margin-left:15px"> <label for="">Pizza </label>
+						<br><label for=""> Weitere Essen: </label> 
 						<input class="form-control" type="checkbox" id="sonstiges1" name="essen" value="Sonstiges1" style="margin-left:15px" onclick="validate();"> <label for=""></label>
 						
 						<select class="form-control" id="verfuegbare_essen">

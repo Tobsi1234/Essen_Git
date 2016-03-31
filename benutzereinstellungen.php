@@ -78,7 +78,11 @@
 
 	
 	if(isset($errorMessage)) {
-		echo $errorMessage;
+        ?>
+        <div class="alert alert-danger fade in">
+            <?php echo $errorMessage; ?>
+        </div>
+        <?php
 	}
 
 ?>

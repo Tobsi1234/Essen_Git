@@ -25,11 +25,19 @@ if(isset($_GET['register'])) {
 	$passwort2 = $_POST['passwort2'];
   
 	if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-		echo 'Bitte eine gültige E-Mail-Adresse eingeben<br>';
+		?>
+		<div class="alert alert-danger">
+			Bitte eine gültige E-Mail-Adresse eingeben<br>
+		</div>
+		<?php
 		$error = true;
 	} 	
 	if($passwort != $passwort2) {
-		echo 'Die Passwörter müssen übereinstimmen<br>';
+		?>
+		<div class="alert alert-danger">
+			Die Passwörter müssen übereinstimmen<br>
+		</div>
+		<?php
 		$error = true;
 	}
 	
@@ -40,7 +48,11 @@ if(isset($_GET['register'])) {
 		$user = $statement->fetch();
 		
 		if($user !== false) {
-			echo 'Diese E-Mail-Adresse ist bereits vergeben<br>';
+			?>
+			<div class="alert alert-danger">
+				Diese E-Mail-Adresse ist bereits vergeben<br>
+			</div>
+			<?php
 			$error = true;
 		}	
 	}
@@ -52,7 +64,11 @@ if(isset($_GET['register'])) {
 		$user = $statement->fetch();
 		
 		if($user !== false) {
-			echo 'Diesr Benutzername ist bereits vergeben<br>';
+			?>
+			<div class="alert alert-danger">
+				Diesr Benutzername ist bereits vergeben<br>
+			</div>
+			<?php
 			$error = true;
 		}	
 	}
@@ -74,7 +90,11 @@ if(isset($_GET['register'])) {
 			</div>
             <?php
 		} else {
-			echo 'Beim Abspeichern ist leider ein Fehler aufgetreten<br>';
+			?>
+			<div class="alert alert-danger">
+				Beim Abspeichern ist leider ein Fehler aufgetreten<br>
+			</div>
+			<?php
 		}
 	} 
 }
