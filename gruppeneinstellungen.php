@@ -39,13 +39,26 @@ require("includes/includeDatabase.php");
 		function gruppeErstellen() {
 			var u_ID = "<?php echo $_SESSION['userid'] ?>";
 			var name = $('#gruppenname').val();
-			alert(name + " : " + u_ID);
+			//alert(name + " : " + u_ID);
 			$.ajax({
 				type: "POST",
 				url: "procedures.php",
 				data: {callFunction: 'gruppeErstellen', name: name, u_ID: u_ID},
 				dataType: 'text',
 				success:function(data) {
+				}
+			});
+		}
+
+		function austreten() {
+			var u_ID = "<?php echo $_SESSION['userid'] ?>";
+			$.ajax({
+				type: "POST",
+				url: "procedures.php",
+				data: {callFunction: 'austreten', u_ID: u_ID},
+				dataType: 'text',
+				success:function(data) {
+					window.location.reload();
 				}
 			});
 		}
@@ -66,7 +79,7 @@ else {
 	$stmt2 = $pdo->prepare("SELECT name FROM gruppe WHERE g_ID = :g_ID");
 	$stmt2->execute(array('g_ID' => $g_ID[0]));
 	$gruppenname = $stmt2->fetch();
-	echo "Deine Gruppe" . $gruppenname[0];
+	echo "Deine Gruppe: " . $gruppenname[0];
 }
 ?>
 
@@ -86,9 +99,9 @@ else {
 				<form class="form-inline" id="formAnlegen" name="formAnlegen" action="" onsubmit="gruppeErstellen();" method="post">
 					<label for="gruppenname"> Gruppenname: </label>
 					<input class="form-control" type="text" id="gruppenname" maxlength="30" placeholder="Gruppenname" style="margin-left:20px" required><br><br>
-					<label>Mitglied hinzufügen: </label>
+					<label>Freunde einladen: </label>
 					<input class="form-control" type="text" id="mitglied" maxlength="30" placeholder="E-Mail" style="margin-left:20px">
-					<button type="button" class="btn btn-default" onclick="emailPrüfen();">Hinzufügen</button><br><br>
+					<button type="button" class="btn btn-default" onclick="emailPrüfen();">Hinzufügen</button>(passiert noch nichts in der DB)<br><br>
 					<div id="bisherHinzugefügt">
 						<label>Bisher hinzugefügt: </label>
 					</div><br>
@@ -96,8 +109,31 @@ else {
 				</form>
 			</div>
 
+		<?php
+		}
+		else {
+		?>
+			<div id="headline">
+				<h1><?php echo "Deine Gruppe: " . $gruppenname[0];?></h1><br>
+			</div>
+			<div class="form-horizontal">
+				<form class="form-inline" id="" name="" action="" onsubmit=";" method="post">
+				</form>
+				<label>Gruppenmitglieder: </label><div id="gruppenmitglieder">
+					<?php
+					$stmt1 = $pdo->prepare("SELECT username FROM users WHERE g_ID = :g_ID");
+					$stmt1->execute(array('g_ID' => $g_ID[0]));
+					foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row1){
+						echo $row1['username'] . "<br>";
+					}
 
-			<?php
+					?>
+				</div><br>
+				<button type="button" class="btn btn-danger" onclick="austreten();">Austreten</button>
+
+			</div>
+
+		<?php
 		}
 		?>
 

@@ -32,6 +32,9 @@ switch ($_POST['callFunction'])
 		case 'gruppeErstellen':
 			gruppeErstellen($_POST['name'], $_POST['u_ID']);
 		break;
+		case 'austreten':
+			austreten($_POST['u_ID']);
+		break;
 
 		default:
 			echo "Keine Funktion zum Aufrufen gefunden!";
@@ -138,7 +141,7 @@ function emailPrüfen($email) {
 
 	require('includes/includeDatabase.php');
 
-	$stmt1 = $pdo->prepare("SELECT username FROM users WHERE email = :email");
+	$stmt1 = $pdo->prepare("SELECT username FROM users WHERE email = :email AND g_ID IS NULL"); //gibt es benutzer und ist er noch frei?
 	$stmt1->execute(array('email' => $email));
 	$email = $stmt1->fetch();
 	//if(!isset($email[0])) echo "null";
@@ -150,15 +153,32 @@ function gruppeErstellen($name, $u_ID) {
 
 	require('includes/includeDatabase.php');
 
-	$stmt1 = $pdo->prepare("INSERT INTO gruppe (name, u_ID) VALUES (:name, :u_ID)");
+	$stmt1 = $pdo->prepare("INSERT INTO gruppe (name, u_ID) VALUES (:name, :u_ID)"); //Gruppenname + Admin
 	$stmt1->execute(array('name' => $name, 'u_ID' => $u_ID));
 
-	$stmt2 = $pdo->prepare("SELECT g_ID FROM gruppe WHERE name = :name");
-	$stmt2->execute(array('name' => $name));
+	$stmt2 = $pdo->prepare("SELECT g_ID FROM gruppe WHERE u_ID = :u_ID");
+	$stmt2->execute(array('u_ID' => $u_ID));
 	$g_ID = $stmt2->fetch();
 
-	$stmt3 = $pdo->prepare("UPDATE users SET g_ID = :g_ID WHERE u_ID = :u_ID");
+	$stmt3 = $pdo->prepare("UPDATE users SET g_ID = :g_ID WHERE u_ID = :u_ID"); //User Gruppe zuweisen
 	$stmt3->execute(array('g_ID' => $g_ID[0], 'u_ID' => $u_ID));
+
+}
+
+function austreten($u_ID) {
+	require('includes/includeDatabase.php');
+
+	$stmt1 = $pdo->prepare("SELECT g_ID FROM gruppe WHERE u_ID = :u_ID"); //ist User admin?
+	$stmt1->execute(array('u_ID' => $u_ID));
+	$g_ID = $stmt1->fetch();
+
+	if($g_ID[0] != "") {
+		$stmt2 = $pdo->prepare("DELETE FROM gruppe WHERE g_ID = :g_ID"); //wenn ja, lösch die ganze Gruppe
+		$stmt2->execute(array('g_ID' => $g_ID[0]));
+	}
+
+	$stmt3 = $pdo->prepare("UPDATE users SET g_ID = NULL WHERE u_ID = :u_ID"); //lösch die verlinkung des users auf die Gruppe
+	$stmt3->execute(array('u_ID' => $u_ID));
 
 }
 
