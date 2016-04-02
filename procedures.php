@@ -95,7 +95,7 @@ function reloadEssen() {
 	$sqlSelEssen->execute();
 	$sqlSelEssenRes = $sqlSelEssen->fetchAll();
 	
-	return $sqlSelEssenRes;
+	echo json_encode($sqlSelEssenRes);
 }
 
 function abstimmen($u_ID, $essen1, $essen2, $datum) {

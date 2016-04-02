@@ -10,7 +10,7 @@ require("includes/includeDatabase.php");
 
     <?php
     include("includes/includeHead.php");
-    include("procedures.php");
+    // include("procedures.php");
     ?>
 
 
@@ -60,14 +60,24 @@ require("includes/includeDatabase.php");
         function essen_laden() {
             box = document.getElementById("verfuegbare_essen");
 
-            essenDropdown = <?php echo json_encode(reloadEssen(), JSON_PRETTY_PRINT);?>;
+            $.ajax({
+            type    : "POST",
+            url     : "procedures.php",
+            data    : {callFunction: 'reloadEssen'},
+            dataType: 'text',
+            success : function (data) {
+                essenDropdown = JSON.parse(data);
 
-            for (var i = 0; i < essenDropdown.length; i++) {
-                element = document.createElement("option");
-                element.appendChild(document.createTextNode(essenDropdown[i]['name']));
-                box.appendChild(element);
+                for (var i = 0; i < essenDropdown.length; i++) {
+                    element = document.createElement("option");
+                    element.appendChild(document.createTextNode(essenDropdown[i]['name']));
+                    box.appendChild(element);
+                }
             }
-        }
+            });
+
+         }
+
 
         function essen_zuweisen() {
             // alert("Ich füge der Location ein Essen hinzu!");
