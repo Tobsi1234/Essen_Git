@@ -201,7 +201,7 @@ include("includes/includeBody.php");
 
                     while ($row1 = mysqli_fetch_object($ergebnis1))
                     {
-                        ?> <li><a href="<?php echo $row1->link;?>"><?php echo $row1->name;?></a></li> <?php
+                        ?> <li><a href="#" data-toggle="popover" title="<?php echo $row1->name;?>" data-content="Link: <?php if($row1->link != "")echo "http://" . $row1->link;?>" ><?php echo $row1->name;?></a></li> <?php
                     }
                     ?>
                 </ul>
@@ -215,7 +215,6 @@ include("includes/includeBody.php");
 include("includes/includeFooter.php");
 ?>
 
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="js/jquery-listnav.js"></script>
 <script src="js/vendor.js"></script>
 <script>
