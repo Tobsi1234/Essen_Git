@@ -25,10 +25,13 @@ require("includes/includeDatabase.php");
 			});
 		}
 
+		var mitglieder = new Array();
 		function mitgliedHinzufügen(name) {
 			if(name) {
 				$('#bisherHinzugefügt').append(name + " ");
+				mitglieder[mitglieder.length] = name;
 				$('#fehlermeldung').hide();
+				$('#mitglied').val("");
 			}
 			else {
 				$('#fehlermeldung').html("Person nicht vorhanden oder bereits vorhanden");
@@ -39,17 +42,29 @@ require("includes/includeDatabase.php");
 		function gruppeErstellen() {
 			var u_ID = "<?php echo $_SESSION['userid'] ?>";
 			var name = $('#gruppenname').val();
-			//alert(name + " : " + u_ID);
+			var jsonMitglieder = JSON.stringify(mitglieder);
 			$.ajax({
 				type: "POST",
 				url: "procedures.php",
-				data: {callFunction: 'gruppeErstellen', name: name, u_ID: u_ID},
+				data: {callFunction: 'gruppeErstellen', name: name, u_ID: u_ID, json: jsonMitglieder},
 				dataType: 'text',
 				success:function(data) {
 				}
 			});
 		}
 
+		function mitgliederHinzufügen() {
+			var u_ID = "<?php echo $_SESSION['userid'] ?>";
+			var jsonMitglieder = JSON.stringify(mitglieder);
+			$.ajax({
+				type: "POST",
+				url: "procedures.php",
+				data: {callFunction: 'mitgliederHinzufügen', u_ID: u_ID, json: jsonMitglieder},
+				dataType: 'text',
+				success:function(data) {
+				}
+			});
+		}
 		function austreten() {
 			var u_ID = "<?php echo $_SESSION['userid'] ?>";
 			$.ajax({
@@ -101,7 +116,7 @@ else {
 					<input class="form-control" type="text" id="gruppenname" maxlength="30" placeholder="Gruppenname" style="margin-left:20px" required><br><br>
 					<label>Freunde einladen: </label>
 					<input class="form-control" type="text" id="mitglied" maxlength="30" placeholder="E-Mail" style="margin-left:20px">
-					<button type="button" class="btn btn-default" onclick="emailPrüfen();">Hinzufügen</button>(passiert noch nichts in der DB)<br><br>
+					<button type="button" class="btn btn-default" onclick="emailPrüfen();">Hinzufügen</button><br><br>
 					<div id="bisherHinzugefügt">
 						<label>Bisher hinzugefügt: </label>
 					</div><br>
@@ -116,31 +131,36 @@ else {
 			<div id="headline">
 				<h1><?php echo "Deine Gruppe: " . $gruppenname[0];?></h1><br>
 			</div>
+			<label>Gruppenmitglieder: </label>
+			<div id="gruppenmitglieder">
+				<?php
+				$stmt1 = $pdo->prepare("SELECT username FROM users WHERE g_ID = :g_ID");
+				$stmt1->execute(array('g_ID' => $g_ID[0]));
+				foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row1){
+					echo $row1['username'] . "<br>";
+				}
+
+				?>
+			</div>
+			<br>
 			<div class="form-horizontal">
-				<form class="form-inline" id="" name="" action="" onsubmit=";" method="post">
-				</form>
-				<label>Gruppenmitglieder: </label><div id="gruppenmitglieder">
-					<?php
-					$stmt1 = $pdo->prepare("SELECT username FROM users WHERE g_ID = :g_ID");
-					$stmt1->execute(array('g_ID' => $g_ID[0]));
-					foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row1){
-						echo $row1['username'] . "<br>";
-					}
-
-					?>
+				<form class="form-inline" id="formHinzufügen" name="formHinzufügen" action="" onsubmit="mitgliederHinzufügen();" method="post">
+				<label>Freunde einladen: </label>
+				<input class="form-control" type="text" id="mitglied" maxlength="30" placeholder="E-Mail" style="margin-left:20px">
+				<button type="button" class="btn btn-default" onclick="emailPrüfen();">Hinzufügen</button><br><br>
+				<div id="bisherHinzugefügt">
+					<label>Bisher hinzugefügt: </label>
 				</div><br>
+				<button type="submit" class="btn btn-primary">Freunde einladen</button>
+				</form>
 				<button type="button" class="btn btn-danger" onclick="austreten();">Austreten</button>
-
 			</div>
 
 		<?php
 		}
 		?>
 
-
 	</div>
-
-
 
 </div>
 

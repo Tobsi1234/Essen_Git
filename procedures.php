@@ -30,13 +30,16 @@ switch ($_POST['callFunction'])
 		break;
 
 		case 'gruppeErstellen':
-			gruppeErstellen($_POST['name'], $_POST['u_ID']);
+			gruppeErstellen($_POST['name'], $_POST['u_ID'], $_POST['json']);
 		break;
 		case 'austreten':
 			austreten($_POST['u_ID']);
 		break;
 		case 'getLocations':
 			getLocations();
+		break;
+		case 'mitgliederHinzufügen':
+			mitgliederHinzufügen($_POST['u_ID'], $_POST['json']);
 		break;
 
 		default:
@@ -152,9 +155,10 @@ function emailPrüfen($email) {
 
 }
 
-function gruppeErstellen($name, $u_ID) {
+function gruppeErstellen($name, $u_ID, $json) {
 
 	require('includes/includeDatabase.php');
+	$mitglieder = json_decode($json, TRUE);
 
 	$stmt1 = $pdo->prepare("INSERT INTO gruppe (name, u_ID) VALUES (:name, :u_ID)"); //Gruppenname + Admin
 	$stmt1->execute(array('name' => $name, 'u_ID' => $u_ID));
@@ -166,6 +170,10 @@ function gruppeErstellen($name, $u_ID) {
 	$stmt3 = $pdo->prepare("UPDATE users SET g_ID = :g_ID WHERE u_ID = :u_ID"); //User Gruppe zuweisen
 	$stmt3->execute(array('g_ID' => $g_ID[0], 'u_ID' => $u_ID));
 
+	for($i=0; $i<count($mitglieder); $i++) {
+		$stmt1 = $pdo->prepare("UPDATE users SET g_ID = :g_ID WHERE username = :username"); //anderen Usern Gruppe zuweisen
+		$stmt1->execute(array('g_ID' => $g_ID[0], 'username' => $mitglieder[$i]));
+	}
 }
 
 function austreten($u_ID) {
@@ -192,6 +200,22 @@ function getLocations(){
 	$stmt1 = $pdo->prepare("SELECT name, link FROM location");
 	$stmt1->execute(array('name' => $name, 'link' => $link));
 	$locationsreturn = $stmt1->fetch();
+}
+
+function mitgliederHinzufügen($u_ID, $json) {
+	require('includes/includeDatabase.php');
+
+	$mitglieder = json_decode($json, TRUE);
+
+	$stmt1 = $pdo->prepare("SELECT g_ID FROM gruppe WHERE u_ID = :u_ID"); //gruppen ID bekommen
+	$stmt1->execute(array('u_ID' => $u_ID));
+	$g_ID = $stmt1->fetch();
+
+	for($i=0; $i<count($mitglieder); $i++) {
+		$stmt2 = $pdo->prepare("UPDATE users SET g_ID = :g_ID WHERE username = :username"); //Usern Gruppe zuweisen
+		$stmt2->execute(array('g_ID' => $g_ID[0], 'username' => $mitglieder[$i]));
+		echo $mitglieder[$i];
+	}
 }
 
 ?>
