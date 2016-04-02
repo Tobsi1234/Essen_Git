@@ -35,6 +35,9 @@ switch ($_POST['callFunction'])
 		case 'austreten':
 			austreten($_POST['u_ID']);
 		break;
+		case 'getLocations':
+			getLocations();
+		break;
 
 		default:
 			echo "Keine Funktion zum Aufrufen gefunden!";
@@ -180,6 +183,15 @@ function austreten($u_ID) {
 	$stmt3 = $pdo->prepare("UPDATE users SET g_ID = NULL WHERE u_ID = :u_ID"); //lösch die verlinkung des users auf die Gruppe
 	$stmt3->execute(array('u_ID' => $u_ID));
 
+}
+
+/* nicht hinbekommen */
+function getLocations(){
+	require('includes/includeDatabase.php');
+	
+	$stmt1 = $pdo->prepare("SELECT name, link FROM location");
+	$stmt1->execute(array('name' => $name, 'link' => $link));
+	$locationsreturn = $stmt1->fetch();
 }
 
 ?>

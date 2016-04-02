@@ -111,6 +111,23 @@ height: 339px;
 	border:none;
 	background-color:white;
 }
+
+.bigcontainer{
+    margin-left: 12%;
+    top: 5%;
+    margin-right: 5%;
+
+}
+
+.leftcontainer{
+    width:50%;
+    float: left;
+}
+
+.rightcontainer {
+    width:50%;
+    float: left;
+}
   
 /*----------------------*/
 
