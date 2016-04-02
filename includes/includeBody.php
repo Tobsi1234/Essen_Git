@@ -79,7 +79,7 @@ if(isset($errorMessage)) {
                         <a href="locationverwaltung.php">Essen hinzufügen</a>
                     </li>
 					<li class="unterSeiten" style="display: none">
-                        <a href="">Verlauf</a>
+                        <a href="verlauf.php">Verlauf</a>
                     </li>
 					<li class="unterSeiten" style="display: none">
                         <a href="gruppeneinstellungen.php">Meine Gruppe</a>

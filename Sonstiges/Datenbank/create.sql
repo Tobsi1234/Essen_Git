@@ -128,3 +128,16 @@ CREATE TABLE IF NOT EXISTS `chat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `abstimmung_ergebnis`
+--
+
+CREATE TABLE `abstimmung_ergebnis` (
+  `l_ID` int(10) NOT NULL,
+  `datum` date NOT NULL,
+  `g_ID` int(10) NOT NULL,
+  PRIMARY KEY (l_ID, datum, g_ID),
+  CONSTRAINT `constraint_location2` FOREIGN KEY (`l_ID`) REFERENCES `location` (`l_ID`) ON UPDATE CASCADE,
+  CONSTRAINT `constraint_gruppe2` FOREIGN KEY (`g_ID`) REFERENCES `gruppe` (`g_ID`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
