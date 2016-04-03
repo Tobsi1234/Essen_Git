@@ -49,6 +49,10 @@ switch ($_POST['callFunction'])
 			getDatesFromAbstimmung();
 			break;
 
+		case 'getAbstimmungsErgebnisse':
+			getAbstimmungsErgebnisse();
+			break;
+
 		default:
 			echo "Keine Funktion zum Aufrufen gefunden!";
 			break;
@@ -229,11 +233,36 @@ function getDatesFromAbstimmung() {
 	global $pdo;
 	$pdolocal = $pdo;
 
-	$sqlSelDates = $pdolocal->prepare("SELECT DISTINCT datum FROM abstimmung_ergebnis"); //gruppen ID bekommen
+	$sqlSelDates = $pdolocal->prepare("SELECT DISTINCT datum FROM abstimmung_ergebnis");
 	$sqlSelDates->execute();
 	$sqlSelDatesRes = $sqlSelDates->fetchAll();
 
 	echo json_encode($sqlSelDatesRes);
+}
+
+function getAbstimmungsErgebnisse() {
+	global $pdo;
+	$pdolocal = $pdo;
+
+	$sqlSelAbst = $pdolocal->prepare("SELECT * FROM abstimmung_ergebnis");
+	$sqlSelAbst->execute();
+	$sqlSelAbstRes = $sqlSelAbst->fetchAll();
+	$i = 0;
+	foreach ($sqlSelAbstRes as $value) {
+		$sqlSelLocname = $pdolocal->prepare("SELECT name FROM location WHERE l_ID = :l_ID");
+		$sqlSelLocname->execute(array('l_ID' => $value['l_ID']));
+		$sqlSelLocnameRes = $sqlSelLocname->fetch();
+		$sqlSelAbstRes[$i]['locname'] = $sqlSelLocnameRes['name'];
+
+		$sqlSelGruppe = $pdolocal->prepare("SELECT name FROM gruppe WHERE g_ID = :g_ID");
+		$sqlSelGruppe->execute(array('g_ID' => $value['g_ID']));
+		$sqlSelGruppeRes = $sqlSelGruppe->fetch();
+		$sqlSelAbstRes[$i]['gruppe'] = $sqlSelGruppeRes['name'];
+
+		$i++;
+	}
+
+	echo json_encode($sqlSelAbstRes);
 }
 
 ?>
