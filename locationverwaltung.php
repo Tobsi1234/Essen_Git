@@ -198,10 +198,11 @@ include("includes/includeBody.php");
                     <?php
                     $abfrage1 = "SELECT name,link FROM location ORDER BY name ASC";
                     $ergebnis1 = mysqli_query($connection, $abfrage1);
-
+                    
                     while ($row1 = mysqli_fetch_object($ergebnis1))
                     {
-                        ?> <li><a href="#" data-toggle="popover" title="<?php echo $row1->name;?>" data-content="Link: <?php if($row1->link != "")echo "http://" . $row1->link;?>" ><?php echo $row1->name;?></a></li> <?php
+                        $linker = $row1->link;
+                        ?> <li><a href="#" data-trigger="focus" data-toggle="popover" title="<?php echo $row1->name;?>" data-content="Link: <?php if($linker != "")echo "<a href='" . $linker . "'>$linker</a>";?>" data-html="true"><?php echo $row1->name;?></a></li> <?php
                     }
                     ?>
                 </ul>
