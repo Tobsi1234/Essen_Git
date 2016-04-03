@@ -202,7 +202,8 @@ include("includes/includeBody.php");
 
                     while ($row1 = mysqli_fetch_object($ergebnis1))
                     {
-                        $linker = $row1->link;
+						if(strpos($row1->link, 'http') !== false) $linker = $row1->link;
+                        else $linker = "http://". $row1->link;
                         ?> <li><a href="#" data-trigger="focus" data-toggle="popover" title="<?php echo $row1->name;?>" data-content="Link: <?php if($linker != "")echo "<a href='" . $linker . "'>$linker</a>";?>" data-html="true"><?php echo $row1->name;?></a></li> <?php
                     }
                     ?>
