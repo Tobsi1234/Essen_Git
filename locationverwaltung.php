@@ -194,11 +194,12 @@ include("includes/includeBody.php");
         <div id="tabpage_3" class="tabContainer">
 
             <div class="listWrapper">
+                
                 <ul id="demoThree" class="demo">
                     <?php
                     $abfrage1 = "SELECT name,link FROM location ORDER BY name ASC";
                     $ergebnis1 = mysqli_query($connection, $abfrage1);
-                    
+
                     while ($row1 = mysqli_fetch_object($ergebnis1))
                     {
                         $linker = $row1->link;
