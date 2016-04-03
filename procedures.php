@@ -11,36 +11,43 @@ switch ($_POST['callFunction'])
 	{
 		case 'insertLocation':	
 			insertLocation($_POST['p1'], $_POST['p2'], $_POST['p3']);
-		break;
+			break;
 		case 'abstimmen':	
 			if(isset($_POST['essen2']))	abstimmen($_POST['u_ID'], $_POST['essen1'], $_POST['essen2'], $_POST['datum']);
 			else abstimmen($_POST['u_ID'], $_POST['essen1'], "", $_POST['datum']);
-		break;
+			break;
 
 		case 'insertEssen':	
 			insertEssen($_POST['p1']);
-		break;
+			break;
 		
 		case 'reloadEssen':	
 			reloadEssen();
-		break;
+			break;
 
 		case 'emailPrüfen':
 			emailPrüfen($_POST['email']);
-		break;
+			break;
 
 		case 'gruppeErstellen':
 			gruppeErstellen($_POST['name'], $_POST['u_ID'], $_POST['json']);
-		break;
+			break;
+
 		case 'austreten':
 			austreten($_POST['u_ID']);
-		break;
+			break;
+
 		case 'getLocations':
 			getLocations();
-		break;
+			break;
+
 		case 'mitgliederHinzufügen':
 			mitgliederHinzufügen($_POST['u_ID'], $_POST['json']);
-		break;
+			break;
+
+		case 'getDatesFromAbstimmung':
+			getDatesFromAbstimmung();
+			break;
 
 		default:
 			echo "Keine Funktion zum Aufrufen gefunden!";
@@ -216,6 +223,17 @@ function mitgliederHinzufügen($u_ID, $json) {
 		$stmt2->execute(array('g_ID' => $g_ID[0], 'username' => $mitglieder[$i]));
 		echo $mitglieder[$i];
 	}
+}
+
+function getDatesFromAbstimmung() {
+	global $pdo;
+	$pdolocal = $pdo;
+
+	$sqlSelDates = $pdolocal->prepare("SELECT DISTINCT datum FROM abstimmung_ergebnis"); //gruppen ID bekommen
+	$sqlSelDates->execute();
+	$sqlSelDatesRes = $sqlSelDates->fetchAll();
+
+	echo json_encode($sqlSelDatesRes);
 }
 
 ?>

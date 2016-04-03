@@ -81,11 +81,6 @@ require("includes/includeDatabase.php");
 
         function essen_zuweisen() {
             // alert("Ich füge der Location ein Essen hinzu!");
-            if (window.XMLHttpRequest) {
-                XMLreq = new XMLHttpRequest();
-            } else if (window.ActiveXObject) {
-                XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
-            }
             referenz  = document.newloc.verfuegbare_essen;
             meinEssen = referenz.value;
 
