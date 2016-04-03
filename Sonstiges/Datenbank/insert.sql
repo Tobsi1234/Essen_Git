@@ -44,6 +44,14 @@ INSERT INTO `essen` (`name`, `u_ID`) VALUES
 
 
 --
+-- Daten für Tabelle `gruppe`
+--
+INSERT INTO `gruppe` (`g_ID`, `name`, `u_ID`) VALUES
+  (4, 'Gruppe X', 3),
+  (5, 'Die BambuswÃ¼rmer', 2);
+
+
+--
 -- Daten für Tabelle `locessen`
 --
 
@@ -65,3 +73,14 @@ INSERT INTO `locessen` (`l_ID`, `e_ID`) VALUES
   (4, 5),
   (4, 9),
   (5, 11);
+
+
+--
+-- Daten für Tabelle `abstimmung_ergebnis`
+--
+
+INSERT INTO `abstimmung_ergebnis` (`l_ID`, `datum`, `g_ID`) VALUES
+  (1, '2016-04-02', 4),
+  (1, '2016-04-03', 4),
+  (3, '2016-04-02', 5),
+  (5, '2016-04-03', 5);
