@@ -105,7 +105,7 @@ else {
 	<!-- First Featurette -->
 	<div class="featurette" id="about">
 		<?php
-		if(!isset($g_ID[0])) {
+		if(!isset($g_ID[0])) { //noch keine Gruppe?
 			?>
 			<div id="headline">
 				<h1>Neue Gruppe anlegen: </h1><br>
@@ -126,7 +126,7 @@ else {
 
 		<?php
 		}
-		else {
+		else { //bereits eine Gruppe
 		?>
 			<div id="headline">
 				<h1><?php echo "Deine Gruppe: " . $gruppenname[0];?></h1><br>
@@ -134,10 +134,14 @@ else {
 			<label>Gruppenmitglieder: </label>
 			<div id="gruppenmitglieder">
 				<?php
-				$stmt1 = $pdo->prepare("SELECT username FROM users WHERE g_ID = :g_ID");
+				$stmt1 = $pdo->prepare("SELECT username, u_ID FROM users WHERE g_ID = :g_ID");
 				$stmt1->execute(array('g_ID' => $g_ID[0]));
+				$stmt2 = $pdo->prepare("SELECT u_ID FROM gruppe WHERE g_ID = :g_ID");
+				$stmt2->execute(array('g_ID' => $g_ID[0]));
+				$admin = $stmt2->fetch();
 				foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row1){
-					echo $row1['username'] . "<br>";
+					if($row1['u_ID'] == $admin[0]) echo $row1['username'] . " (admin) <br>";
+					else echo $row1['username'] . "<br>";
 				}
 
 				?>
@@ -157,7 +161,7 @@ else {
 			</div>
 
 		<?php
-		}
+		} //ende php abfrage
 		?>
 
 	</div>

@@ -97,9 +97,23 @@ require("includes/includeDatabase.php");
 
 		}else{
 			$('#sonstiges2').css('display', 'none');
+			$('#sonstiges2').prop('checked', false);
 			$('#verfuegbare_essen2').css('display','none');
 		}
 	}
+
+	function countCheckboxes() {
+		var counter = 0;
+		if ($('#bäcker').is(':checked')) counter += 1;
+		if ($('#döner').is(':checked')) counter += 1;
+		if ($('#pizza').is(':checked')) counter += 1;
+		if ($('#sonstiges1').is(':checked')) counter += 1;
+		if ($('#sonstiges2').is(':checked')) counter += 1;
+
+		if(counter > 0 && counter < 3) $('#auswahl_speichern').prop('disabled', false);
+		else $('#auswahl_speichern').prop('disabled', true);
+	}
+
 	
 	function f_datum_heute() {
 		heute = new Date();
@@ -147,7 +161,7 @@ require("includes/includeDatabase.php");
 		jahr = heute.getFullYear();
 		datum_heute = tag + "." + monat + "." + jahr;
 		refDatum = document.getElementById('datum');
-		refDatum.innerHTML = datum_heute;
+		//refDatum.innerHTML = datum_heute;
 		return false;
 	}
 	
@@ -158,14 +172,7 @@ require("includes/includeDatabase.php");
 <?php
 	include ("includes/includeBody.php");
 ?>
- 	<!-- Full Width Image Header
-    <header class="header-image">
-            <div class="container">
-				<br><br><br>
-				<div id="datum" style="float:right">
-				</div>
-            </div>
-    </header> -->
+
 	<script> f_datum();</script>
 
     <!-- Page Content -->
@@ -199,15 +206,15 @@ require("includes/includeDatabase.php");
 					<form class="form-inline" id="form1" name="form1" action="" method="post" onsubmit="form_essen(); return false;">
 						<div class="form-group">
 							<label for="name"> Name: </label> 
-							<input class="form-control" type="text" id="name" maxlength="30" value="Name" disabled="disabled" style="margin-left:20px;">
+							<input class="form-control" type="text" id="name" maxlength="30" value="Name" style="margin-left:20px;" disabled>
 						</div>
 						<script> form_name(); </script> <br><br>
 						<label for=""> Top 3 Essen: </label> 
-						<input class="form-control" type="checkbox" id="bäcker" name="essen" value="Bäcker" style="margin-left:15px"> <label for="">Bäcker </label>
-						<input class="form-control" type="checkbox" id="döner" name="essen" value="Döner" style="margin-left:15px"> <label for="">Döner </label>
-						<input class="form-control" type="checkbox" id="pizza" name="essen" value="Pizza" style="margin-left:15px"> <label for="">Pizza </label>
+						<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="bäcker" name="essen" value="Bäcker" style="margin-left:15px"> <label for="">Bäcker </label>
+						<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="döner" name="essen" value="Döner" style="margin-left:15px"> <label for="">Döner </label>
+						<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="pizza" name="essen" value="Pizza" style="margin-left:15px"> <label for="">Pizza </label>
 						<br><label for=""> Weitere Essen: </label> 
-						<input class="form-control" type="checkbox" id="sonstiges1" name="essen" value="Sonstiges1" style="margin-left:15px" onclick="validate();"> <label for=""></label>
+						<input class="form-control" onclick="validate();countCheckboxes();" type="checkbox" id="sonstiges1" name="essen" value="Sonstiges1" style="margin-left:15px"> <label for=""></label>
 						
 						<select class="form-control" id="verfuegbare_essen">
 						<?php
@@ -224,7 +231,7 @@ require("includes/includeDatabase.php");
 							?>
 						</select>
 
-						<input class="form-control" type="checkbox" id="sonstiges2" name="essen" value="Sonstiges2" style="margin-left:15px; display:none;" >
+						<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="sonstiges2" name="essen" value="Sonstiges2" style="margin-left:15px; display:none;" >
 
 						<select class="form-control" id="verfuegbare_essen2" style="display:none">
 						<?php
@@ -241,7 +248,7 @@ require("includes/includeDatabase.php");
 							?>
 						</select>
 						<br><br>
-						<button type="submit" class="btn btn-primary">Auswahl speichern</button>
+						<button type="submit" id="auswahl_speichern" class="btn btn-primary" disabled>Auswahl speichern</button>
 					</form>
 
 					<br><br>
