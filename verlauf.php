@@ -38,10 +38,9 @@ require("includes/includeDatabase.php");
 
 // Eigene Funktion, die für das Datum den String so formatiert, dass er der Dropdown-Liste hinzugefügt werden kann
 	function getFormattedDropdownString(date) {
-		var local = date;
 
-		var week = getDaysOfWeek(local);
-		var weeknumber = getWeekNumber(local);
+		var week = getDaysOfWeek(date);
+		var weeknumber = getWeekNumber(date);
 
 		var weeknumberString = weeknumber[0]+", "+weeknumber[1];
 
@@ -65,49 +64,36 @@ require("includes/includeDatabase.php");
 
 
 	}
-// hole alle Datumswerte, für die es Einträge in der Tabelle "abstimmung_ergebnis" gibt
-	function woche_abholen() {
+	
+	// Hilfsfunktion zum Füllen der Dropdown-Liste
+	function fülle_dropdown(data) {
+		
+		var allDates = JSON.parse(data);
+		for (var i = 0; i<allDates.length; i++) {
+			var date = new Date(allDates[i]['datum']);
+			// alert(date);
+			var dropdownInhalt = getFormattedDropdownString(date);
+			var exists = false;
 
-			$.ajax({
-			type    : "POST",
-			url     : "procedures.php",
-			data    : {callFunction: 'getDatesFromAbstimmung'},
-			dataType: 'text',
-			success : function (data) {
-				var allDates = JSON.parse(data);
-				for (var i = 0; i<allDates.length; i++) {
-					var date = new Date(allDates[i]['datum']);
-					// alert(date);
-					var dropdownInhalt = getFormattedDropdownString(date);
-					var exists = false;
-
-					$('#woche').each(function() {
-						if (this.value == dropdownInhalt) {
-							exists = true;
-							return false;
-						}
-					});
-					// Überprüfung, ob Woche bereits in Dropdown-Liste
-					if (exists == false) {
-						$('#woche').append($('<option>', {
-							text: dropdownInhalt
-						}));
-					}
-
+			$('#woche').each(function() {
+				if (this.value == dropdownInhalt) {
+					exists = true;
+					return false;
 				}
+			});
+			// Überprüfung, ob Woche bereits in Dropdown-Liste
+			if (exists == false) {
+				$('#woche').append($('<option>', {
+					text: dropdownInhalt
+				}));
 			}
-		});
+
+		}
 	}
 
-	function datum_refreshen() {
-		// schaue nach, was für eine Woche in der Dropdown-Liste steht und hole die entsprechenden Einträge aus der DB
-		$.ajax({
-			type    : "POST",
-			url     : "procedures.php",
-			data    : {callFunction: 'getAbstimmungsErgebnisse'},
-			dataType: 'text',
-			success : function (data) {
-				var ergebnisse = JSON.parse(data);
+	// Hilfsfunktion zum Auslesen der Dropdown-Liste und Ausgeben der Abstimmungsergebnisse
+	function schreibe_abstimmungsergebnisse(data) {
+		var ergebnisse = JSON.parse(data);
 				var selectedText = $('#woche :selected').text();
 
 				var year = selectedText.substring(24,28);
@@ -142,8 +128,32 @@ require("includes/includeDatabase.php");
 					hilfs = ergebnisseWoche[i]['datum'];
 				}
 
+	}
 
+	// schaue nach, was für eine Woche in der Dropdown-Liste steht, hole die entsprechenden Einträge aus der DB	und gib diese formatiert aus
+	function datum_refreshen() {
 
+		$.ajax({
+			type    : "POST",
+			url     : "procedures.php",
+			data    : {callFunction: 'getAbstimmungsErgebnisse'},
+			dataType: 'text',
+			success : function (data) {
+				schreibe_abstimmungsergebnisse(data);
+			}
+		});
+	}
+	
+	// hole alle Datumswerte, für die es Einträge in der Tabelle "abstimmung_ergebnis" gibt und schreibe diese in die Dropdown-Liste
+	function woche_abholen() {
+
+			$.ajax({
+			type    : "POST",
+			url     : "procedures.php",
+			data    : {callFunction: 'getDatesFromAbstimmung'},
+			dataType: 'text',
+			success : function (data) {
+				fülle_dropdown(data);
 			}
 		});
 	}
