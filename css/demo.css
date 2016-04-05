@@ -302,8 +302,8 @@
 
 #demoThree-nav .ln-letters a {
     border: none;
-    border-top: 2px solid pink;
-    color: red
+    border-top: 2px solid #8BB5FE;
+    color: #2356AD;
 }
 
 #demoThree-nav .ln-letters a.ln-last {
@@ -311,13 +311,13 @@
 }
 
 #demoThree-nav .ln-letters a:hover, #demoThree-nav .ln-letters a.ln-selected {
-    border-top: 2px solid red;
-    background-color: pink;
+    border-top: 2px solid #2356AD;
+    background-color: #8BB5FE;
     color: White !important
 }
 
 #demoThree-nav .ln-letters a.ln-disabled {
-    color: pink
+    color: #8BB5FE;
 }
 
 #demoThree-nav .ln-letters a.ln-disabled:hover {
@@ -325,15 +325,15 @@
 }
 
 #demoThree-nav .ln-letter-count {
-    color: red
+    color: #337ab7;
 }
 
 #demoThree li {
-    color: pink
+    color: black;
 }
 
 #demoThree li a {
-    color: red;
+    color: #337ab7;
     text-decoration: none
 }
 
