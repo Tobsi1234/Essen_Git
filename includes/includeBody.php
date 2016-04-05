@@ -8,8 +8,6 @@ if(isset($_GET['login'])) {
 	$statement = $pdo->prepare("SELECT * FROM users WHERE email = :email");
 	$result = $statement->execute(array('email' => $email));
 	$user = $statement->fetch();
-
-
 		
 	//Überprüfung des Passworts
 	if ($user !== false && password_verify($passwort, $user['passwort'])) {
@@ -17,14 +15,18 @@ if(isset($_GET['login'])) {
 		$_SESSION['username'] = $user['username'];
 		$_SESSION['email'] = $user['email'];
 
-		//g_ID auch noch als Session:
-		$stmt1 = $pdo->prepare("SELECT g_ID FROM users WHERE u_ID = :u_ID");
-		$stmt1->execute(array('u_ID' => $_SESSION['userid']));
-		$g_ID = $stmt1->fetch();
-		if(isset($g_ID[0])) $_SESSION['g_ID'] = $g_ID[0];
 	} else {
 		$errorMessage = "E-Mail oder Passwort war ungültig<br>";
 	}
+}
+
+if (isset($_SESSION['userid'])) {
+	//g_ID auch noch als Session speichern, sofern gerade ein User angemeldet ist
+	$sqlSelG_ID = $pdo->prepare("SELECT g_ID FROM users WHERE u_ID = :u_ID");
+	$sqlSelG_ID->execute(array('u_ID' => $_SESSION['userid']));
+	$sqlSelG_IDRes = $sqlSelG_ID->fetch();
+	// Wenn eine G_ID existiert, speichere sie in der Session. Ansonsten mache die Session leer.
+	if(isset($sqlSelG_IDRes[0])) $_SESSION['g_ID'] = $sqlSelG_IDRes[0]; else unset($_SESSION['g_ID']);
 }
 ?>
 <script language="javascript">
@@ -126,7 +128,7 @@ if(isset($errorMessage)) {
 		$url = $_SERVER['REQUEST_URI'];
 		$checkLogin = false;
 
-		$pagesToCheck = array('0' => "abstimmung.php", '1' => "locationverwaltung.php", '2' => "gruppeneinstellungen.php", '3' =>"benutzereinstellungen.php");
+		$pagesToCheck = array('0' => "abstimmung.php", '1' => "locationverwaltung.php", '2' => "gruppeneinstellungen.php", '3' =>"benutzereinstellungen.php", '4' => "verlauf.php");
 
 		// Das Array und die Abfrage sorgen dafür, dass der Login-Check nur bei den obigen Seiten ausgeführt wird
 		// Das bedeutet: Jede vom Benutzer aufrufbare Seite, bei dem er angemeldet sein muss, gehört in das Array rein!
