@@ -122,10 +122,14 @@ require("includes/includeDatabase.php");
 				$('#abstimmungen').html("");
 				for (var i = 0; i<ergebnisseWoche.length; i++) {
 					var cd = new Date(ergebnisseWoche[i]['datum']);
+					var name = "<?php echo($_SESSION['username']) ?>";
 					$('#abstimmungen').append("<br><br>");
 					$('#abstimmungen').append("Ergebnis am "+cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+ergebnisseWoche[i]['gruppe']+": <b>"+ergebnisseWoche[i]['locname']+"</b><br>");
-				}
+					$('#abstimmungen').append("<a href=\"#\" data-trigger=\"focus\" data-toggle=\"popover\" title=\"HI\" data-content=\"" + name +"\" data-html=\"true\">Ergebnis am "+
+						cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+ergebnisseWoche[i]['gruppe']+": <b>"+ergebnisseWoche[i]['locname']+"</a>");
 
+						}
+				$('[data-toggle="popover"]').popover();
 	}
 
 	// schaue nach, was für eine Woche in der Dropdown-Liste steht, hole die entsprechenden Einträge aus der DB	und gib diese formatiert aus
@@ -185,7 +189,7 @@ require("includes/includeDatabase.php");
 					<div></div>
 					<div class="abstimmungen" id="abstimmungen">
 					</div>
-
+					<br><br>
 
 				</form>
 
@@ -194,6 +198,7 @@ require("includes/includeDatabase.php");
 		</div>
 	</div>
 </div>
+
 <script>woche_abholen()</script>
 	<?php
 		include ("includes/includeFooter.php");
