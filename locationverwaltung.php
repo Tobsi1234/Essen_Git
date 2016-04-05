@@ -143,7 +143,21 @@ include("includes/includeBody.php");
         require('includes/includeDatabase.php');
         ?>
         <br><br>
-        <div>
+
+        <div id="main" class="container">
+            <ul class="nav navbar-nav">
+                <li><a href="#page1">Location hinzufügen</a></li>
+                <li><a href="#page2">Essen hinzufügen</a></li>
+            </ul>
+            <div class="clear"></div>
+            <div id="pageContent">
+                Hallo, auf dieser Seite können Sie neue Locations und Essen anlegen.
+            </div>
+        </div>
+        <div class="clear"></div>
+
+
+        <!--<div id="neueLocation">
             <h2>Location hinzufügen</h2>
             <div></div>
             <br><br>
@@ -169,8 +183,8 @@ include("includes/includeBody.php");
                 <button type="submit">Location speichern</button>
             </form>
 
-        </div>
-        <div id="neuesEssen">
+        </div> -->
+        <!--<div id="neuesEssen">
             <br><br>
             <h2>Essen hinzufügen</h2>
             <br><br>
@@ -178,9 +192,9 @@ include("includes/includeBody.php");
                 <label for="essenName">Name des Essens:</label>
                 <input type="text" id="essenName" maxlength="30" value="" style="margin-left:23px;">
                 <button type="submit">Essen speichern</button>
-                <br><br><br><br><br><br><br><br><br><br>
+
             </form>
-        </div>
+        </div> -->
     </div>
 
     <!-- Alphabet -->

@@ -16,6 +16,7 @@
     <!-- Custom CSS -->
     <link href="css/one-page-wonder.css" rel="stylesheet">
     
+	<!-- CSS für Login -->
     <link href="css/login.css" rel="stylesheet">
 	
 	<!-- jQuery -->
@@ -24,6 +25,9 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.js"></script>
+	
+	<!-- Page Swapper Ajax -->
+	<script type="text/javascript" src="js/pages.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
