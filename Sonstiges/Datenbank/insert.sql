@@ -47,8 +47,8 @@ INSERT INTO `essen` (`name`, `u_ID`) VALUES
 -- Daten für Tabelle `gruppe`
 --
 INSERT INTO `gruppe` (`g_ID`, `name`, `u_ID`) VALUES
-  (4, 'Gruppe X', 3),
-  (5, 'Die BambuswÃ¼rmer', 2);
+  (1, 'Gruppe X', 3),
+  (2, 'Die BambuswÃ¼rmer', 2);
 
 
 --
@@ -76,11 +76,19 @@ INSERT INTO `locessen` (`l_ID`, `e_ID`) VALUES
 
 
 --
--- Daten für Tabelle `abstimmung_ergebnis`
+-- Daten für Tabelle `abstimmung_ergebnis´
 --
 
 INSERT INTO `abstimmung_ergebnis` (`l_ID`, `datum`, `g_ID`) VALUES
-  (1, '2016-04-02', 4),
-  (1, '2016-04-03', 4),
-  (3, '2016-04-02', 5),
-  (5, '2016-04-03', 5);
+  (1, '2016-04-02', 1),
+  (1, '2016-04-03', 1),
+  (3, '2016-04-02', 2),
+  (5, '2016-04-03', 2);
+  
+  
+--
+-- Fremdschlüssel-Daten für Tabelle 'users'
+--
+UPDATE `users` SET g_ID = 1 WHERE u_ID = 1;
+UPDATE `users` SET g_ID = 2 WHERE u_ID = 2;
+UPDATE `users` SET g_ID = 1 WHERE u_ID = 3;

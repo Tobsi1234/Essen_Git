@@ -38,14 +38,10 @@ require("includes/includeDatabase.php");
 
 // Eigene Funktion, die für das Datum den String so formatiert, dass er der Dropdown-Liste hinzugefügt werden kann
 	function getFormattedDropdownString(date) {
-		var local1 = date;
-		var local2 = date;
-		// alert("Local1 vorher:"+local1);
-		//alert("Local2 vorher:"+local2);
-		var week = getDaysOfWeek(local1);
-		//alert("Local1 nachher:"+local1);
-		//alert("Local2 nachher:"+local2);
-		var weeknumber = getWeekNumber(local2);
+		var local = date;
+
+		var week = getDaysOfWeek(local);
+		var weeknumber = getWeekNumber(local);
 
 		var weeknumberString = weeknumber[0]+", "+weeknumber[1];
 
@@ -137,9 +133,13 @@ require("includes/includeDatabase.php");
 					}
 				}
 				// alert("Länge: "+ergebnisseWoche.length);
-
+				var hilfs;
 				for (var i = 0; i<ergebnisseWoche.length; i++) {
-					// Ergebnisse ausgeben
+					if (hilfs != ergebnisseWoche[i]['datum']) $('#abstimmungen').append("<br><br>"); // Leerzeilen hinzufügen, falls sich das Datum ändert
+					var cd = new Date(ergebnisseWoche[i]['datum']);
+					$('#abstimmungen').append("Ergebnis am "+cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+ergebnisseWoche[i]['gruppe']+": "+ergebnisseWoche[i]['locname']+"<br>");
+
+					hilfs = ergebnisseWoche[i]['datum'];
 				}
 
 
@@ -169,11 +169,11 @@ require("includes/includeDatabase.php");
 				<div></div>
 				<br><br>
 
-				<form id="verlauf" name="verlauf" action="" method="post" onsubmit="datum_refreshen();">
+				<form id="verlauf" name="verlauf" action="" method="post" onsubmit="">
 					<label for="woche">Woche auswählen:</label>
 					<select id="woche" name="woche">
 					</select>
-					<button type="submit">Anwenden</button>
+					<button type="button" onclick="datum_refreshen();">Anwenden</button>
 					<div></div>
 					<div class="abstimmungen" id="abstimmungen">
 					</div>

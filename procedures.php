@@ -244,7 +244,7 @@ function getAbstimmungsErgebnisse() {
 	global $pdo;
 	$pdolocal = $pdo;
 
-	$sqlSelAbst = $pdolocal->prepare("SELECT * FROM abstimmung_ergebnis");
+	$sqlSelAbst = $pdolocal->prepare("SELECT * FROM abstimmung_ergebnis ORDER BY datum DESC");
 	$sqlSelAbst->execute();
 	$sqlSelAbstRes = $sqlSelAbst->fetchAll();
 	$i = 0;
