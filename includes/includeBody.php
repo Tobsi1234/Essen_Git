@@ -8,12 +8,20 @@ if(isset($_GET['login'])) {
 	$statement = $pdo->prepare("SELECT * FROM users WHERE email = :email");
 	$result = $statement->execute(array('email' => $email));
 	$user = $statement->fetch();
+
+
 		
 	//Überprüfung des Passworts
 	if ($user !== false && password_verify($passwort, $user['passwort'])) {
 		$_SESSION['userid'] = $user['u_ID'];
 		$_SESSION['username'] = $user['username'];
-		$_SESSION['email'] = $user['email'];  
+		$_SESSION['email'] = $user['email'];
+
+		//g_ID auch noch als Session:
+		$stmt1 = $pdo->prepare("SELECT g_ID FROM users WHERE u_ID = :u_ID");
+		$stmt1->execute(array('u_ID' => $_SESSION['userid']));
+		$g_ID = $stmt1->fetch();
+		if(isset($g_ID[0])) $_SESSION['g_ID'] = $g_ID[0];
 	} else {
 		$errorMessage = "E-Mail oder Passwort war ungültig<br>";
 	}
