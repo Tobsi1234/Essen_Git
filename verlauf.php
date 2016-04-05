@@ -119,13 +119,11 @@ require("includes/includeDatabase.php");
 					}
 				}
 				// alert("Länge: "+ergebnisseWoche.length);
-				var hilfs;
+				$('#abstimmungen').html("");
 				for (var i = 0; i<ergebnisseWoche.length; i++) {
-					if (hilfs != ergebnisseWoche[i]['datum']) $('#abstimmungen').append("<br><br>"); // Leerzeilen hinzufügen, falls sich das Datum ändert
 					var cd = new Date(ergebnisseWoche[i]['datum']);
-					$('#abstimmungen').append("Ergebnis am "+cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+ergebnisseWoche[i]['gruppe']+": "+ergebnisseWoche[i]['locname']+"<br>");
-
-					hilfs = ergebnisseWoche[i]['datum'];
+					$('#abstimmungen').append("<br><br>");
+					$('#abstimmungen').append("Ergebnis am "+cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+ergebnisseWoche[i]['gruppe']+": <b>"+ergebnisseWoche[i]['locname']+"</b><br>");
 				}
 
 	}

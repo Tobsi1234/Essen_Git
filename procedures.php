@@ -233,8 +233,8 @@ function getDatesFromAbstimmung() {
 	global $pdo;
 	$pdolocal = $pdo;
 
-	$sqlSelDates = $pdolocal->prepare("SELECT DISTINCT datum FROM abstimmung_ergebnis");
-	$sqlSelDates->execute();
+	$sqlSelDates = $pdolocal->prepare("SELECT DISTINCT datum FROM abstimmung_ergebnis WHERE g_ID = :g_ID");
+	$sqlSelDates->execute(array('g_ID' => $_SESSION['g_ID']));
 	$sqlSelDatesRes = $sqlSelDates->fetchAll();
 
 	echo json_encode($sqlSelDatesRes);
@@ -244,8 +244,8 @@ function getAbstimmungsErgebnisse() {
 	global $pdo;
 	$pdolocal = $pdo;
 
-	$sqlSelAbst = $pdolocal->prepare("SELECT * FROM abstimmung_ergebnis ORDER BY datum DESC");
-	$sqlSelAbst->execute();
+	$sqlSelAbst = $pdolocal->prepare("SELECT * FROM abstimmung_ergebnis WHERE g_ID = :g_ID ORDER BY datum DESC");
+	$sqlSelAbst->execute(array('g_ID' => $_SESSION['g_ID']));
 	$sqlSelAbstRes = $sqlSelAbst->fetchAll();
 	$i = 0;
 	foreach ($sqlSelAbstRes as $value) {
