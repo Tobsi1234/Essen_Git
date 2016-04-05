@@ -1,0 +1,27 @@
+<div id="neueLocation">
+    <h2>Location hinzufügen</h2>
+    <div></div>
+    <br>
+
+    <form id="newloc" name="newloc" action="" method="post" onsubmit="loc_anlegen(); return false;">
+        <label for="locname">Name der Location:</label>
+        <input type="text" id="locname" maxlength="30" value="" style="margin-left:23px;">
+        <br><br>
+        <label for="locpage">Homepage: </label>
+        <input type="text" id="locpage" maxlength="100" value="" style="margin-left:23px;">
+        <br><br>
+        <label for="verfuegbare_essen">Essensmöglichkeiten:</label>
+        <select id="verfuegbare_essen" name="verfuegbare_essen">
+        </select>
+        <button type="button" onclick="essen_zuweisen();">Hinzufügen</button>
+        <br><br>
+        <select id="gewaehlte_essen" name="gewaehlte_essen" size="5">
+        </select>
+        <button type="button" onclick="essen_entfernen();">Entfernen</button>
+        <br><br>
+
+        <br><br>
+        <button type="submit">Location speichern</button>
+    </form>
+
+</div>
