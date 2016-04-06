@@ -47,9 +47,9 @@ function loadPage(url)
 	
 	$.ajax({
 		type: "POST",
-		url: "load_page.php",
-		data: 'page='+url,
-		dataType: "html",
+		url: "procedures.php",
+		data    : {callFunction: 'load_page', page: url},
+		dataType: "text",
 		success: function(msg){
 			
 			if(parseInt(msg)!=0)

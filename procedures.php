@@ -53,6 +53,10 @@ switch ($_POST['callFunction'])
 			getAbstimmungsErgebnisse();
 			break;
 
+		case 'load_page':
+			load_page((int)$_POST['page']);
+			break;
+
 		default:
 			echo "Keine Funktion zum Aufrufen gefunden!";
 			break;
@@ -265,4 +269,12 @@ function getAbstimmungsErgebnisse() {
 	echo json_encode($sqlSelAbstRes);
 }
 
+function load_page($page) {
+
+	if(file_exists('pages/page_'.$page.'.html'))
+		echo file_get_contents('pages/page_'.$page.'.html');
+
+	else echo 'There is no such page!';
+
+}
 ?>
