@@ -41,7 +41,7 @@ function checkURL(hash)
 
 function loadPage(url)
 {
-	url=url.replace('#page','');
+	url=url.replace('#','');
 	
 	$('#loading').css('visibility','visible');
 	

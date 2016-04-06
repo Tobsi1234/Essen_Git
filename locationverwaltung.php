@@ -12,7 +12,7 @@ require("includes/includeDatabase.php");
     include("includes/includeHead.php");
     // include("procedures.php");
     ?>
-    
+
 </head>
 
 <body>
@@ -31,8 +31,8 @@ include("includes/includeBody.php");
 
         <div id="main" class="container">
             <ul class="nav navbar-nav">
-                <li><a href="#page1">Location hinzufügen</a></li>
-                <li><a href="#page2">Essen hinzufügen</a></li>
+                <li><a href="#locations">Location hinzufügen</a></li>
+                <li><a href="#essen">Essen hinzufügen</a></li>
             </ul>
             <div class="clear"></div>
             <div id="pageContent">
@@ -81,14 +81,13 @@ include("includes/includeBody.php");
             </form>
         </div> -->
     </div>
-
     <!-- Alphabet -->
     <div class="rightcontainer">
 
         <div id="tabpage_3" class="tabContainer">
 
             <div class="listWrapper">
-                
+
                 <ul id="demoThree" class="demo">
                     <?php
                     $abfrage1 = "SELECT name,link FROM location ORDER BY name ASC";
@@ -103,14 +102,13 @@ include("includes/includeBody.php");
                     ?>
                 </ul>
             </div>
+         </div>
     </div>
 </div>
-
 
 <?php
 include("includes/includeFooter.php");
 ?>
-
 <script src="js/jquery-listnav.js"></script>
 <script src="js/vendor.js"></script>
 <script>
@@ -126,6 +124,7 @@ include("includes/includeFooter.php");
         $('[data-toggle="popover"]').popover();
     });
 </script>
+
 </body>
 
 

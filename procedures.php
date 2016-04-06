@@ -54,7 +54,7 @@ switch ($_POST['callFunction'])
 			break;
 
 		case 'load_page':
-			load_page((int)$_POST['page']);
+			load_page($_POST['page']);
 			break;
 
 		default:
@@ -271,10 +271,10 @@ function getAbstimmungsErgebnisse() {
 
 function load_page($page) {
 
-	if(file_exists('pages/page_'.$page.'.html'))
-		echo file_get_contents('pages/page_'.$page.'.html');
+	if(file_exists('pages/'.$page.'.php'))
+		echo file_get_contents('pages/'.$page.'.php');
 
-	else echo 'There is no such page!';
+	else echo 'There is no such page!'.$page;
 
 }
 ?>
