@@ -42,6 +42,7 @@ require("includes/includeDatabase.php");
 		var week = getDaysOfWeek(date);
 		var weeknumber = getWeekNumber(date);
 
+		if (weeknumber[0] < 10) weeknumber[0] = '0'+weeknumber[0].toString();
 		var weeknumberString = weeknumber[0]+", "+weeknumber[1];
 
 
@@ -69,25 +70,25 @@ require("includes/includeDatabase.php");
 	function fülle_dropdown(data) {
 		
 		var allDates = JSON.parse(data);
+				
 		for (var i = 0; i<allDates.length; i++) {
 			var date = new Date(allDates[i]['datum']);
 			// alert(date);
 			var dropdownInhalt = getFormattedDropdownString(date);
 			var exists = false;
 
-			$('#woche').each(function() {
-				if (this.value == dropdownInhalt) {
+			$('#woche > option').each(function() {
+				if ($(this).val() === dropdownInhalt) {
 					exists = true;
-					return false;
 				}
 			});
+
 			// Überprüfung, ob Woche bereits in Dropdown-Liste
 			if (exists == false) {
 				$('#woche').append($('<option>', {
 					text: dropdownInhalt
 				}));
 			}
-
 		}
 	}
 
@@ -106,29 +107,20 @@ require("includes/includeDatabase.php");
 				var lastMonth = selectedText.substring(12,14);
 				var lastDate = new Date(year+"-"+lastMonth+"-"+lastDay);
 
-				var ergebnisseWoche = [];
-
+				$('#abstimmungen').html("");
+				
 				for (var i = 0; i<ergebnisse.length; i++) {
 					var current = ergebnisse[i];
 
 					if (new Date(current['datum']) >= firstDate && new Date(current['datum']) <= lastDate) {
-						ergebnisseWoche[i] = new Object();
-						ergebnisseWoche[i]['datum'] = current['datum'];
-						ergebnisseWoche[i]['locname'] = current['locname'];
-						ergebnisseWoche[i]['gruppe'] = current['gruppe'];
+						var cd = new Date(current['datum']);
+						var name = "<?php echo($_SESSION['username']) ?>";
+						$('#abstimmungen').append("<br><br>");
+						$('#abstimmungen').append("Ergebnis am "+cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+current['gruppe']+": <b>"+current['locname']+"</b><br>");
+						$('#abstimmungen').append("<a href=\"#\" data-trigger=\"focus\" data-toggle=\"popover\" title=\"HI\" data-content=\"" + name +"\" data-html=\"true\">Ergebnis am "+
+						cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+current['gruppe']+": <b>"+current['locname']+"</a>");	
 					}
 				}
-				// alert("Länge: "+ergebnisseWoche.length);
-				$('#abstimmungen').html("");
-				for (var i = 0; i<ergebnisseWoche.length; i++) {
-					var cd = new Date(ergebnisseWoche[i]['datum']);
-					var name = "<?php echo($_SESSION['username']) ?>";
-					$('#abstimmungen').append("<br><br>");
-					$('#abstimmungen').append("Ergebnis am "+cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+ergebnisseWoche[i]['gruppe']+": <b>"+ergebnisseWoche[i]['locname']+"</b><br>");
-					$('#abstimmungen').append("<a href=\"#\" data-trigger=\"focus\" data-toggle=\"popover\" title=\"HI\" data-content=\"" + name +"\" data-html=\"true\">Ergebnis am "+
-						cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+ergebnisseWoche[i]['gruppe']+": <b>"+ergebnisseWoche[i]['locname']+"</a>");
-
-						}
 				$('[data-toggle="popover"]').popover();
 	}
 
