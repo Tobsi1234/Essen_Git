@@ -1,7 +1,7 @@
 <?php 
 require('includes/includeDatabase.php');
 
-if(isset($_GET['login'])) {
+if(isset($_GET['login']) && isset($_POST['email']) && isset($_POST['passwort'])) {
 	$email = $_POST['email'];
 	$passwort = $_POST['passwort'];
 	
