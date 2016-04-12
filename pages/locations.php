@@ -21,6 +21,8 @@
             data    : {callFunction: 'insertLocation', p1: locname, p2: locpage, p3: locessen},
             dataType: 'text',
             success : function (data) {
+				// alert("Es wurde die Location "+data+" angelegt. Danke!");
+				window.location.reload();
             }
         });
     }

@@ -7,59 +7,68 @@ if (!isset($_SESSION)) {
 require('includes/includeDatabase.php');
 
 if (isset($_POST['callFunction'])) {
-switch ($_POST['callFunction'])
-	{
-		case 'insertLocation':	
-			insertLocation($_POST['p1'], $_POST['p2'], $_POST['p3']);
-			break;
-		case 'abstimmen':	
-			if(isset($_POST['essen2']))	abstimmen($_POST['u_ID'], $_POST['essen1'], $_POST['essen2'], $_POST['datum']);
-			else abstimmen($_POST['u_ID'], $_POST['essen1'], "", $_POST['datum']);
-			break;
+switch ($_POST['callFunction']) {
 
-		case 'insertEssen':	
-			insertEssen($_POST['p1']);
-			break;
-		
-		case 'reloadEssen':	
-			reloadEssen();
-			break;
+	case 'insertLocation':
+		insertLocation($_POST['p1'], $_POST['p2'], $_POST['p3']);
+		break;
 
-		case 'emailPrüfen':
-			emailPrüfen($_POST['email']);
-			break;
+	case 'abstimmen':
+		if(isset($_POST['essen2']))	abstimmen($_POST['u_ID'], $_POST['essen1'], $_POST['essen2'], $_POST['datum']);
+		else abstimmen($_POST['u_ID'], $_POST['essen1'], "", $_POST['datum']);
+		break;
 
-		case 'gruppeErstellen':
-			gruppeErstellen($_POST['name'], $_POST['u_ID'], $_POST['json']);
-			break;
+	case 'insertEssen':
+		insertEssen($_POST['p1']);
+		break;
 
-		case 'austreten':
-			austreten($_POST['u_ID']);
-			break;
+	case 'reloadEssen':
+		reloadEssen();
+		break;
 
-		case 'getLocations':
-			getLocations();
-			break;
+	case 'emailPrüfen':
+		emailPrüfen($_POST['email']);
+		break;
 
-		case 'mitgliederHinzufügen':
-			mitgliederHinzufügen($_POST['u_ID'], $_POST['json']);
-			break;
+	case 'gruppeErstellen':
+		gruppeErstellen($_POST['name'], $_POST['u_ID'], $_POST['json']);
+		break;
 
-		case 'getDatesFromAbstimmung':
-			getDatesFromAbstimmung();
-			break;
+	case 'austreten':
+		austreten($_POST['u_ID']);
+		break;
 
-		case 'getAbstimmungsErgebnisse':
-			getAbstimmungsErgebnisse();
-			break;
+	case 'getLocations':
+		getLocations();
+		break;
 
-		case 'load_page':
-			load_page($_POST['page']);
-			break;
+	case 'mitgliederHinzufügen':
+		mitgliederHinzufügen($_POST['u_ID'], $_POST['json']);
+		break;
 
-		default:
-			echo "Keine Funktion zum Aufrufen gefunden!";
-			break;
+	case 'getDatesFromAbstimmung':
+		getDatesFromAbstimmung();
+		break;
+
+	case 'getAbstimmungsErgebnisse':
+		getAbstimmungsErgebnisse();
+		break;
+
+	case 'load_page':
+		load_page($_POST['page']);
+		break;
+
+	case 'getAbstimmungenHeute':
+		getAbstimmungenHeute();
+		break;
+
+	case 'calculateErgebnisHeute':
+		calculateErgebnisHeute();
+		break;
+
+	default:
+		echo "Keine Funktion zum Aufrufen gefunden!";
+		break;
 	}
 }
 			
@@ -88,7 +97,7 @@ function insertLocation($locname, $locpage, $locessen) {
 		$sqlInsLocEssenRes = $sqlInsLocEssen->execute(array(':l_ID' => $sqlGetLocIdRes['l_ID'], ':e_ID' => $sqlGetEssenIdRes['e_ID']));
 	}
 	
-	
+	echo $locname;
 }
 
 function insertEssen($essenName) {
@@ -276,5 +285,53 @@ function load_page($page) {
 
 	else echo 'There is no such page!'.$page;
 
+}
+
+function getAbstimmungenHeute() {
+	global $pdo;
+	$pdolocal = $pdo;
+
+	$sqlSelAbstHeuteRes = selectAbstimmungenHeute();
+	$i = 0;
+	foreach ($sqlSelAbstHeuteRes as $value) {
+		$sqlSelHilfsUsers = $pdolocal->prepare('SELECT username FROM users WHERE u_ID = :u_ID');
+		$sqlSelHilfsUsers->execute(array('u_ID' => $value['u_ID']));
+		$sqlSelHilfsUsersRes = $sqlSelHilfsUsers->fetch();
+		$sqlSelAbstHeuteRes[$i]['username'] = $sqlSelHilfsUsersRes['username'];
+
+		$sqlSelHilfsGruppe = $pdolocal->prepare('SELECT gruppe.name FROM gruppe WHERE g_ID = :g_ID');
+		$sqlSelHilfsGruppe->execute(array('g_ID' => $value['g_ID']));
+		$sqlSelHilfsGruppeRes = $sqlSelHilfsGruppe->fetch();
+		$sqlSelAbstHeuteRes[$i]['gruppe'] = $sqlSelHilfsGruppeRes['name'];
+
+		$sqlSelHilfsUsers = $pdolocal->prepare('SELECT name FROM essen WHERE e_ID = :e_ID1 OR e_ID = :e_ID2');
+		$sqlSelHilfsUsers->execute(array('e_ID1' => $value['e_ID1'], 'e_ID2' => $value['e_ID2']));
+		$sqlSelHilfsUsersRes = $sqlSelHilfsUsers->fetchAll();
+		$sqlSelAbstHeuteRes[$i]['essen1'] = $sqlSelHilfsUsersRes[0]['name'];
+		$sqlSelAbstHeuteRes[$i]['essen2'] = $sqlSelHilfsUsersRes[1]['name'];
+		$i++;
+	}
+
+	echo json_encode($sqlSelAbstHeuteRes);
+}
+
+function calculateErgebnisHeute() {
+	global $pdo;
+	$pdolocal = $pdo;
+
+	$sqlSelAbstHeuteRes = selectAbstimmungenHeute();
+}
+
+// Reine serverseitige Hilfsfunktion, daher KEIN EINTRAG IM SWITCH-STATEMENT NÖTIG!
+function selectAbstimmungenHeute() {
+	global $pdo;
+	$pdolocal = $pdo;
+	date_default_timezone_set("Europe/Berlin");
+
+	$sqlSelAbstHeute = $pdolocal->prepare("SELECT abstimmen.u_ID, g_ID, e_ID1, e_ID2 FROM abstimmen, users WHERE users.u_ID = abstimmen.u_ID AND datum = :datum AND users.g_ID = :g_ID");
+	$sqlSelAbstHeute->execute(array('datum' => date("Y-m-d",time()),'g_ID' => $_SESSION['g_ID']));
+	$sqlSelAbstHeuteRes = $sqlSelAbstHeute->fetchAll();
+
+	return $sqlSelAbstHeuteRes;
 }
 ?>
