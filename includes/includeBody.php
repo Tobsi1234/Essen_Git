@@ -70,17 +70,39 @@ if(isset($errorMessage)) {
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.php">Startseite</a>
+            <div class="navbar-header pull-left">
+				<a class="navbar-brand" href="index.php">Startseite</a>
             </div>
+			<div class="navbar-header pull-right">
+				<ul class="nav navbar-nav pull-left">
+					<li id="login" style="margin-right:15px">
+						<a id="login-trigger" href="#">
+							Einloggen <span>&#x25BC;</span>
+						</a>
+						<div id="login-content">
+							<form action="?login=1" method="post">
+								<fieldset id="inputs">
+									<input id="username" type="email" name="email" placeholder="E-Mail Adresse" required>
+									<input id="password" type="password" name="passwort" placeholder="Passwort" required>
+								</fieldset>
+								<fieldset id="actions">
+									<input type="submit" id="submit" value="Einloggen">
+									<label><input type="checkbox" checked="checked">Eingeloggt bleiben?</label>
+									<label><a href="registrieren.php">Noch nicht registriert? </a></label>
+								</fieldset>
+							</form>
+						</div>
+					</li>
+				</ul>
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="navbar-collapse collapse pull-left" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="unterSeiten" style="display: none">
                         <a href="abstimmung.php">Abstimmung</a>
@@ -93,28 +115,11 @@ if(isset($errorMessage)) {
                     </li>
 					<li class="unterSeiten" style="display: none">
                         <a href="gruppeneinstellungen.php">Meine Gruppe</a>
-                    </li>                    
-                    <li id="login">
-                        <a id="login-trigger" href="#">
-                            Einloggen <span>&#x25BC;</span>
-                        </a>
-                            <div id="login-content">
-                                 <form action="?login=1" method="post">
-                                    <fieldset id="inputs">
-                                        <input id="username" type="email" name="email" placeholder="E-Mail Adresse" required>   
-                                        <input id="password" type="password" name="passwort" placeholder="Passwort" required>
-                                    </fieldset>
-                                    <fieldset id="actions">
-                                        <input type="submit" id="submit" value="Einloggen">
-                                        <label><input type="checkbox" checked="checked">Eingeloggt bleiben?</label>
-                                        <label><a href="registrieren.php">Noch nicht registriert? </a></label>
-                                    </fieldset>
-                                </form>
-                            </div>                     
-        			</li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+                    </li>
+				</ul>
+				<!-- /.navbar-collapse -->
+			</div>
+
         </div>
         <!-- /.container -->
     </nav>  
