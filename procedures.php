@@ -291,23 +291,30 @@ function getAbstimmungenHeute() {
 	global $pdo;
 	$pdolocal = $pdo;
 
-	$sqlSelAbstHeuteRes = selectAbstimmungenHeute();
+	$abstHeute = selectAbstimmungenHeute();
+
+	$sqlSelAbstHeuteRes = $abstHeute;
 	$i = 0;
+
 	foreach ($sqlSelAbstHeuteRes as $value) {
+		// Hole Usernamen der heutigen Abstimmer
 		$sqlSelHilfsUsers = $pdolocal->prepare('SELECT username FROM users WHERE u_ID = :u_ID');
 		$sqlSelHilfsUsers->execute(array('u_ID' => $value['u_ID']));
 		$sqlSelHilfsUsersRes = $sqlSelHilfsUsers->fetch();
 		$sqlSelAbstHeuteRes[$i]['username'] = $sqlSelHilfsUsersRes['username'];
 
+		// Hole Gruppennamen der zugehörigen Gruppe
 		$sqlSelHilfsGruppe = $pdolocal->prepare('SELECT gruppe.name FROM gruppe WHERE g_ID = :g_ID');
 		$sqlSelHilfsGruppe->execute(array('g_ID' => $value['g_ID']));
 		$sqlSelHilfsGruppeRes = $sqlSelHilfsGruppe->fetch();
 		$sqlSelAbstHeuteRes[$i]['gruppe'] = $sqlSelHilfsGruppeRes['name'];
 
+		// Hole die je zwei Essensbezeichnungen, für die der User abgestimmt hat. Bei doppelten Nennungen sorgt die if-Abfrage auch für eine doppelte Speicherung
 		$sqlSelHilfsUsers = $pdolocal->prepare('SELECT name FROM essen WHERE e_ID = :e_ID1 OR e_ID = :e_ID2');
 		$sqlSelHilfsUsers->execute(array('e_ID1' => $value['e_ID1'], 'e_ID2' => $value['e_ID2']));
 		$sqlSelHilfsUsersRes = $sqlSelHilfsUsers->fetchAll();
 		$sqlSelAbstHeuteRes[$i]['essen1'] = $sqlSelHilfsUsersRes[0]['name'];
+		if (!isset($sqlSelHilfsUsersRes[1]['name'])) {$sqlSelHilfsUsersRes[1]['name'] = $sqlSelHilfsUsersRes[0]['name'];}
 		$sqlSelAbstHeuteRes[$i]['essen2'] = $sqlSelHilfsUsersRes[1]['name'];
 		$i++;
 	}
@@ -320,14 +327,41 @@ function calculateErgebnisHeute() {
 	$pdolocal = $pdo;
 
 	$sqlSelAbstHeuteRes = selectAbstimmungenHeute();
+	$abstimmungen = array();
+
+	// Fülle Array abstimmungen mit allen e_IDs, für die heute abgestimmt wurde
+	for($i = 0; $i < (count($sqlSelAbstHeuteRes))*2; $i = $i+2) {
+		$abstimmungen[$i] = $sqlSelAbstHeuteRes[$i/2]['e_ID1'];
+		$abstimmungen[$i+1] = $sqlSelAbstHeuteRes[$i/2]['e_ID2'];
+	}
+
+	// Ermittle das Essen, für welches am häufigsten abgestimmt wurde
+	$häufigkeiten = array_count_values($abstimmungen);
+	arsort($häufigkeiten);
+
+	// Hole alle Location-IDs, welches dieses Essen anbieten
+	$sqlSelLoc = $pdolocal->prepare("SELECT l_ID FROM locessen WHERE e_ID = :e_ID");
+	$sqlSelLoc->execute(array('e_ID' => key($häufigkeiten)));
+	$sqlSelLocRes = $sqlSelLoc->fetchAll();
+
+
+	$zufallszahl = mt_rand(0,count($sqlSelLocRes)-1);
+
+	// Hole den Namen einer per Zufall ermittelten Location, die dieses Essen anbietet
+	$sqlSelLocname = $pdolocal->prepare("SELECT name FROM location WHERE l_ID = :l_ID");
+	$sqlSelLocname->execute(array('l_ID' => $sqlSelLocRes[$zufallszahl]['l_ID']));
+	$sqlSelLocnameRes = $sqlSelLocname->fetch();
+
+	echo $sqlSelLocnameRes['name'];
 }
 
-// Reine serverseitige Hilfsfunktion, daher KEIN EINTRAG IM SWITCH-STATEMENT NÖTIG!
+// Reine serverseitige Hilfsfunktion, daher kein Eintrag im Switch-Statement nötig!
 function selectAbstimmungenHeute() {
 	global $pdo;
 	$pdolocal = $pdo;
 	date_default_timezone_set("Europe/Berlin");
 
+	// Hole alle heutigen Abstimmungen von allen Usern der Gruppe, der der aktuelle User angehört
 	$sqlSelAbstHeute = $pdolocal->prepare("SELECT abstimmen.u_ID, g_ID, e_ID1, e_ID2 FROM abstimmen, users WHERE users.u_ID = abstimmen.u_ID AND datum = :datum AND users.g_ID = :g_ID");
 	$sqlSelAbstHeute->execute(array('datum' => date("Y-m-d",time()),'g_ID' => $_SESSION['g_ID']));
 	$sqlSelAbstHeuteRes = $sqlSelAbstHeute->fetchAll();

@@ -41,7 +41,7 @@ require("includes/includeDatabase.php");
 					var abstimmungen = JSON.parse(data);
 					$('#abstimmungen').html("");
 					for (var i = 0; i<abstimmungen.length; i++) {
-						$('#abstimmungen').append(abstimmungen[i]['username']+" hat für die Essen "+abstimmungen[i]['essen1']+" und "+abstimmungen[i]['essen2']+" abgestimmt.<br>");
+						$('#abstimmungen').append("<b>"+abstimmungen[i]['username']+"</b>"+" hat für die Essen "+"<b>"+abstimmungen[i]['essen1']+"</b>"+" und "+"<b>"+abstimmungen[i]['essen2']+"</b>"+" abgestimmt.<br>");
 					}
 				}
 			});
@@ -54,7 +54,7 @@ require("includes/includeDatabase.php");
 				data    : {callFunction: 'calculateErgebnisHeute'},
 				dataType: 'text',
 				success : function (data) {
-					var abstimmungen = JSON.parse(data);
+					$('#essenErgebnis').html("<h2>"+"Die heutige Essensempfehlung ist \""+data+"\""+"</h2>");
 				}
 			});
 		}
@@ -72,6 +72,7 @@ include ("includes/includeBody.php");
 
 <script> datum(); //datum init</script>
 <script>holeAbstimmungenHeute();</script>
+<script>berechneErgebnisHeute();</script>
 
 <!-- Page Content -->
 <div class="container" id="container" style="display: none">
@@ -105,18 +106,11 @@ include ("includes/includeBody.php");
 		?>
 		<div class="col-md-7">
 			<div id="headline">
-				<h1>Auswertung für Gruppe <?php echo $gruppenname[0];?></h1><br>
+				<h1>Auswertung für Gruppe "<?php echo $gruppenname[0];?>":</h1><br>
 			</div>
-			Ergebnis von heute : <div id="essenErgebnis"> </div><br><br>
+			<div id="essenErgebnis"> </div><br><br>
 			<div id="abstimmungen"></div>
-
-
-
 		</div>
-
-
-
-
 
 		<div class="col-md-4 col-md-offset-1">
 			<div style="border-left: thick solid black;">
