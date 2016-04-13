@@ -38,10 +38,18 @@ require("includes/includeDatabase.php");
 				data    : {callFunction: 'getAbstimmungenHeute'},
 				dataType: 'text',
 				success : function (data) {
+				//alert(data);
 					var abstimmungen = JSON.parse(data);
 					$('#abstimmungen').html("");
+					//alert(abstimmungen[i]['essen1']);
 					for (var i = 0; i<abstimmungen.length; i++) {
-						$('#abstimmungen').append("<b>"+abstimmungen[i]['username']+"</b>"+" hat für die Essen "+"<b>"+abstimmungen[i]['essen1']+"</b>"+" und "+"<b>"+abstimmungen[i]['essen2']+"</b>"+" abgestimmt.<br>");
+						if (abstimmungen[i]['essen2'] != null) {
+							//alert("Einen schönen guten Tag");
+							$('#abstimmungen').append("<b>"+abstimmungen[i]['username']+"</b>"+" hat für die Essen "+"<b>"+abstimmungen[i]['essen1']+"</b>"+" und "+"<b>"+abstimmungen[i]['essen2']+"</b>"+" abgestimmt.<br>");
+						}
+						else {
+							$('#abstimmungen').append("<b>"+abstimmungen[i]['username']+"</b>"+" hat nur für das Essen "+"<b>"+abstimmungen[i]['essen1']+"</b>"+"</b>"+" abgestimmt.<br>");
+						}
 					}
 				}
 			});

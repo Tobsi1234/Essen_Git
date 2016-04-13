@@ -310,12 +310,15 @@ function getAbstimmungenHeute() {
 		$sqlSelAbstHeuteRes[$i]['gruppe'] = $sqlSelHilfsGruppeRes['name'];
 
 		// Hole die je zwei Essensbezeichnungen, für die der User abgestimmt hat. Bei doppelten Nennungen sorgt die if-Abfrage auch für eine doppelte Speicherung
-		$sqlSelHilfsUsers = $pdolocal->prepare('SELECT name FROM essen WHERE e_ID = :e_ID1 OR e_ID = :e_ID2');
-		$sqlSelHilfsUsers->execute(array('e_ID1' => $value['e_ID1'], 'e_ID2' => $value['e_ID2']));
-		$sqlSelHilfsUsersRes = $sqlSelHilfsUsers->fetchAll();
-		$sqlSelAbstHeuteRes[$i]['essen1'] = $sqlSelHilfsUsersRes[0]['name'];
-		if (!isset($sqlSelHilfsUsersRes[1]['name'])) {$sqlSelHilfsUsersRes[1]['name'] = $sqlSelHilfsUsersRes[0]['name'];}
-		$sqlSelAbstHeuteRes[$i]['essen2'] = $sqlSelHilfsUsersRes[1]['name'];
+		$sqlSelHilfsUsers1 = $pdolocal->prepare('SELECT name FROM essen WHERE e_ID = :e_ID1');
+		$sqlSelHilfsUsers1->execute(array('e_ID1' => $value['e_ID1']));
+		$sqlSelHilfsUsersRes1 = $sqlSelHilfsUsers1->fetch();
+		$sqlSelHilfsUsers2 = $pdolocal->prepare('SELECT name FROM essen WHERE e_ID = :e_ID2');
+		$sqlSelHilfsUsers2->execute(array('e_ID2' => $value['e_ID2']));
+		$sqlSelHilfsUsersRes2 = $sqlSelHilfsUsers2->fetch();
+		
+		if (isset($sqlSelHilfsUsersRes1['name'])){$sqlSelAbstHeuteRes[$i]['essen1'] = $sqlSelHilfsUsersRes1['name'];}
+		if (isset($sqlSelHilfsUsersRes2['name'])) {$sqlSelAbstHeuteRes[$i]['essen2'] = $sqlSelHilfsUsersRes2['name'];}
 		$i++;
 	}
 
@@ -330,9 +333,10 @@ function calculateErgebnisHeute() {
 	$abstimmungen = array();
 
 	// Fülle Array abstimmungen mit allen e_IDs, für die heute abgestimmt wurde
-	for($i = 0; $i < (count($sqlSelAbstHeuteRes))*2; $i = $i+2) {
-		$abstimmungen[$i] = $sqlSelAbstHeuteRes[$i/2]['e_ID1'];
-		$abstimmungen[$i+1] = $sqlSelAbstHeuteRes[$i/2]['e_ID2'];
+	for($i = 0; $i < count($sqlSelAbstHeuteRes); $i++) {
+		array_push($abstimmungen, $sqlSelAbstHeuteRes[$i]['e_ID1']);
+		if (isset($sqlSelAbstHeuteRes[$i]['e_ID2'])) {array_push($abstimmungen, $sqlSelAbstHeuteRes[$i]['e_ID2']);}
+		// echo $abstimmungen[$i]."xxx".$abstimmungen[$i+1];
 	}
 
 	// Ermittle das Essen, für welches am häufigsten abgestimmt wurde
