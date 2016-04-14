@@ -334,7 +334,7 @@ function calculateErgebnisHeute() {
 
 	// Fülle Array abstimmungen mit allen e_IDs, für die heute abgestimmt wurde
 	for($i = 0; $i < count($sqlSelAbstHeuteRes); $i++) {
-		array_push($abstimmungen, $sqlSelAbstHeuteRes[$i]['e_ID1']);
+		if (isset($sqlSelAbstHeuteRes[$i]['e_ID1'])) {array_push($abstimmungen, $sqlSelAbstHeuteRes[$i]['e_ID1']);}
 		if (isset($sqlSelAbstHeuteRes[$i]['e_ID2'])) {array_push($abstimmungen, $sqlSelAbstHeuteRes[$i]['e_ID2']);}
 		// echo $abstimmungen[$i]."xxx".$abstimmungen[$i+1];
 	}
@@ -342,21 +342,24 @@ function calculateErgebnisHeute() {
 	// Ermittle das Essen, für welches am häufigsten abgestimmt wurde
 	$häufigkeiten = array_count_values($abstimmungen);
 	arsort($häufigkeiten);
-
+	echo key($häufigkeiten);
 	// Hole alle Location-IDs, welches dieses Essen anbieten
 	$sqlSelLoc = $pdolocal->prepare("SELECT l_ID FROM locessen WHERE e_ID = :e_ID");
 	$sqlSelLoc->execute(array('e_ID' => key($häufigkeiten)));
 	$sqlSelLocRes = $sqlSelLoc->fetchAll();
 
+	if (count($sqlSelLocRes) > 0) {
 
-	$zufallszahl = mt_rand(0,count($sqlSelLocRes)-1);
+		$zufallszahl = mt_rand(0, count($sqlSelLocRes) - 1);
 
-	// Hole den Namen einer per Zufall ermittelten Location, die dieses Essen anbietet
-	$sqlSelLocname = $pdolocal->prepare("SELECT name FROM location WHERE l_ID = :l_ID");
-	$sqlSelLocname->execute(array('l_ID' => $sqlSelLocRes[$zufallszahl]['l_ID']));
-	$sqlSelLocnameRes = $sqlSelLocname->fetch();
+		// Hole den Namen einer per Zufall ermittelten Location, die dieses Essen anbietet
+		$sqlSelLocname = $pdolocal->prepare("SELECT name FROM location WHERE l_ID = :l_ID");
+		$sqlSelLocname->execute(array('l_ID' => $sqlSelLocRes[$zufallszahl]['l_ID']));
+		$sqlSelLocnameRes = $sqlSelLocname->fetch();
 
-	echo $sqlSelLocnameRes['name'];
+		echo $sqlSelLocnameRes['name'];
+	}
+
 }
 
 // Reine serverseitige Hilfsfunktion, daher kein Eintrag im Switch-Statement nötig!

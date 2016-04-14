@@ -38,13 +38,13 @@ require("includes/includeDatabase.php");
 				data    : {callFunction: 'getAbstimmungenHeute'},
 				dataType: 'text',
 				success : function (data) {
-				//alert(data);
+
 					var abstimmungen = JSON.parse(data);
 					$('#abstimmungen').html("");
-					//alert(abstimmungen[i]['essen1']);
+
 					for (var i = 0; i<abstimmungen.length; i++) {
+
 						if (abstimmungen[i]['essen2'] != null) {
-							//alert("Einen schönen guten Tag");
 							$('#abstimmungen').append("<b>"+abstimmungen[i]['username']+"</b>"+" hat für die Essen "+"<b>"+abstimmungen[i]['essen1']+"</b>"+" und "+"<b>"+abstimmungen[i]['essen2']+"</b>"+" abgestimmt.<br>");
 						}
 						else {
@@ -62,7 +62,12 @@ require("includes/includeDatabase.php");
 				data    : {callFunction: 'calculateErgebnisHeute'},
 				dataType: 'text',
 				success : function (data) {
-					$('#essenErgebnis').html("<h2>"+"Die heutige Essensempfehlung ist \""+data+"\""+"</h2>");
+					if(data == '') {
+						$('#essenErgebnis').html("<h2>"+"Noch keine Abstimmung für heute vorhanden"+"</h2>");
+					}
+					else {
+						$('#essenErgebnis').html("<h2>"+"Die heutige Essensempfehlung ist \""+data+"\""+"</h2>");
+					}
 				}
 			});
 		}
