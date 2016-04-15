@@ -342,12 +342,18 @@ function calculateErgebnisHeute() {
 	// Ermittle das Essen, für welches am häufigsten abgestimmt wurde
 	$häufigkeiten = array_count_values($abstimmungen);
 	arsort($häufigkeiten);
-	echo key($häufigkeiten);
+	// echo(key($häufigkeiten));
 	// Hole alle Location-IDs, welches dieses Essen anbieten
 	$sqlSelLoc = $pdolocal->prepare("SELECT l_ID FROM locessen WHERE e_ID = :e_ID");
 	$sqlSelLoc->execute(array('e_ID' => key($häufigkeiten)));
 	$sqlSelLocRes = $sqlSelLoc->fetchAll();
 
+	$result = array();
+		if (count($sqlSelAbstHeuteRes) === 0) {
+			$result['abstimmungen'] = false;
+		}  
+		else $result['abstimmungen'] = true;
+		
 	if (count($sqlSelLocRes) > 0) {
 
 		$zufallszahl = mt_rand(0, count($sqlSelLocRes) - 1);
@@ -357,8 +363,10 @@ function calculateErgebnisHeute() {
 		$sqlSelLocname->execute(array('l_ID' => $sqlSelLocRes[$zufallszahl]['l_ID']));
 		$sqlSelLocnameRes = $sqlSelLocname->fetch();
 
-		echo $sqlSelLocnameRes['name'];
+		$result['locname'] = $sqlSelLocnameRes['name'];
+				
 	}
+	echo json_encode($result);
 
 }
 

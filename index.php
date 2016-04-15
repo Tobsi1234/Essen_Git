@@ -38,10 +38,15 @@ require("includes/includeDatabase.php");
 				data    : {callFunction: 'getAbstimmungenHeute'},
 				dataType: 'text',
 				success : function (data) {
-
+					
 					var abstimmungen = JSON.parse(data);
-					$('#abstimmungen').html("");
+					
+					if(abstimmungen.toString() === '') {
+						$('#essenErgebnis').html("<h2>"+"Noch keine Abstimmung für heute vorhanden"+"</h2>");
+					}
 
+					$('#abstimmungen').html("");
+					
 					for (var i = 0; i<abstimmungen.length; i++) {
 
 						if (abstimmungen[i]['essen2'] != null) {
@@ -62,11 +67,20 @@ require("includes/includeDatabase.php");
 				data    : {callFunction: 'calculateErgebnisHeute'},
 				dataType: 'text',
 				success : function (data) {
-					if(data == '') {
-						$('#essenErgebnis').html("<h2>"+"Noch keine Abstimmung für heute vorhanden"+"</h2>");
+
+					var location = JSON.parse(data);
+
+					// Wenn Abstimmungen vorhanden, aber keine Location für diese Abstimmung da ist
+					if(location['abstimmungen'] === true && location['locname'] === undefined) {
+						$('#essenErgebnis').html("<h2>"+"Für diese Abstimmungen existiert leider keine passende Location."+"</h2>");
 					}
+					// Wenn weder Abstimmungen noch Locations da sind
+					else if (location['abstimmungen'] === false){
+						// do nothing
+					}
+					// Wenn Locations und damit auch Abstimmungen da sind
 					else {
-						$('#essenErgebnis').html("<h2>"+"Die heutige Essensempfehlung ist \""+data+"\""+"</h2>");
+						$('#essenErgebnis').html("<h2>"+"Die heutige Essensempfehlung ist \""+location['locname']+"\""+"</h2>");
 					}
 				}
 			});
