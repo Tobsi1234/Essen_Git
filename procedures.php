@@ -356,9 +356,14 @@ function calculateErgebnisHeute() {
 		
 	if (count($sqlSelLocRes) > 0) {
 
+		// Zufallszahl, um eine zufällige der bestimmten Locations auszuwählen, die das ermittelte Essen anbietet
 		$zufallszahl = mt_rand(0, count($sqlSelLocRes) - 1);
 
-		// Hole den Namen einer per Zufall ermittelten Location, die dieses Essen anbietet
+		// Füge die Location als Abstimmungsergebnis in die Tabelle ein. Wenn es schon ein Ergebnis gibt, überschreibe es.
+		$sqlInsErg = $pdolocal->prepare("INSERT INTO abstimmung_ergebnis (l_ID, datum, g_ID) VALUES (:l_ID, :datum, :g_ID) ON DUPLICATE KEY UPDATE l_ID = :l_ID;");
+		$sqlInsErg->execute(array('l_ID' => $sqlSelLocRes[$zufallszahl]['l_ID'], 'datum' => date("Y-m-d",time()),'g_ID' => $_SESSION['g_ID']));
+
+		// Den Namen der Location ermitteln (für die Ausgabe)
 		$sqlSelLocname = $pdolocal->prepare("SELECT name FROM location WHERE l_ID = :l_ID");
 		$sqlSelLocname->execute(array('l_ID' => $sqlSelLocRes[$zufallszahl]['l_ID']));
 		$sqlSelLocnameRes = $sqlSelLocname->fetch();

@@ -67,7 +67,7 @@ require("includes/includeDatabase.php");
 				data    : {callFunction: 'calculateErgebnisHeute'},
 				dataType: 'text',
 				success : function (data) {
-
+					// alert(data);
 					var location = JSON.parse(data);
 
 					// Wenn Abstimmungen vorhanden, aber keine Location für diese Abstimmung da ist

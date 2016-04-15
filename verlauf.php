@@ -70,7 +70,7 @@ require("includes/includeDatabase.php");
 	function fülle_dropdown(data) {
 		
 		var allDates = JSON.parse(data);
-				
+
 		for (var i = 0; i<allDates.length; i++) {
 			var date = new Date(allDates[i]['datum']);
 			// alert(date);
