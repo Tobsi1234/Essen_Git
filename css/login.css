@@ -113,20 +113,17 @@ height: 339px;
 }
 
 .bigcontainer{
-    margin-left: 12%;
+    
+	margin-left: 12%;
     top: 5%;
     margin-right: 5%;
-
-}
-
-.leftcontainer{
-    width:50%;
-    float: left;
+	
 }
 
 .rightcontainer {
-    width:50%;
-    float: left;
+   width:50%;
+   float:right;
+   
 }
   
 /*----------------------*/
@@ -326,4 +323,10 @@ background: black;
 
 #nachricht {
 width:65%;
+}
+
+#neueLocation {
+	float:left;
+	width: 50%;
+	margin-top:-25px;
 }

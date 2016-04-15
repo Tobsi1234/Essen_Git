@@ -97,11 +97,13 @@
     -->
 </script>
 
+<?php
+require("includes/includeDatabase.php");
+?>
+
 <div id="neueLocation">
     <h2>Location hinzufügen</h2>
-    <div></div>
     <br>
-
     <form id="newloc" name="newloc" action="" method="post" onsubmit="loc_anlegen(); return false;">
         <label for="locname">Name der Location:</label>
         <input type="text" id="locname" maxlength="30" value="" style="margin-left:23px;">
@@ -124,6 +126,47 @@
     </form>
 
 </div>
+<!-- Alphabet -->
+<div class="rightcontainer">
+
+    <div id="tabpage_3" class="tabContainer">
+
+        <div class="listWrapper">
+
+            <ul id="demoThree" class="demo">
+                <?php
+                $abfrage1 = "SELECT name,link FROM location ORDER BY name ASC";
+                $ergebnis1 = mysqli_query($connection, $abfrage1);
+
+                while ($row1 = mysqli_fetch_object($ergebnis1))
+                {
+                    if(strpos($row1 -> link, 'http') !== false) $linker = $row1 -> link;
+                    else $linker = "http://". $row1 -> link;
+                    ?> <li><a href="#" data-trigger="focus" data-toggle="popover" title="<?php echo $row1 -> name;?>" data-content="Link: <?php if($linker != "")echo "<a href='" . $linker . "'>$linker</a>";?>" data-html="true"><?php echo $row1->name;?></a></li> <?php
+                }
+                ?>
+            </ul>
+        </div>
+     </div>
+</div>
+
+
+    
+<script src="js/jquery-listnav.js"></script>
+<script src="js/vendor.js"></script>
+<script>
+    $(function(){
+        $('#demoThree').listnav({
+            initLetter: 'all',
+            includeNums: true,
+            allText: 'Alle',
+            noMatchText: 'Keine Einträge für diesen Buchstaben vorhanden.'
+        });
+    });
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
 
 
 <script>essen_laden();</script>
