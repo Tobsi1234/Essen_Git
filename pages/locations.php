@@ -89,9 +89,33 @@
                 window.location.reload();
             }
         });
-
         // window.location.reload();
+    }
 
+    function getLocations() {
+        $.ajax({
+            type    : "POST",
+            url     : "procedures.php",
+            data    : {callFunction: 'getLocations'},
+            dataType: 'text',
+            success : function (data) {
+                var locations= JSON.parse(data);
+                $('#demoThree').html("");
+                for(i=0; i<locations.length; i++) {
+                    var location = JSON.parse(locations[i]);
+                    $('#demoThree').append("<li><a href=\"#locations\" data-trigger=\"focus\" data-toggle=\"popover\" title=\""+location['name']+"\" data-content=\"Link: <a href=\'"+location['link']+"\' >"+location['link']+"</a> \" data-html=\"true\">" + location['name'] +"</a></li>");
+                }
+                $('[data-toggle="popover"]').popover();
+                $(function(){
+                    $('#demoThree').listnav({
+                        initLetter: 'all',
+                        includeNums: true,
+                        allText: 'Alle',
+                        noMatchText: 'Keine Einträge für diesen Buchstaben vorhanden.'
+                    });
+                });
+            }
+        });
     }
 
     -->
@@ -134,39 +158,14 @@ require("includes/includeDatabase.php");
         <div class="listWrapper">
 
             <ul id="demoThree" class="demo">
-                <?php
-                $abfrage1 = "SELECT name,link FROM location ORDER BY name ASC";
-                $ergebnis1 = mysqli_query($connection, $abfrage1);
-
-                while ($row1 = mysqli_fetch_object($ergebnis1))
-                {
-                    if(strpos($row1 -> link, 'http') !== false) $linker = $row1 -> link;
-                    else $linker = "http://". $row1 -> link;
-                    ?> <li><a href="#" data-trigger="focus" data-toggle="popover" title="<?php echo $row1 -> name;?>" data-content="Link: <?php if($linker != "")echo "<a href='" . $linker . "'>$linker</a>";?>" data-html="true"><?php echo $row1->name;?></a></li> <?php
-                }
-                ?>
             </ul>
+            <script> getLocations(); </script>
+
         </div>
      </div>
 </div>
 
-
-    
 <script src="js/jquery-listnav.js"></script>
 <script src="js/vendor.js"></script>
-<script>
-    $(function(){
-        $('#demoThree').listnav({
-            initLetter: 'all',
-            includeNums: true,
-            allText: 'Alle',
-            noMatchText: 'Keine Einträge für diesen Buchstaben vorhanden.'
-        });
-    });
-    $(document).ready(function(){
-        $('[data-toggle="popover"]').popover();
-    });
-</script>
-
 
 <script>essen_laden();</script>

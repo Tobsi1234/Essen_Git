@@ -217,13 +217,23 @@ function austreten($u_ID) {
 
 }
 
-/* nicht hinbekommen */
 function getLocations(){
 	require('includes/includeDatabase.php');
 	
-	$stmt1 = $pdo->prepare("SELECT name, link FROM location");
-	$stmt1->execute(array('name' => $name, 'link' => $link));
-	$locationsreturn = $stmt1->fetch();
+	$stmt1 = $pdo->prepare("SELECT name,link FROM location ORDER BY name ASC");
+	$stmt1->execute();
+	foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row1){
+		if (strpos($row1['link'], 'http') !== false) $link = $row1['link'];
+		else $link = "http://" . $row1['link'];
+
+		$location = array(
+			"name" => $row1['name'],
+			"link" => $link
+		);
+		$arr[] = json_encode($location);
+	}
+
+	print json_encode($arr);
 }
 
 function mitgliederHinzufügen($u_ID, $json) {
