@@ -49,6 +49,7 @@ require("includes/includeDatabase.php");
 				data: {callFunction: 'gruppeErstellen', name: name, u_ID: u_ID, json: jsonMitglieder},
 				dataType: 'text',
 				success:function(data) {
+					window.location.reload();
 				}
 			});
 		}
@@ -111,7 +112,7 @@ else {
 				<h1>Neue Gruppe anlegen: </h1><br>
 			</div>
 			<div class="form-horizontal">
-				<form class="form-inline" id="formAnlegen" name="formAnlegen" action="" onsubmit="gruppeErstellen();" method="post">
+				<form class="form-inline" id="formAnlegen" name="formAnlegen" action="" onsubmit="" method="post">
 					<label for="gruppenname"> Gruppenname: </label>
 					<input class="form-control" type="text" id="gruppenname" maxlength="30" placeholder="Gruppenname" style="margin-left:20px" required><br><br>
 					<label>Freunde einladen: </label>
@@ -120,7 +121,7 @@ else {
 					<div id="bisherHinzugefügt">
 						<label>Bisher hinzugefügt: </label>
 					</div><br>
-					<button type="submit" class="btn btn-primary">Gruppe erstellen</button>
+					<button type="button" class="btn btn-primary" onclick="gruppeErstellen();">Gruppe erstellen</button>
 				</form>
 			</div>
 
