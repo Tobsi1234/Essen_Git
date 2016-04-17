@@ -34,7 +34,7 @@ require("includes/includeDatabase.php");
 				$('#mitglied').val("");
 			}
 			else {
-				$('#fehlermeldung').html("Person nicht vorhanden oder bereits vorhanden");
+				$('#fehlermeldung').html("Person nicht vorhanden oder bereits in einer Gruppe vertreten");
 				$('#fehlermeldung').show();
 			}
 		}
@@ -90,12 +90,12 @@ include ("includes/includeBody.php");
 $stmt1 = $pdo->prepare("SELECT g_ID FROM users WHERE u_ID = :u_ID");
 $stmt1->execute(array('u_ID' => $_SESSION['userid']));
 $g_ID = $stmt1->fetch();
-if(!isset($g_ID[0])) echo "Keine Gruppe";
+if(!isset($g_ID[0])) echo "";
 else {
 	$stmt2 = $pdo->prepare("SELECT name FROM gruppe WHERE g_ID = :g_ID");
 	$stmt2->execute(array('g_ID' => $g_ID[0]));
 	$gruppenname = $stmt2->fetch();
-	echo "Deine Gruppe: " . $gruppenname[0];
+	//echo "Deine Gruppe: " . $gruppenname[0];
 }
 ?>
 
