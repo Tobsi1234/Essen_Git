@@ -117,11 +117,11 @@ require("includes/includeDatabase.php");
 						var name = "<?php echo($_SESSION['username']) ?>";
 						$('#abstimmungen').append("<br><br>");
 						$('#abstimmungen').append("Ergebnis am "+cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+current['gruppe']+": <b>"+current['locname']+"</b><br>");
-						$('#abstimmungen').append("<a href=\"#\" data-trigger=\"focus\" data-toggle=\"popover\" title=\"HI\" data-content=\"" + name +"\" data-html=\"true\">Ergebnis am "+
-						cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+current['gruppe']+": <b>"+current['locname']+"</a>");	
+						//$('#abstimmungen').append("<a href=\"#\" data-trigger=\"focus\" data-toggle=\"popover\" title=\"HI\" data-content=\"" + name +"\" data-html=\"true\">Ergebnis am "+
+						//cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+current['gruppe']+": <b>"+current['locname']+"</a>");	
 					}
 				}
-				$('[data-toggle="popover"]').popover();
+				//$('[data-toggle="popover"]').popover();
 	}
 
 	// schaue nach, was für eine Woche in der Dropdown-Liste steht, hole die entsprechenden Einträge aus der DB	und gib diese formatiert aus
