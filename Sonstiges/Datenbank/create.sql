@@ -123,8 +123,10 @@ CREATE TABLE IF NOT EXISTS `chat` (
   `name` varchar(30) NOT NULL,
   `nachricht` text NOT NULL,
   `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `g_ID` int(10) NOT NULL,
   PRIMARY KEY (`c_ID`),
-  CONSTRAINT `constraint_username` FOREIGN KEY (`name`) REFERENCES `users` (`username`) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT `constraint_username` FOREIGN KEY (`name`) REFERENCES `users` (`username`) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT `constraint_gruppe_chat` FOREIGN KEY (`g_ID`) REFERENCES `gruppe` (`g_ID`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

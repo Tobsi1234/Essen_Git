@@ -1,8 +1,10 @@
 <?php
+session_start();
+
 	require('includes/includeDatabase.php');
 	$arr = array();
-	$stmt1 = $pdo->prepare("SELECT * FROM chat");
-	$stmt1->execute();
+	$stmt1 = $pdo->prepare("SELECT * FROM chat WHERE g_ID = :g_ID");
+	$stmt1->execute(array('g_ID' => $_SESSION['g_ID']));
 	foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row1){
 		$nachricht = $row1['nachricht'];
 		$name = $row1['name'];
