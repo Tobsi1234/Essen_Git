@@ -125,7 +125,9 @@
 require("includes/includeDatabase.php");
 ?>
 
-<div id="neueLocation">
+<div class="col-md-6">
+    <div class="col-md-12">
+
     <h2>Location hinzufügen</h2>
     <br>
     <form id="newloc" name="newloc" action="" method="post" onsubmit="loc_anlegen(); return false;">
@@ -147,13 +149,13 @@ require("includes/includeDatabase.php");
 
         <br><br>
         <button type="submit">Location speichern</button>
-    </form>
-
+    </form><br>
+    </div>
 </div>
 <!-- Alphabet -->
-<div class="rightcontainer">
-
-    <div id="tabpage_3" class="tabContainer">
+<div class="col-md-6">
+    <br>
+    <div id="tabpage_3" class="col-md-12">
 
         <div class="listWrapper">
 

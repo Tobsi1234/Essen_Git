@@ -19,7 +19,7 @@ require("includes/includeDatabase.php");
 include("includes/includeBody.php");
 ?>
 <!-- Page Content -->
-<div class="bigcontainer">
+<div class="">
         <br><br>
         <div id="main" class="container">
             <ul class="nav navbar-nav">
