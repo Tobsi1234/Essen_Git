@@ -42,6 +42,10 @@ switch ($_POST['callFunction']) {
 		getLocations();
 		break;
 
+	case 'getEssen':
+		getEssen();
+		break;
+
 	case 'mitgliederHinzufügen':
 		mitgliederHinzufügen($_POST['u_ID'], $_POST['json']);
 		break;
@@ -222,15 +226,27 @@ function getLocations(){
 	
 	$stmt1 = $pdo->prepare("SELECT name,link FROM location ORDER BY name ASC");
 	$stmt1->execute();
-	foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row1){
-		if (strpos($row1['link'], 'http') !== false) $link = $row1['link'];
-		else $link = "http://" . $row1['link'];
+	foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row){
+		if (strpos($row['link'], 'http') !== false) $link = $row['link'];
+		else $link = "http://" . $row['link'];
 
 		$location = array(
-			"name" => $row1['name'],
+			"name" => $row['name'],
 			"link" => $link
 		);
 		$arr[] = json_encode($location);
+	}
+
+	print json_encode($arr);
+}
+
+function getEssen(){
+	require('includes/includeDatabase.php');
+
+	$stmt1 = $pdo->prepare("SELECT name FROM essen ORDER BY name ASC");
+	$stmt1->execute();
+	foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$arr[] = $row['name'];
 	}
 
 	print json_encode($arr);

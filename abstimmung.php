@@ -104,7 +104,7 @@ require("includes/includeDatabase.php");
 
 	function countCheckboxes() {
 		var counter = 0;
-		if ($('#bäcker').is(':checked')) counter += 1;
+		if ($('#gebäck').is(':checked')) counter += 1;
 		if ($('#döner').is(':checked')) counter += 1;
 		if ($('#pizza').is(':checked')) counter += 1;
 		if ($('#sonstiges1').is(':checked')) counter += 1;
@@ -210,7 +210,7 @@ require("includes/includeDatabase.php");
 						</div>
 						<script> form_name(); </script> <br><br>
 						<label for=""> Top 3 Essen: </label> 
-						<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="bäcker" name="essen" value="Bäcker" style="margin-left:15px"> <label for="">Bäcker </label>
+						<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="gebäck" name="essen" value="Gebäck" style="margin-left:15px"> <label for="">Gebäck </label>
 						<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="döner" name="essen" value="Döner" style="margin-left:15px"> <label for="">Döner </label>
 						<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="pizza" name="essen" value="Pizza" style="margin-left:15px"> <label for="">Pizza </label>
 						<br><label for=""> Weitere Essen: </label> 
