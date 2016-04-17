@@ -304,7 +304,6 @@ margin-left: -150px;
 /* chat */
 #chat_border {
 height: 500px;
-position: fixed;
 }
 
 #chat_ausgabe {

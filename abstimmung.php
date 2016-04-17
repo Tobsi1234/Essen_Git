@@ -177,108 +177,132 @@ require("includes/includeDatabase.php");
 
     <!-- Page Content -->
     <div class="container">
-
+		<?php
+		$stmt1 = $pdo->prepare("SELECT g_ID FROM users WHERE u_ID = :u_ID");
+		$stmt1->execute(array('u_ID' => $_SESSION['userid']));
+		$g_ID = $stmt1->fetch();
+		if(!isset($g_ID[0])) echo "";
+		else {
+			$stmt2 = $pdo->prepare("SELECT name FROM gruppe WHERE g_ID = :g_ID");
+			$stmt2->execute(array('g_ID' => $g_ID[0]));
+			$gruppenname = $stmt2->fetch();
+			//echo "Deine Gruppe: " . $gruppenname[0];
+		}
+		?>
         <!-- First Featurette -->
         <div class="featurette" id="about">
 		 	<br><br>
 			<script> name_ausgeben(); </script>
 			<?php
-			require('includes/includeDatabase.php');
+			if(!isset($g_ID[0])) { //noch keine Gruppe?
+				?>
+				<h1>Bitte gründe eine Gruppe!</h1>
+
+				<?php
+			}
+			else { //bereits eine Gruppe
 			?>
-			<div>
-				<div class="col-md-7">
-					<div id="headline">
-					<h1>Abstimmung: </h1><br>
-					</div>
-				    <div style="float:left; width:30px;"><label>Datum: </label>
-					</div>
-					<div class="dropdown" style="margin-left:68px;">
-						<button class="btn btn-default dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Datum
-						<span class="caret"></span></button>
-						<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-							<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="f_datum_heute();">Heute</a></li>
-							<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="f_datum_morgen();">Morgen</a></li>
-							<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="f_datum_uebermorgen();">Übermorgen</a></li>   
-						</ul>
-					</div>
-					<br>
-					<script> f_datum_heute();</script>
-					<form class="form-inline" id="form1" name="form1" action="" method="post" onsubmit="form_essen(); return false;">
-						<div class="form-group">
-							<label for="name"> Name: </label> 
-							<input class="form-control" type="text" id="name" maxlength="30" value="Name" style="margin-left:20px;" disabled>
-						</div>
-						<script> form_name(); </script> <br><br>
-						<label for=""> Top 3 Essen: </label> 
-						<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="gebäck" name="essen" value="Gebäck" style="margin-left:15px"> <label for="">Gebäck </label>
-						<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="döner" name="essen" value="Döner" style="margin-left:15px"> <label for="">Döner </label>
-						<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="pizza" name="essen" value="Pizza" style="margin-left:15px"> <label for="">Pizza </label>
-						<br><label for=""> Weitere Essen: </label> 
-						<input class="form-control" onclick="validate();countCheckboxes();" type="checkbox" id="sonstiges1" name="essen" value="Sonstiges1" style="margin-left:15px"> <label for=""></label>
-						
-						<select class="form-control" id="verfuegbare_essen">
-						<?php
-						$abfrage0 = "SELECT * FROM essen ORDER BY name ASC";
-						$ergebnis0 = mysqli_query($connection, $abfrage0);
-						while ($row0 = mysqli_fetch_object($ergebnis0))
-							{
-								?>
-								<!--<input type="checkbox" id="essen" name="essen" value="<?php echo $row0->name; ?>" style="margin-left:15px"> <label for=""><?php echo $row0->name; ?> </label>-->
-								
-								<option><?php echo $row0->name; ?> </option>
-								<?php
-							}
-							?>
-						</select>
-
-						<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="sonstiges2" name="essen" value="Sonstiges2" style="margin-left:15px; display:none;" >
-
-						<select class="form-control" id="verfuegbare_essen2" style="display:none">
-						<?php
-						$abfrage0 = "SELECT * FROM essen ORDER BY name ASC";
-						$ergebnis0 = mysqli_query($connection, $abfrage0);
-						while ($row0 = mysqli_fetch_object($ergebnis0))
-							{
-								?>
-								<!--<input type="checkbox" id="essen" name="essen" value="<?php echo $row0->name; ?>" style="margin-left:15px"> <label for=""><?php echo $row0->name; ?> </label>-->
-								
-								<option><?php echo $row0->name; ?> </option>
-								<?php
-							}
-							?>
-						</select>
-						<br><br>
-						<button type="submit" id="auswahl_speichern" class="btn btn-primary" disabled>Auswahl speichern</button>
-					</form>
-
-					<br><br>
+			<div class="col-md-7">
+				<div id="headline">
+				<h1>Abstimmung: </h1><br>
 				</div>
-				<div class="col-md-4 col-md-offset-1">
-					<div class = "panel panel-primary" id="chat_border">
-						<div class="panel-heading">Chat</div>
-						<div class="panel-body">
-							<div id="chat_ausgabe"></div>
-							<div id="chat_eingabe" style="margin-left: 10px">
-								<form class="form-inline" role="form" id="formChat" name="formChat" action="" method="post" onsubmit="chat_speichern(); return false;">
-									<input class="form-control" id="nachricht" type="text" placeholder="schreiben..."/>
-									<button class="btn btn-dafualt" type="submit">Senden</button>
-								</form>
-							</div>
+				<div style="float:left; width:30px;"><label>Datum: </label>
+				</div>
+				<div class="dropdown" style="margin-left:68px;">
+					<button class="btn btn-default dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Datum
+					<span class="caret"></span></button>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="f_datum_heute();">Heute</a></li>
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="f_datum_morgen();">Morgen</a></li>
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="f_datum_uebermorgen();">Übermorgen</a></li>
+					</ul>
+				</div>
+				<br>
+				<script> f_datum_heute();</script>
+				<form class="form-inline" id="form1" name="form1" action="" method="post" onsubmit="form_essen(); return false;">
+					<div class="form-group">
+						<label for="name"> Name: </label>
+						<input class="form-control" type="text" id="name" maxlength="30" value="Name" style="margin-left:20px;" disabled>
+					</div>
+					<script> form_name(); </script> <br><br>
+					<label for=""> Top 3 Essen: </label>
+					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="gebäck" name="essen" value="Gebäck" style="margin-left:15px"> <label for="">Gebäck </label>
+					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="döner" name="essen" value="Döner" style="margin-left:15px"> <label for="">Döner </label>
+					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="pizza" name="essen" value="Pizza" style="margin-left:15px"> <label for="">Pizza </label>
+					<br><label for=""> Weitere Essen: </label>
+					<input class="form-control" onclick="validate();countCheckboxes();" type="checkbox" id="sonstiges1" name="essen" value="Sonstiges1" style="margin-left:15px"> <label for=""></label>
+
+					<select class="form-control" id="verfuegbare_essen">
+					<?php
+					$abfrage0 = "SELECT * FROM essen ORDER BY name ASC";
+					$ergebnis0 = mysqli_query($connection, $abfrage0);
+					while ($row0 = mysqli_fetch_object($ergebnis0))
+						{
+							?>
+							<!--<input type="checkbox" id="essen" name="essen" value="<?php echo $row0->name; ?>" style="margin-left:15px"> <label for=""><?php echo $row0->name; ?> </label>-->
+
+							<option><?php echo $row0->name; ?> </option>
+							<?php
+						}
+						?>
+					</select>
+
+					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="sonstiges2" name="essen" value="Sonstiges2" style="margin-left:15px; display:none;" >
+
+					<select class="form-control" id="verfuegbare_essen2" style="display:none">
+					<?php
+					$abfrage0 = "SELECT * FROM essen ORDER BY name ASC";
+					$ergebnis0 = mysqli_query($connection, $abfrage0);
+					while ($row0 = mysqli_fetch_object($ergebnis0))
+						{
+							?>
+							<!--<input type="checkbox" id="essen" name="essen" value="<?php echo $row0->name; ?>" style="margin-left:15px"> <label for=""><?php echo $row0->name; ?> </label>-->
+
+							<option><?php echo $row0->name; ?> </option>
+							<?php
+						}
+						?>
+					</select>
+					<br><br>
+					<button type="submit" id="auswahl_speichern" class="btn btn-primary" disabled>Auswahl speichern</button>
+				</form>
+
+				<br><br>
+			</div>
+			<div class="col-md-4 col-md-offset-1">
+				<div class = "panel panel-primary" id="chat_border">
+					<div class="panel-heading">Chat</div>
+					<div class="panel-body">
+						<div id="chat_ausgabe"></div>
+						<div id="chat_eingabe" style="margin-left: 10px">
+							<form class="form-inline" role="form" id="formChat" name="formChat" action="" method="post" onsubmit="chat_speichern(); return false;">
+								<input class="form-control" id="nachricht" type="text" placeholder="schreiben..."/>
+								<button class="btn btn-dafualt" type="submit">Senden</button>
+							</form>
 						</div>
 					</div>
 				</div>
 			</div>
 			<br><br>
-			</div>
-        </div>
-		<script> 
+		</div>
+		<script>
 			chat_laden(); // läd chat jede sekunde neu.
 			chat_verspätet();
 			scrollen_verspätet();
 		</script>
-    </div>
-	<?php
-		include ("includes/includeFooter.php");
-	?>			
+		<?php
+		} //ende php abfrage
+		?>
+	<br><br>
+
+</div>
+<div id="loggedOutSeite" style="display: none">
+	<h1> Willkommen </h1>
+	<h2> Bitte logge dich ein :) </h2>
+</div>
+
+<?php
+	include ("includes/includeFooter.php");
+?>
 </body>
 </html>

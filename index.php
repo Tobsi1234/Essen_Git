@@ -108,7 +108,7 @@ include ("includes/includeBody.php");
 	$stmt1 = $pdo->prepare("SELECT g_ID FROM users WHERE u_ID = :u_ID");
 	$stmt1->execute(array('u_ID' => $_SESSION['userid']));
 	$g_ID = $stmt1->fetch();
-	if(!isset($g_ID[0])) echo "Keine Gruppe";
+	if(!isset($g_ID[0])) echo "";
 	else {
 		$stmt2 = $pdo->prepare("SELECT name FROM gruppe WHERE g_ID = :g_ID");
 		$stmt2->execute(array('g_ID' => $g_ID[0]));
@@ -137,10 +137,10 @@ include ("includes/includeBody.php");
 			</div>
 			<div id="essenErgebnis"> </div><br><br>
 			<div id="abstimmungen"></div>
+			<br><br>
 		</div>
 
 		<div class="col-md-4 col-md-offset-1">
-			<div style="border-left: thick solid black;">
 			<div class = "panel panel-primary" id="chat_border">
 				<div class="panel-heading">Chat</div>
 				<div class="panel-body">
@@ -151,7 +151,7 @@ include ("includes/includeBody.php");
 							<button class="btn btn-dafualt" type="submit">Senden</button>
 						</form>
 					</div>
-				</div></div>
+				</div>
 			</div>
 		</div>
 		<script>
