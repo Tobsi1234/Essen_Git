@@ -97,13 +97,13 @@ INSERT INTO `abstimmung_ergebnis` (`l_ID`, `datum`, `g_ID`) VALUES
 --
 -- Daten für Tabelle `abstimmung_ergebnis´
 --
-  INSERT INTO `abstimmen` (`u_ID`, `datum`, `e_ID1`, `e_ID2`) VALUES
-(1, '2016-04-12', 11, 1),
-(1, '2016-04-13', 4, 4),
-(2, '2016-04-12', 11, 2),
-(2, '2016-04-13', 5, 6),
-(3, '2016-04-12', 11, 7),
-(3, '2016-04-13', 3, 8);
+  INSERT INTO `abstimmen` (`u_ID`, `datum`, `e_ID1`, `e_ID2`, `g_ID`) VALUES
+(1, '2016-04-12', 11, 1, 1),
+(1, '2016-04-13', 4, 4, 1),
+(2, '2016-04-12', 11, 2, 2),
+(2, '2016-04-13', 5, 6, 2),
+(3, '2016-04-12', 11, 7, 1),
+(3, '2016-04-13', 3, 8, 1);
   
 --
 -- Fremdschlüssel-Daten für Tabelle 'users'

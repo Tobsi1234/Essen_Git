@@ -156,18 +156,18 @@ function abstimmen($u_ID, $essen1, $essen2, $datum) {
 	}
 
 	if($essen2 == "") {	
-		$stmt9 = $pdo->prepare("INSERT INTO abstimmen (u_ID, datum, e_ID1) VALUES (:u_ID, :datum, :e_ID1)");
-		$stmt9->execute(array('u_ID' => $u_ID[0], 'datum' => $datum, 'e_ID1' => $e_ID1[0]));
+		$stmt9 = $pdo->prepare("INSERT INTO abstimmen (u_ID, datum, e_ID1, g_ID) VALUES (:u_ID, :datum, :e_ID1, :g_ID)");
+		$stmt9->execute(array('u_ID' => $u_ID[0], 'datum' => $datum, 'e_ID1' => $e_ID1[0], 'g_ID' => $_SESSION['g_ID']));
 		
-		$stmt10 = $pdo->prepare("UPDATE abstimmen SET e_ID1 = :e_ID1, e_ID2 = null WHERE datum = :datum AND u_ID = :u_ID");
-		$stmt10->execute(array('u_ID' => $u_ID[0], 'datum' => $datum, 'e_ID1' => $e_ID1[0]));
+		$stmt10 = $pdo->prepare("UPDATE abstimmen SET e_ID1 = :e_ID1, e_ID2 = null, g_ID = :g_ID WHERE datum = :datum AND u_ID = :u_ID");
+		$stmt10->execute(array('u_ID' => $u_ID[0], 'datum' => $datum, 'e_ID1' => $e_ID1[0], 'g_ID' => $_SESSION['g_ID']));
 	}
 	else {
-		$stmt9 = $pdo->prepare("INSERT INTO abstimmen (u_ID, datum, e_ID1, e_ID2) VALUES (:u_ID, :datum, :e_ID1, :e_ID2)");
-		$stmt9->execute(array('u_ID' => $u_ID[0], 'datum' => $datum, 'e_ID1' => $e_ID1[0], 'e_ID2' => $e_ID2[0]));
+		$stmt9 = $pdo->prepare("INSERT INTO abstimmen (u_ID, datum, e_ID1, e_ID2, g_ID) VALUES (:u_ID, :datum, :e_ID1, :e_ID2, :g_ID)");
+		$stmt9->execute(array('u_ID' => $u_ID[0], 'datum' => $datum, 'e_ID1' => $e_ID1[0], 'e_ID2' => $e_ID2[0], 'g_ID' => $_SESSION['g_ID']));
 		
-		$stmt10 = $pdo->prepare("UPDATE abstimmen SET e_ID1 = :e_ID1, e_ID2 = :e_ID2 WHERE datum = :datum AND u_ID = :u_ID");
-		$stmt10->execute(array('u_ID' => $u_ID[0], 'datum' => $datum, 'e_ID1' => $e_ID1[0], 'e_ID2' => $e_ID2[0]));
+		$stmt10 = $pdo->prepare("UPDATE abstimmen SET e_ID1 = :e_ID1, e_ID2 = :e_ID2, g_ID = :g_ID  WHERE datum = :datum AND u_ID = :u_ID");
+		$stmt10->execute(array('u_ID' => $u_ID[0], 'datum' => $datum, 'e_ID1' => $e_ID1[0], 'e_ID2' => $e_ID2[0], 'g_ID' => $_SESSION['g_ID']));
 	}
 }
 
@@ -407,8 +407,8 @@ function selectAbstimmungenHeute() {
 	$pdolocal = $pdo;
 	date_default_timezone_set("Europe/Berlin");
 
-	// Hole alle heutigen Abstimmungen von allen Usern der Gruppe, der der aktuelle User angehört
-	$sqlSelAbstHeute = $pdolocal->prepare("SELECT abstimmen.u_ID, g_ID, e_ID1, e_ID2 FROM abstimmen, users WHERE users.u_ID = abstimmen.u_ID AND datum = :datum AND users.g_ID = :g_ID");
+	// Hole alle heutigen Abstimmungen von allen Usern der Gruppe  (,der der aktuelle User angehört)
+	$sqlSelAbstHeute = $pdolocal->prepare("SELECT abstimmen.u_ID, abstimmen.g_ID, e_ID1, e_ID2 FROM abstimmen WHERE datum = :datum AND abstimmen.g_ID = :g_ID");
 	$sqlSelAbstHeute->execute(array('datum' => date("Y-m-d",time()),'g_ID' => $_SESSION['g_ID']));
 	$sqlSelAbstHeuteRes = $sqlSelAbstHeute->fetchAll();
 
