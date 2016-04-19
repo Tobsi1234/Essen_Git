@@ -47,8 +47,8 @@
         <br>
         <form id="newessen" name="newessen" action="" method="post" onsubmit="essen_anlegen(); return false;">
             <label for="essenName">Name des Essens:</label>
-            <input type="text" id="essenName" maxlength="30" value="" style="margin-left:23px;" required>
-            <button type="submit">Essen speichern</button>
+            <input type="text" class="fancyform" id="essenName" maxlength="30" value="" style="margin-left:8px; margin-right: 8px" required>
+            <button type="submit" class="btn btn-primary">Essen speichern</button>
 
         </form><br>
     </div>

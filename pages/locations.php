@@ -131,25 +131,36 @@ require("includes/includeDatabase.php");
     <h2>Location hinzufügen</h2>
     <br>
     <form id="newloc" name="newloc" action="" method="post" onsubmit="loc_anlegen(); return false;">
-        <label for="locname">Name der Location:</label>
-        <input type="text" id="locname" maxlength="30" value="" style="margin-left:23px;">
-        <br><br>
-        <label for="locpage">Homepage: </label>
-        <input type="text" id="locpage" maxlength="100" value="" style="margin-left:23px;">
-        <br><br>
-        <label for="verfuegbare_essen">Essensmöglichkeiten:</label>
-        <select id="verfuegbare_essen" name="verfuegbare_essen">
-        </select>
-        <button type="button" onclick="essen_zuweisen();">Hinzufügen</button>
-        <br><br>
-        <select id="gewaehlte_essen" name="gewaehlte_essen" size="5">
-        </select>
-        <button type="button" onclick="essen_entfernen();">Entfernen</button>
-        <br><br>
+        <table class="usertable">
+            <tbody>
+            <tr>
+                <td><label for="locname">Name der Location:</label></td>
+                <td><input type="text" class="fancyform" id="locname" maxlength="30" value="" style="margin-left:23px;"></td>
+            </tr>
+            <tr>
+                <td><label for="locpage">Homepage: </label></td>
+                <td><input type="text" class="fancyform" id="locpage" maxlength="100" value="" style="margin-left:23px;"></td>
+            </tr>
+            <tr>
+                <td><label for="verfuegbare_essen">Essensmöglichkeiten:</label></td>
+                <td><select id="verfuegbare_essen" class="fancyform" name="verfuegbare_essen"></select></td>
+            </tr>
+            <tr>
+                <td rowspan="2"><select id="gewaehlte_essen" class="fancyform" name="gewaehlte_essen" size="5"></select></td>
+                <td style="text-align:right"><button type="button" class="btn btn-primary" onclick="essen_zuweisen();">Hinzufügen</button></td>
+            </tr>
+            <tr>
+                <td style="text-align:right"><button type="button" class="btn btn-primary" onclick="essen_entfernen();">Entfernen</button></td>
 
-        <br><br>
-        <button type="submit">Location speichern</button>
-    </form><br>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="text-align:right"><button type="submit" class="btn btn-primary">Location speichern</button></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </form>
     </div>
 </div>
 <!-- Alphabet -->

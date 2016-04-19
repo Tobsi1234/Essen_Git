@@ -175,9 +175,9 @@ require("includes/includeDatabase.php");
 
 				<form id="verlauf" name="verlauf" action="" method="post" onsubmit="">
 					<label for="woche">Woche auswählen:</label>
-					<select id="woche" name="woche">
+					<select id="woche" class="fancyform" name="woche">
 					</select>
-					<button type="button" onclick="datum_refreshen();">Anwenden</button>
+					<button type="button" class="btn btn-primary" onclick="datum_refreshen();">Anwenden</button>
 					<div></div>
 					<div class="abstimmungen" id="abstimmungen">
 					</div>
