@@ -70,6 +70,9 @@ switch ($_POST['callFunction']) {
 		calculateErgebnisHeute();
 		break;
 
+	case 'top3':
+		top3();
+		break;
 	default:
 		echo "Keine Funktion zum Aufrufen gefunden!";
 		break;
@@ -137,10 +140,10 @@ function abstimmen($u_ID, $essen1, $essen2, $datum) {
 	
 	$stmt2 = $pdo->prepare("SELECT p_ID FROM person WHERE name = :name");
 	$stmt2->execute(array('name' => $name));
-	$p_ID = $stmt2->fetch(); */
+	$p_ID = $stmt2->fetch();
 
 	$stmt5 = $pdo->prepare("INSERT INTO essen (name) VALUES (:name)");
-	$stmt5->execute(array('name' => $essen1));
+	$stmt5->execute(array('name' => $essen1)); */
 	
 	$stmt6 = $pdo->prepare("SELECT e_ID FROM essen WHERE name = :name");
 	$stmt6->execute(array('name' => $essen1));
@@ -410,5 +413,25 @@ function selectAbstimmungenHeute() {
 	$sqlSelAbstHeuteRes = $sqlSelAbstHeute->fetchAll();
 
 	return $sqlSelAbstHeuteRes;
+}
+
+function top3() {
+	require('includes/includeDatabase.php');
+	$g_ID = $_SESSION['g_ID'];
+	//gibt die drei am meisten gewählten Essen (id) zurück:
+	$stmt1 = $pdo->prepare("SELECT e_ID, COUNT(e_ID) AS ids FROM (SELECT e_ID1 AS e_ID FROM abstimmen WHERE g_ID = :g_ID UNION ALL SELECT e_ID2 AS e_ID FROM abstimmen WHERE g_ID = :g_ID)x GROUP BY e_ID ORDER BY ids DESC");
+	$stmt1->execute(array('g_ID' => $g_ID));
+	$count = 0;
+	foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$stmt2 = $pdo->prepare("SELECT name FROM essen WHERE e_ID = :e_ID");
+		$stmt2->execute(array('e_ID' => $row['e_ID']));
+		$essen = $stmt2->fetch();
+		if(isset($essen[0])) $arr[] = $essen[0];
+		if($count >= 2) break;
+		$count += 1;
+	}
+
+	print json_encode($arr);
+
 }
 ?>

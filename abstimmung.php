@@ -12,7 +12,7 @@ require("includes/includeDatabase.php");
 
 <script language="javascript"> 
 <!--
-	var XMLreq, name, refEssen, refDatum, refNeu, refMenu1, refVerfügbar, selectedEssen, essen, heute, tag, monat, jahr, datum_heute;
+	var name, refEssen, refDatum, refNeu, refMenu1, refVerfügbar, selectedEssen, essen, heute, tag, monat, jahr, datum_heute;
 	function name_ausgeben() {
 		name = "<?php echo $_SESSION['username'] ?>";
 		u_ID = "<?php echo $_SESSION['userid'] ?>";
@@ -25,12 +25,6 @@ require("includes/includeDatabase.php");
 	}
 	
 	function form_essen() {
-		
-		if (window.XMLHttpRequest) {
-			XMLreq = new XMLHttpRequest();
-		} else if (window.ActiveXObject) {
-			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
-		}
 		
 		var essenArr = [];
 		refEssen = document.forms['form1'].essen;
@@ -104,9 +98,9 @@ require("includes/includeDatabase.php");
 
 	function countCheckboxes() {
 		var counter = 0;
-		if ($('#gebäck').is(':checked')) counter += 1;
-		if ($('#döner').is(':checked')) counter += 1;
-		if ($('#pizza').is(':checked')) counter += 1;
+		if ($('#top1').is(':checked')) counter += 1;
+		if ($('#top2').is(':checked')) counter += 1;
+		if ($('#top3').is(':checked')) counter += 1;
 		if ($('#sonstiges1').is(':checked')) counter += 1;
 		if ($('#sonstiges2').is(':checked')) counter += 1;
 
@@ -114,6 +108,43 @@ require("includes/includeDatabase.php");
 		else $('#auswahl_speichern').prop('disabled', true);
 	}
 
+	function top3() {
+
+		$.ajax({
+			type: "POST",
+			url: "procedures.php",
+			data: {callFunction: 'top3'},
+			dataType: 'text',
+			success:function(data) {
+				var test = JSON.parse(data);
+				if(test.length > 0) {
+					var top1 = test[0];
+					$('#top1').val(top1);
+					$('#label_top1').html(top1);
+					$('#top1').css('display', 'inline-block');
+					$('#label_top1').css('display', 'inline-block');
+				}
+				if(test.length > 1) {
+					var top2 = test[1];
+					$('#top2').val(top2);
+					$('#label_top2').html(top2);
+					$('#top2').css('display', 'inline-block');
+					$('#label_top2').css('display', 'inline-block');
+				}
+				if(test.length > 2) {
+					var top3 = test[2];
+					$('#top3').val(top3);
+					$('#label_top3').html(top3);
+					$('#top3').css('display', 'inline-block');
+					$('#label_top3').css('display', 'inline-block');
+				}
+
+				alert(test);
+			}
+		});
+
+
+	}
 	
 	function f_datum_heute() {
 		heute = new Date();
@@ -226,9 +257,10 @@ require("includes/includeDatabase.php");
 					</div>
 					<script> form_name(); </script> <br><br>
 					<label for=""> Top 3 Essen: </label>
-					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="gebäck" name="essen" value="Gebäck" style="margin-left:15px"> <label for="">Gebäck </label>
-					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="döner" name="essen" value="Döner" style="margin-left:15px"> <label for="">Döner </label>
-					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="pizza" name="essen" value="Pizza" style="margin-left:15px"> <label for="">Pizza </label>
+					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="top1" name="essen" value="top1" style="margin-left:15px; display:none"> <label id="label_top1" for="top1" style="display:none">Top1 </label>
+					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="top2" name="essen" value="top2" style="margin-left:15px; display:none"> <label id="label_top2" for="top2" style="display:none">Top2 </label>
+					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="top3" name="essen" value="top3" style="margin-left:15px; display:none"> <label id="label_top3" for="top3" style="display:none">Top3 </label>
+					<script>top3();</script>
 					<br><label for=""> Weitere Essen: </label>
 					<input class="form-control" onclick="validate();countCheckboxes();" type="checkbox" id="sonstiges1" name="essen" value="Sonstiges1" style="margin-left:15px"> <label for=""></label>
 
