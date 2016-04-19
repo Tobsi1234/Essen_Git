@@ -55,12 +55,11 @@ require("includes/includeDatabase.php");
 		}
 
 		function mitgliederHinzufügen() {
-			var u_ID = "<?php echo $_SESSION['userid'] ?>";
 			var jsonMitglieder = JSON.stringify(mitglieder);
 			$.ajax({
 				type: "POST",
 				url: "procedures.php",
-				data: {callFunction: 'mitgliederHinzufügen', u_ID: u_ID, json: jsonMitglieder},
+				data: {callFunction: 'mitgliederHinzufügen', json: jsonMitglieder},
 				dataType: 'text',
 				success:function(data) {
 				}

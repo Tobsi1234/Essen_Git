@@ -47,7 +47,7 @@ switch ($_POST['callFunction']) {
 		break;
 
 	case 'mitgliederHinzufügen':
-		mitgliederHinzufügen($_POST['u_ID'], $_POST['json']);
+		mitgliederHinzufügen($_POST['json']);
 		break;
 
 	case 'getDatesFromAbstimmung':
@@ -252,14 +252,11 @@ function getEssen(){
 	print json_encode($arr);
 }
 
-function mitgliederHinzufügen($u_ID, $json) {
+function mitgliederHinzufügen($json) {
 	require('includes/includeDatabase.php');
 
 	$mitglieder = json_decode($json, TRUE);
-
-	$stmt1 = $pdo->prepare("SELECT g_ID FROM gruppe WHERE u_ID = :u_ID"); //gruppen ID bekommen
-	$stmt1->execute(array('u_ID' => $u_ID));
-	$g_ID = $stmt1->fetch();
+	$g_ID = $_SESSION['g_ID'];
 
 	for($i=0; $i<count($mitglieder); $i++) {
 		$stmt2 = $pdo->prepare("UPDATE users SET g_ID = :g_ID WHERE username = :username"); //Usern Gruppe zuweisen
