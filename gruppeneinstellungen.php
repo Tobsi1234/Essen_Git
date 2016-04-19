@@ -32,6 +32,7 @@ require("includes/includeDatabase.php");
 				mitglieder[mitglieder.length] = name;
 				$('#fehlermeldung').hide();
 				$('#mitglied').val("");
+				$('#freunde_einladen').prop('disabled', false);
 			}
 			else {
 				$('#fehlermeldung').html("Person nicht vorhanden oder bereits in einer Gruppe vertreten");
@@ -54,17 +55,42 @@ require("includes/includeDatabase.php");
 			});
 		}
 
-		function mitgliederHinzufügen() {
-			var jsonMitglieder = JSON.stringify(mitglieder);
+		//ohne weiterleitung (wenn man schon in einer gruppe ist)
+		function emailPrüfen2() {
+			var mitglied;
+			var email = $('#mitglied').val();
 			$.ajax({
 				type: "POST",
 				url: "procedures.php",
-				data: {callFunction: 'mitgliederHinzufügen', json: jsonMitglieder},
+				data: {callFunction: 'emailPrüfen', email: email},
 				dataType: 'text',
 				success:function(data) {
+					mitglied = data;
+					mitgliedHinzufügen2(mitglied);
 				}
 			});
 		}
+
+		function mitgliedHinzufügen2(mitglied) {
+			if(mitglied) {
+				$('#fehlermeldung').hide();
+				$.ajax({
+					type: "POST",
+					url: "procedures.php",
+					data: {callFunction: 'mitgliedHinzufügen', mitglied: mitglied},
+					dataType: 'text',
+					success:function(data) {
+						window.location.reload();
+					}
+				});
+			}
+			else {
+				$('#fehlermeldung').html("Person nicht vorhanden oder bereits in einer Gruppe vertreten");
+				$('#fehlermeldung').show();
+			}
+
+		}
+
 		function austreten() {
 			var u_ID = "<?php echo $_SESSION['userid'] ?>";
 			$.ajax({
@@ -148,16 +174,12 @@ else {
 			</div>
 			<br>
 			<div class="form-horizontal">
-				<form class="form-inline" id="formHinzufügen" name="formHinzufügen" action="" onsubmit="mitgliederHinzufügen();" method="post">
-				<label>Freunde einladen: </label>
-				<input class="form-control" type="text" id="mitglied" maxlength="30" placeholder="E-Mail" style="margin-left:20px">
-				<button type="button" class="btn btn-default" onclick="emailPrüfen();">Hinzufügen</button><br><br>
-				<div id="bisherHinzugefügt">
-					<label>Bisher hinzugefügt: </label>
-				</div><br>
-				<button type="submit" class="btn btn-primary">Freunde einladen</button>
+				<form class="form-inline" id="" name="" action="" onsubmit="" method="">
+					<label>Freunde einladen: </label>
+					<input class="form-control" type="text" id="mitglied" maxlength="30" placeholder="E-Mail" style="margin-left:20px">
+					<button type="button" class="btn btn-default" onclick="emailPrüfen2();">Hinzufügen</button><br><br>
+					<button type="button" class="btn btn-danger" onclick="austreten();">Austreten</button>
 				</form>
-				<button type="button" class="btn btn-danger" onclick="austreten();">Austreten</button>
 			</div>
 
 		<?php

@@ -138,8 +138,6 @@ require("includes/includeDatabase.php");
 					$('#top3').css('display', 'inline-block');
 					$('#label_top3').css('display', 'inline-block');
 				}
-
-				alert(test);
 			}
 		});
 
