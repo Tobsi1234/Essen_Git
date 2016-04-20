@@ -38,7 +38,7 @@ require("includes/includeDatabase.php");
 					data: {callFunction: 'abstimmen', u_ID: u_ID, essen1: essenArr[0], datum: datum},
 					dataType: 'text',
 					success:function(data) {
-						//alert(data);
+						window.location.reload();
 					}
 				});
 			}
@@ -49,15 +49,12 @@ require("includes/includeDatabase.php");
 					data: {callFunction: 'abstimmen', u_ID: u_ID, essen1: essenArr[0], essen2: essenArr[1], datum: datum},
 					dataType: 'text',
 					success:function(data) {
-						//alert(data);
+						window.location.reload();
 					}
 				});
 			}
 
-			alert(name + " hat " + essenArr[0] + " und " + essenArr[1] + " gewählt. Danke!");
-		}
-		else {
-			alert("Bitte wähle mindestens ein, höchstens zwei Essen aus.");
+			//alert(name + " hat " + essenArr[0] + " und " + essenArr[1] + " gewählt. Danke!");
 		}
 
 		return false; 

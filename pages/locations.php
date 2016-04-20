@@ -61,13 +61,14 @@
                 error = true;
             }
         }
-        if (meinEssen && box.options.length < 5 && error == false) {
+        if (meinEssen && box.options.length < 10 && error == false) {
             element = document.createElement("option");
             element.appendChild(document.createTextNode(meinEssen));
             box.appendChild(element);
+            $('#gewählt').css('display', 'table-row');
         }
         else {
-            alert("Höchstens 5 Essen pro Location, keine doppelten Essen und keine leeren Essen hinzufügen, bitte!!");
+            alert("Höchstens 10 Essen pro Location, keine doppelten Essen und keine leeren Essen hinzufügen, bitte!!");
         }
 
         return false;
@@ -76,6 +77,8 @@
     function essen_entfernen() {
         box = document.getElementById("gewaehlte_essen");
         box.remove(box.selectedIndex);
+        var gewählteEssen = $('#gewaehlte_essen option').val();
+        if(gewählteEssen == null) $('#gewählt').css('display', 'none');
     }
 
     function locations_abfragen() {
@@ -135,28 +138,25 @@ require("includes/includeDatabase.php");
             <tbody>
             <tr>
                 <td><label for="locname">Name der Location:</label></td>
-                <td><input type="text" class="fancyform" id="locname" maxlength="30" value="" style="margin-left:23px;"></td>
+                <td><input type="text" class="fancyform" id="locname" maxlength="30" value="" required></td>
             </tr>
             <tr>
                 <td><label for="locpage">Homepage: </label></td>
-                <td><input type="text" class="fancyform" id="locpage" maxlength="100" value="" style="margin-left:23px;"></td>
+                <td><input type="text" class="fancyform" id="locpage" maxlength="100" value=""></td>
             </tr>
             <tr>
                 <td><label for="verfuegbare_essen">Essensmöglichkeiten:</label></td>
                 <td><select id="verfuegbare_essen" class="fancyform" name="verfuegbare_essen"></select></td>
+                <td style="text-align:right"><button type="button" class="btn btn-default" onclick="essen_zuweisen();" title="Maximal 10 Essen zur Location hinzufügen">Hinzufügen</button></td>
             </tr>
-            <tr>
-                <td rowspan="2"><select id="gewaehlte_essen" class="fancyform" name="gewaehlte_essen" size="5"></select></td>
-                <td style="text-align:right"><button type="button" class="btn btn-primary" onclick="essen_zuweisen();">Hinzufügen</button></td>
-            </tr>
-            <tr>
-                <td style="text-align:right"><button type="button" class="btn btn-primary" onclick="essen_entfernen();">Entfernen</button></td>
-
+            <tr id="gewählt" style="display:none">
+                <td><label for="verfuegbare_essen">Gewählt:</label></td>
+                <td><select id="gewaehlte_essen" class="fancyform" name="gewaehlte_essen" size="4"></select></td>
+                <td style="text-align:right"><button type="button" class="btn btn-danger" onclick="essen_entfernen();">Entfernen</button></td>
             </tr>
             <tr>
                 <td></td>
-                <td style="text-align:right"><button type="submit" class="btn btn-primary">Location speichern</button></td>
-
+                <td style="text-align:left"><button type="submit" class="btn btn-primary">Location speichern</button></td>
             </tr>
             </tbody>
         </table>
