@@ -113,32 +113,47 @@ require("includes/includeDatabase.php");
 			data: {callFunction: 'top3'},
 			dataType: 'text',
 			success:function(data) {
-				var test = JSON.parse(data);
-				if(test.length > 0) {
-					var top1 = test[0];
+				var top3Array = JSON.parse(data);
+				if(top3Array.length > 0) {
+					var top1 = top3Array[0];
 					$('#top1').val(top1);
 					$('#label_top1').html(top1);
 					$('#top1').css('display', 'inline-block');
 					$('#label_top1').css('display', 'inline-block');
 				}
-				if(test.length > 1) {
-					var top2 = test[1];
+				if(top3Array.length > 1) {
+					var top2 = top3Array[1];
 					$('#top2').val(top2);
 					$('#label_top2').html(top2);
 					$('#top2').css('display', 'inline-block');
 					$('#label_top2').css('display', 'inline-block');
 				}
-				if(test.length > 2) {
-					var top3 = test[2];
+				if(top3Array.length > 2) {
+					var top3 = top3Array[2];
 					$('#top3').val(top3);
 					$('#label_top3').html(top3);
 					$('#top3').css('display', 'inline-block');
 					$('#label_top3').css('display', 'inline-block');
 				}
+				verfuegbare_essen();
 			}
 		});
+	}
 
-
+	function verfuegbare_essen() {
+		$.ajax({
+			type: "POST",
+			url: "procedures.php",
+			data: {callFunction: 'verfuegbare_essen'},
+			dataType: 'text',
+			success: function (data) {
+				var verfuegbare_essen = JSON.parse(data);
+				for(var i=0; i<verfuegbare_essen.length; i++) {
+					$('#verfuegbare_essen').append("<option>" + verfuegbare_essen[i] + "</option>");
+					$('#verfuegbare_essen2').append("<option>" + verfuegbare_essen[i] + "</option>");
+				}
+			}
+		});
 	}
 	
 	function f_datum_heute() {
@@ -255,44 +270,20 @@ require("includes/includeDatabase.php");
 					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="top1" name="essen" value="top1" style="margin-left:15px; display:none"> <label id="label_top1" for="top1" style="display:none">Top1 </label>
 					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="top2" name="essen" value="top2" style="margin-left:15px; display:none"> <label id="label_top2" for="top2" style="display:none">Top2 </label>
 					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="top3" name="essen" value="top3" style="margin-left:15px; display:none"> <label id="label_top3" for="top3" style="display:none">Top3 </label>
-					<script>top3();</script>
 					<br><label for=""> Weitere Essen: </label>
 					<input class="form-control" onclick="validate();countCheckboxes();" type="checkbox" id="sonstiges1" name="essen" value="Sonstiges1" style="margin-left:15px"> <label for=""></label>
 
 					<select class="form-control" id="verfuegbare_essen">
-					<?php
-					$abfrage0 = "SELECT * FROM essen ORDER BY name ASC";
-					$ergebnis0 = mysqli_query($connection, $abfrage0);
-					while ($row0 = mysqli_fetch_object($ergebnis0))
-						{
-							?>
-							<!--<input type="checkbox" id="essen" name="essen" value="<?php echo $row0->name; ?>" style="margin-left:15px"> <label for=""><?php echo $row0->name; ?> </label>-->
-
-							<option><?php echo $row0->name; ?> </option>
-							<?php
-						}
-						?>
 					</select>
 
 					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="sonstiges2" name="essen" value="Sonstiges2" style="margin-left:15px; display:none;" >
 
 					<select class="form-control" id="verfuegbare_essen2" style="display:none">
-					<?php
-					$abfrage0 = "SELECT * FROM essen ORDER BY name ASC";
-					$ergebnis0 = mysqli_query($connection, $abfrage0);
-					while ($row0 = mysqli_fetch_object($ergebnis0))
-						{
-							?>
-							<!--<input type="checkbox" id="essen" name="essen" value="<?php echo $row0->name; ?>" style="margin-left:15px"> <label for=""><?php echo $row0->name; ?> </label>-->
-
-							<option><?php echo $row0->name; ?> </option>
-							<?php
-						}
-						?>
 					</select>
 					<br><br>
 					<button type="submit" id="auswahl_speichern" class="btn btn-primary" disabled>Auswahl speichern</button>
 				</form>
+				<script>top3();</script>
 
 				<br><br>
 			</div>

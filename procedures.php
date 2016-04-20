@@ -73,6 +73,9 @@ switch ($_POST['callFunction']) {
 	case 'top3':
 		top3();
 		break;
+	case 'verfuegbare_essen':
+		verfuegbare_essen();
+		break;
 	default:
 		echo "Keine Funktion zum Aufrufen gefunden!";
 		break;
@@ -418,17 +421,29 @@ function top3() {
 	//gibt die drei am meisten gewählten Essen (id) zurück:
 	$stmt1 = $pdo->prepare("SELECT e_ID, COUNT(e_ID) AS ids FROM (SELECT e_ID1 AS e_ID FROM abstimmen WHERE g_ID = :g_ID UNION ALL SELECT e_ID2 AS e_ID FROM abstimmen WHERE g_ID = :g_ID)x GROUP BY e_ID ORDER BY ids DESC");
 	$stmt1->execute(array('g_ID' => $g_ID));
-	$count = 0;
-	foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row){
+	$rows = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+	for ($i = 0; $i<3; $i++){
 		$stmt2 = $pdo->prepare("SELECT name FROM essen WHERE e_ID = :e_ID");
-		$stmt2->execute(array('e_ID' => $row['e_ID']));
+		$stmt2->execute(array('e_ID' => $rows[$i]['e_ID']));
 		$essen = $stmt2->fetch();
-		if(isset($essen[0])) $arr[] = $essen[0];
-		if($count >= 2) break;
-		$count += 1;
+		$j = $i+1;
+		if(isset($essen[0])) {
+			$arr[] = $essen[0];
+			$_SESSION['top' . $j] = $essen[0];
+		}
 	}
-
 	print json_encode($arr);
+}
 
+function verfuegbare_essen() {
+	require('includes/includeDatabase.php');
+
+	$stmt1 = $pdo->prepare("SELECT name FROM essen ORDER BY name ASC");
+	$stmt1->execute();
+	foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row)
+	{
+		if( ($row['name'] != $_SESSION['top1']) && ($row['name'] != $_SESSION['top2']) && ($row['name'] != $_SESSION['top3'])) $arr[] = $row['name'];
+	}
+	print json_encode($arr);
 }
 ?>
