@@ -111,17 +111,48 @@ require("includes/includeDatabase.php");
 				
 				for (var i = 0; i<ergebnisse.length; i++) {
 					var current = ergebnisse[i];
-
 					if (new Date(current['datum']) >= firstDate && new Date(current['datum']) <= lastDate) {
-						var cd = new Date(current['datum']);
-						var name = "<?php echo($_SESSION['username']) ?>";
-						$('#abstimmungen').append("<br><br>");
-						$('#abstimmungen').append("Ergebnis am "+cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+current['gruppe']+": <b>"+current['locname']+"</b><br>");
-						//$('#abstimmungen').append("<a href=\"#\" data-trigger=\"focus\" data-toggle=\"popover\" title=\"HI\" data-content=\"" + name +"\" data-html=\"true\">Ergebnis am "+
-						//cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+current['gruppe']+": <b>"+current['locname']+"</a>");	
+						getAbstimmungen(current);
 					}
 				}
-				//$('[data-toggle="popover"]').popover();
+	}
+
+	//holt sich abstimmungen für PopOver und gibt es dann aus!
+	//in einer einzelnen Methode nicht möglich, siehe: http://stackoverflow.com/questions/2687679/jquery-ajax-inside-a-loop-problem
+	function getAbstimmungen(current) {
+		var cd = new Date(current['datum']);
+		$.ajax({
+			type    : "POST",
+			url     : "procedures.php",
+			data    : {callFunction: 'getAbstimmungen', datum: current['datum']},
+			dataType: 'text',
+			success : function (data) {
+				//alert(current['datum']);
+				var abstimmungen = JSON.parse(data);
+				var content="";
+				abstimmungen.forEach(function (s, i, a) {
+					var username = JSON.parse(s)['name'];
+					var essen1 = JSON.parse(s)['essen1'];
+					var essen2 = JSON.parse(s)['essen2'];
+					if(!essen2) content= content.concat(username + " hat " + essen1 + " gewählt. <br>");
+					else content= content.concat(username + " hat " + essen1 + " und " + essen2 + " gewählt. <br>");
+				});
+
+				/*
+				var elements = $();
+				for(x = 0; x < 1000; x++) {
+					elements = elements.add('<div>'+x+'</div>');
+				}
+				$('body').append(elements);
+				*/
+
+				$('#abstimmungen').append("<br><br>");
+				//$('#abstimmungen').append("Ergebnis am "+cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+current['gruppe']+": <b>"+current['locname']+"</b><br>");
+				$('#abstimmungen').append("<a href=\"#\" data-trigger=\"focus\" data-toggle=\"popover\" title=\"Abstimmungen\" data-content=\"" + content +"\" data-html=\"true\">Ergebnis am "+
+					cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+current['gruppe']+": <b>"+current['locname']+"</a>");
+				$('[data-toggle="popover"]').popover();
+			}
+		});
 	}
 
 	// schaue nach, was für eine Woche in der Dropdown-Liste steht, hole die entsprechenden Einträge aus der DB	und gib diese formatiert aus

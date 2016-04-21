@@ -76,6 +76,9 @@ switch ($_POST['callFunction']) {
 	case 'verfuegbare_essen':
 		verfuegbare_essen();
 		break;
+	case 'getAbstimmungen':
+		getAbstimmungen($_POST['datum']);
+		break;
 	default:
 		echo "Keine Funktion zum Aufrufen gefunden!";
 		break;
@@ -446,4 +449,33 @@ function verfuegbare_essen() {
 	}
 	print json_encode($arr);
 }
+
+function getAbstimmungen($datum) {
+	require('includes/includeDatabase.php');
+
+	$g_ID = $_SESSION['g_ID'];
+	$stmt1 = $pdo->prepare("SELECT * FROM abstimmen WHERE g_ID = :g_ID AND datum = :datum");
+	$stmt1->execute(array('g_ID' => $g_ID, 'datum' => $datum));
+	foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row) {
+		$stmt2 = $pdo->prepare("SELECT name FROM essen WHERE e_ID = :e_ID1");
+		$stmt2->execute(array('e_ID1' => $row['e_ID1']));
+		$essen1 = $stmt2->fetch();
+		$abstimmungen['essen1'] = $essen1[0];
+		if($row['e_ID2']) {
+			$stmt3 = $pdo->prepare("SELECT name FROM essen WHERE e_ID = :e_ID2");
+			$stmt3->execute(array('e_ID2' => $row['e_ID2']));
+			$essen2 = $stmt3->fetch();
+			$abstimmungen['essen2'] = $essen2[0];
+		}
+		$stmt4 = $pdo->prepare("SELECT username FROM users WHERE u_ID = :u_ID");
+		$stmt4->execute(array('u_ID' => $row['u_ID']));
+		$username = $stmt4->fetch();
+		$abstimmungen['name'] = $username[0];
+
+		$json = json_encode($abstimmungen);
+		$arr[] = $json;
+	}
+	print json_encode($arr);
+}
+
 ?>
