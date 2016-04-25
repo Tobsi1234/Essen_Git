@@ -76,7 +76,7 @@ if(isset($errorMessage)) {
 			<div class="navbar-header pull-right">
 				<ul class="nav navbar-nav pull-left">
 					<li id="login" style="margin-right:15px">
-						<a id="login-trigger" href="#">
+						<a id="login-trigger" href="javascript:;">
 							Einloggen <span>&#x25BC;</span>
 						</a>
 						<div id="login-content">
