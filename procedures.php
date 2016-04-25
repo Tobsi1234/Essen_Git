@@ -275,7 +275,7 @@ function getDatesFromAbstimmung() {
 	global $pdo;
 	$pdolocal = $pdo;
 
-	$sqlSelDates = $pdolocal->prepare("SELECT DISTINCT datum FROM abstimmung_ergebnis WHERE g_ID = :g_ID");
+	$sqlSelDates = $pdolocal->prepare("SELECT DISTINCT datum FROM abstimmung_ergebnis WHERE g_ID = :g_ID ORDER BY datum DESC");
 	$sqlSelDates->execute(array('g_ID' => $_SESSION['g_ID']));
 	$sqlSelDatesRes = $sqlSelDates->fetchAll();
 

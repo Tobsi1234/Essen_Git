@@ -69,7 +69,8 @@ require("includes/includeDatabase.php");
 					arr[arr.length] = $('#verfuegbare_essen').val();
 				}
 				else if(rObj[i].value == "Sonstiges2") {
-					arr[arr.length] = $('#verfuegbare_essen2').val();
+					//keine doppelten Werte
+					if($('#verfuegbare_essen2').val() != $('#verfuegbare_essen').val()) arr[arr.length] = $('#verfuegbare_essen2').val();
 				}
 				else {
 					arr[arr.length] = rObj[i].value;
