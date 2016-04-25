@@ -95,56 +95,36 @@ require("includes/includeDatabase.php");
 	// Hilfsfunktion zum Auslesen der Dropdown-Liste und Ausgeben der Abstimmungsergebnisse
 	function schreibe_abstimmungsergebnisse(data) {
 		var ergebnisse = JSON.parse(data);
-				var selectedText = $('#woche :selected').text();
+		var selectedText = $('#woche :selected').text();
 
-				var year = selectedText.substring(24,28);
+		var year = selectedText.substring(24,28);
 
-				var firstDay = selectedText.substring(0,2);
-				var firstMonth = selectedText.substring(3,5);
-				var firstDate = new Date(year+"-"+firstMonth+"-"+firstDay);
+		var firstDay = selectedText.substring(0,2);
+		var firstMonth = selectedText.substring(3,5);
+		var firstDate = new Date(year+"-"+firstMonth+"-"+firstDay);
 
-				var lastDay = selectedText.substring(9,11);
-				var lastMonth = selectedText.substring(12,14);
-				var lastDate = new Date(year+"-"+lastMonth+"-"+lastDay);
+		var lastDay = selectedText.substring(9,11);
+		var lastMonth = selectedText.substring(12,14);
+		var lastDate = new Date(year+"-"+lastMonth+"-"+lastDay);
 
-				$('#abstimmungen').html("");
-				
-				for (var i = 0; i<ergebnisse.length; i++) {
-					var current = ergebnisse[i];
-					if (new Date(current['datum']) >= firstDate && new Date(current['datum']) <= lastDate) {
-						getAbstimmungen(current);
-					}
-				}
-	}
+		$('#abstimmungen').html("");
 
-	//holt sich abstimmungen für PopOver und gibt es dann aus!
-	//in einer einzelnen Methode nicht möglich, siehe: http://stackoverflow.com/questions/2687679/jquery-ajax-inside-a-loop-problem
-	function getAbstimmungen(current) {
-		var cd = new Date(current['datum']);
-		$.ajax({
-			type    : "POST",
-			url     : "procedures.php",
-			data    : {callFunction: 'getAbstimmungen', datum: current['datum']},
-			dataType: 'text',
-			success : function (data) {
-				//alert(current['datum']);
-				var abstimmungen = JSON.parse(data);
+		for (var i = 0; i<ergebnisse.length; i++) {
+			var current = ergebnisse[i];
+			if (new Date(current['datum']) >= firstDate && new Date(current['datum']) <= lastDate) {
+				var cd = new Date(current['datum']);
+				var abstimmungen = JSON.parse(current['abstimmungen']);
 				var content="";
-				abstimmungen.forEach(function (s, i, a) {
-					var username = JSON.parse(s)['name'];
-					var essen1 = JSON.parse(s)['essen1'];
-					var essen2 = JSON.parse(s)['essen2'];
-					if(!essen2) content= content.concat(username + " hat " + essen1 + " gewählt. <br>");
-					else content= content.concat(username + " hat " + essen1 + " und " + essen2 + " gewählt. <br>");
-				});
-
-				/*
-				var elements = $();
-				for(x = 0; x < 1000; x++) {
-					elements = elements.add('<div>'+x+'</div>');
+				if(abstimmungen) {
+					abstimmungen.forEach(function (s, i, a) {
+						var username = JSON.parse(s)['name'];
+						var essen1 = JSON.parse(s)['essen1'];
+						var essen2 = JSON.parse(s)['essen2'];
+						if (!essen2) content = content.concat(username + " hat " + essen1 + " gewählt. <br>");
+						else content = content.concat(username + " hat " + essen1 + " und " + essen2 + " gewählt. <br>");
+					});
 				}
-				$('body').append(elements);
-				*/
+				//alert(content + cd);
 
 				$('#abstimmungen').append("<br><br>");
 				//$('#abstimmungen').append("Ergebnis am "+cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+current['gruppe']+": <b>"+current['locname']+"</b><br>");
@@ -152,7 +132,7 @@ require("includes/includeDatabase.php");
 					cd.getDate()+"."+(cd.getMonth()+1)+"."+" von "+current['gruppe']+": <b>"+current['locname']+"</a>");
 				$('[data-toggle="popover"]').popover();
 			}
-		});
+		}
 	}
 
 	// schaue nach, was für eine Woche in der Dropdown-Liste steht, hole die entsprechenden Einträge aus der DB	und gib diese formatiert aus
@@ -212,7 +192,7 @@ require("includes/includeDatabase.php");
 					<div></div>
 					<div class="abstimmungen" id="abstimmungen">
 					</div>
-					<br><br>
+					<br><br><br><br>
 
 				</form>
 
