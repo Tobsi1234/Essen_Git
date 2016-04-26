@@ -128,7 +128,7 @@
 require("includes/includeDatabase.php");
 ?>
 
-<div class="col-md-6">
+<div class="col-md-5">
     <div class="col-md-12">
 
     <h2>Location hinzufügen</h2>
@@ -164,7 +164,7 @@ require("includes/includeDatabase.php");
     </div>
 </div>
 <!-- Alphabet -->
-<div class="col-md-6">
+<div class="col-md-7">
     <br>
     <div id="tabpage_3" class="col-md-12">
 

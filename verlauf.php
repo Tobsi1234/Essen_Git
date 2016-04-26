@@ -172,7 +172,7 @@ require("includes/includeDatabase.php");
 <?php
 	include ("includes/includeBody.php");
 ?>
-<div class="container" id="container" style="display: none">
+<div class="container weiß" id="container" style="display: none">
 
 	<!-- First Featurette -->
 	<div class="featurette" id="about">

@@ -20,8 +20,7 @@ include("includes/includeBody.php");
 ?>
 <!-- Page Content -->
 <div class="">
-        <br><br>
-        <div id="main" class="container">
+        <div id="main" class="container weiß">
             <ul class="nav navbar-nav">
                 <li><a href="#locations">Location hinzufügen</a></li>
                 <li><a href="#essen">Essen hinzufügen</a></li>
@@ -29,6 +28,7 @@ include("includes/includeBody.php");
             <div class="clear"></div>
             <div id="pageContent">
                 Hallo, auf dieser Seite können Sie neue Locations und Essen anlegen.
+                <br><br>
             </div>
         </div>
         <div class="clear"></div>

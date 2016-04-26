@@ -328,3 +328,14 @@ width:65%;
 	width: 50%;
 	margin-top:-25px;
 }
+
+.weiß {
+    background-color: white;
+}
+
+body {
+    /* background-image: url("http://bilder.t-online.de/b/73/12/25/04/id_73122504/610/tid_da/sonnenbrille-raus-und-ab-ins-cafe-das-wochenende-wird-fuer-die-meisten-richtig-schoen-.jpg");
+    background-size: 305px 171px; */
+    background-color: #FF8000;
+    background-repeat: repeat;
+}

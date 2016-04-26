@@ -41,20 +41,28 @@
 
     -->
 </script>
-<div class="col-md-6">
+<div class="col-md-5">
     <div class="col-md-12" id="neuesEssen">
         <h2>Essen hinzufügen</h2>
         <br>
         <form id="newessen" name="newessen" action="" method="post" onsubmit="essen_anlegen(); return false;">
-            <label for="essenName">Name des Essens:</label>
-            <input type="text" class="fancyform" id="essenName" maxlength="30" value="" style="margin-left:8px; margin-right: 8px" required>
-            <button type="submit" class="btn btn-primary">Essen speichern</button>
+            <table class="usertable">
+                <tbody>
+                <tr>
+                    <td><label for="essenName">Name des Essens:</label></td>
+                    <td><input type="text" class="fancyform" id="essenName" maxlength="30" value="" required></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button type="submit" class="btn btn-primary">Essen speichern</button></td>
+                </tr>
+            </table>
 
         </form><br>
     </div>
 </div>
 <!-- Alphabet -->
-<div class="col-md-6">
+<div class="col-md-7">
     <br>
     <div id="tabpage_3" class="col-md-12">
 
@@ -63,7 +71,7 @@
             <ul id="demoThree" class="demo">
             </ul>
             <script> getEssen(); </script>
-
+            <br>
         </div>
     </div>
 </div>

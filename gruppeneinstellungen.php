@@ -125,7 +125,7 @@ else {
 ?>
 
 <!-- Page Content -->
-<div class="container">
+<div class="container weiß">
 	<div class="alert alert-danger" id="fehlermeldung" style="display:none">
 	</div>
 	<!-- First Featurette -->
@@ -148,6 +148,7 @@ else {
 					</div><br>
 					<button type="button" class="btn btn-primary" onclick="gruppeErstellen();">Gruppe erstellen</button>
 				</form>
+				<br><br>
 			</div>
 
 		<?php
@@ -180,6 +181,7 @@ else {
 					<button type="button" class="btn btn-default" onclick="emailPrüfen2();">Hinzufügen</button><br><br>
 					<button type="button" class="btn btn-danger" onclick="austreten();">Austreten</button>
 				</form>
+				<br><br>
 			</div>
 
 		<?php

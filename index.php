@@ -102,7 +102,7 @@ include ("includes/includeBody.php");
 <script>berechneErgebnisHeute();</script>
 
 <!-- Page Content -->
-<div class="container" id="container" style="display: none">
+<div class="container weiß" id="container" style="display: none">
 
 	<?php
 	$stmt1 = $pdo->prepare("SELECT g_ID FROM users WHERE u_ID = :u_ID");

@@ -218,7 +218,7 @@ require("includes/includeDatabase.php");
 	<script> f_datum();</script>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container weiß">
 		<?php
 		$stmt1 = $pdo->prepare("SELECT g_ID FROM users WHERE u_ID = :u_ID");
 		$stmt1->execute(array('u_ID' => $_SESSION['userid']));
@@ -246,7 +246,7 @@ require("includes/includeDatabase.php");
 			?>
 			<div class="col-md-7">
 				<div id="headline">
-				<h1>Abstimmung: </h1><br>
+				<h1>Abstimmung </h1><br>
 				</div>
 				<div style="float:left; width:30px;"><label>Datum: </label>
 				</div>
