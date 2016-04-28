@@ -52,8 +52,11 @@ require("includes/includeDatabase.php");
 						if (abstimmungen[i]['essen2'] != null) {
 							$('#abstimmungen').append("<b>"+abstimmungen[i]['username']+"</b>"+" hat für die Essen "+"<b>"+abstimmungen[i]['essen1']+"</b>"+" und "+"<b>"+abstimmungen[i]['essen2']+"</b>"+" abgestimmt.<br>");
 						}
+						else if (abstimmungen[i]['essen1'] === abstimmungen[i]['essen2']) {
+							$('#abstimmungen').append("<b>"+abstimmungen[i]['username']+"</b>"+" hat <b>doppelt</b> für das Essen "+"<b>"+abstimmungen[i]['essen1']+"</b>"+"</b>"+" abgestimmt.<br>");
+						}
 						else {
-							$('#abstimmungen').append("<b>"+abstimmungen[i]['username']+"</b>"+" hat nur für das Essen "+"<b>"+abstimmungen[i]['essen1']+"</b>"+"</b>"+" abgestimmt.<br>");
+							$('#abstimmungen').append("<b>"+abstimmungen[i]['username']+"</b>"+" hat <b>nur</b> für das Essen "+"<b>"+abstimmungen[i]['essen1']+"</b>"+"</b>"+" abgestimmt.<br>");
 						}
 					}
 				}
