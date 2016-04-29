@@ -384,31 +384,74 @@ function calculateErgebnisHeute() {
 	global $pdo;
 	$pdolocal = $pdo;
 
-	$sqlSelAbstHeuteRes = selectAbstimmungenHeute();
 	$abstimmungen = array();
+	$locations = array();
+
+	$sqlSelAbstHeuteRes = selectAbstimmungenHeute();
 
 	// Fülle Array abstimmungen mit allen e_IDs, für die heute abgestimmt wurde
 	for($i = 0; $i < count($sqlSelAbstHeuteRes); $i++) {
-		if (isset($sqlSelAbstHeuteRes[$i]['e_ID1'])) {array_push($abstimmungen, $sqlSelAbstHeuteRes[$i]['e_ID1']);}
-		if (isset($sqlSelAbstHeuteRes[$i]['e_ID2'])) {array_push($abstimmungen, $sqlSelAbstHeuteRes[$i]['e_ID2']);}
-		// echo $abstimmungen[$i]."xxx".$abstimmungen[$i+1];
+		if (isset($sqlSelAbstHeuteRes[$i]['e_ID1'])) array_push($abstimmungen, $sqlSelAbstHeuteRes[$i]['e_ID1']); else array_push($abstimmungen, null);
+		if (isset($sqlSelAbstHeuteRes[$i]['e_ID2'])) array_push($abstimmungen, $sqlSelAbstHeuteRes[$i]['e_ID2']); else array_push($abstimmungen, null);
+		//error_log($abstimmungen[$i*2]."xxx".$abstimmungen[$i*2+1]);
+		// Hole alle zu diesen zwei Essen passenden Locations
+		$sqlSelLoc = $pdolocal->prepare("SELECT l_ID FROM locessen WHERE e_ID = :e_ID1 OR e_ID = :e_ID2");
+		$sqlSelLoc->execute(array('e_ID1' => $abstimmungen[$i*2], 'e_ID2' => $abstimmungen[$i*2+1]));
+		$sqlSelLocRes = $sqlSelLoc->fetchAll();
+		foreach($sqlSelLocRes as $value) {
+			$locations[]['l_ID'] = $value['l_ID'];
+		}
+	}
+	// Entferne mehrfach vorhandene Locations
+	$locations = array_multi_unique($locations);
+
+	// Berechne, wie oft für jedes Essen abgestimmt wurde
+	$häufigkeiten = array_count_values($abstimmungen);
+
+	for($i = 0; $i<count($locations); $i++) {
+		//error_log("Ich komme jetzt zu Location ".$locations[$i]['l_ID']);
+		$masterzahl = 0;
+		//error_log($locations[$i]['l_ID']);
+
+		$sqlSelEssen = $pdolocal->prepare("SELECT e_ID FROM locessen WHERE l_ID = :l_ID");
+		$sqlSelEssen->execute(array('l_ID' => $locations[$i]['l_ID']));
+		$sqlSelEssenRes = $sqlSelEssen->fetchAll();
+
+		foreach($sqlSelEssenRes as $value) {
+			if (in_array($value['e_ID'], $abstimmungen)) { $masterzahl = $masterzahl + $häufigkeiten[$value['e_ID']];}
+		}
+		$locations[$i]['masterzahl'] = $masterzahl;
+		//error_log("Die Masterzahl hier ist".$locations[$i]['masterzahl']);
 	}
 
-	// Ermittle das Essen, für welches am häufigsten abgestimmt wurde
-	$häufigkeiten = array_count_values($abstimmungen);
-	arsort($häufigkeiten);
+	// Sortiere die Locations nach der Masterzahl, um die Location zu ermitteln, für die am häufigsten abgestimmt wurde
+	$l_ID = array();
+	$masterzahl = array();
+	// Schleife notwendig, um Daten in richtige Form für multisort zu bringen
+	foreach($locations as $key => $row) {
+		$l_ID[$key] = $row['l_ID'];
+		$masterzahl[$key] = $row['masterzahl'];
+	}
+	array_multisort($masterzahl, SORT_DESC, $l_ID, SORT_ASC, $locations);
+
+	foreach($locations as $value) {
+		error_log($value['l_ID']." hat ".$value['masterzahl']." Abstimmungen.");
+	}
+
+	// arsort($häufigkeiten);
 	// echo(key($häufigkeiten));
 	// Hole alle Location-IDs, welches dieses Essen anbieten
-	$sqlSelLoc = $pdolocal->prepare("SELECT l_ID FROM locessen WHERE e_ID = :e_ID");
+	/*$sqlSelLoc = $pdolocal->prepare("SELECT l_ID FROM locessen WHERE e_ID = :e_ID");
 	$sqlSelLoc->execute(array('e_ID' => key($häufigkeiten)));
-	$sqlSelLocRes = $sqlSelLoc->fetchAll();
+	$sqlSelLocRes = $sqlSelLoc->fetchAll();*/
 
+	// Gibt dem Array, was am Ende zurückgegeben wird, die Information mit, ob es überhaupt Abstimmungen gegeben hat
 	$result = array();
-		if (count($sqlSelAbstHeuteRes) === 0) {
-			$result['abstimmungen'] = false;
-		}  
-		else $result['abstimmungen'] = true;
-		
+	if (count($sqlSelAbstHeuteRes) === 0) {
+		$result['abstimmungen'] = false;
+	}
+	else $result['abstimmungen'] = true;
+
 	if (count($sqlSelLocRes) > 0) {
 
 		// Zufallszahl, um eine zufällige der bestimmten Locations auszuwählen, die das ermittelte Essen anbietet
@@ -424,24 +467,11 @@ function calculateErgebnisHeute() {
 		$sqlSelLocnameRes = $sqlSelLocname->fetch();
 
 		$result['locname'] = $sqlSelLocnameRes['name'];
-				
+
 	}
-	echo json_encode($result);
+	//echo json_encode($result);
 
-}
 
-// Reine serverseitige Hilfsfunktion, daher kein Eintrag im Switch-Statement nötig!
-function selectAbstimmungenHeute() {
-	global $pdo;
-	$pdolocal = $pdo;
-	date_default_timezone_set("Europe/Berlin");
-
-	// Hole alle heutigen Abstimmungen von allen Usern der Gruppe  (,der der aktuelle User angehört)
-	$sqlSelAbstHeute = $pdolocal->prepare("SELECT abstimmen.u_ID, abstimmen.g_ID, e_ID1, e_ID2 FROM abstimmen WHERE datum = :datum AND abstimmen.g_ID = :g_ID");
-	$sqlSelAbstHeute->execute(array('datum' => date("Y-m-d",time()),'g_ID' => $_SESSION['g_ID']));
-	$sqlSelAbstHeuteRes = $sqlSelAbstHeute->fetchAll();
-
-	return $sqlSelAbstHeuteRes;
 }
 
 function top3() {
@@ -476,4 +506,39 @@ function verfuegbare_essen() {
 	print json_encode($arr);
 }
 
+
+/*
+ * HILFSFUNKTIONEN!!!
+ *
+ * Die Hilfsfunktionen werden ausschließlich serverseitig verwendet und benötigen deshalb KEINEN Eintrag im Switch-Statement!!
+ */
+
+
+
+// Funktion, die doppelte Einträge auch aus mehrdimensionalen Arrays entfernen kann
+function array_multi_unique($multiArray){
+
+	$uniqueArray = array();
+	foreach($multiArray as $subArray){
+		if(!in_array($subArray, $uniqueArray)){
+			$uniqueArray[] = $subArray;
+		}
+	}
+	return $uniqueArray;
+}
+
+
+// Holt alle Abstimmungen von heute (per Join :P )
+function selectAbstimmungenHeute() {
+	global $pdo;
+	$pdolocal = $pdo;
+	date_default_timezone_set("Europe/Berlin");
+
+	// Hole alle heutigen Abstimmungen von allen Usern der Gruppe  (,der der aktuelle User angehört)
+	$sqlSelAbstHeute = $pdolocal->prepare("SELECT abstimmen.u_ID, abstimmen.g_ID, e_ID1, e_ID2 FROM abstimmen WHERE datum = :datum AND abstimmen.g_ID = :g_ID");
+	$sqlSelAbstHeute->execute(array('datum' => date("Y-m-d",time()),'g_ID' => $_SESSION['g_ID']));
+	$sqlSelAbstHeuteRes = $sqlSelAbstHeute->fetchAll();
+
+	return $sqlSelAbstHeuteRes;
+}
 ?>
