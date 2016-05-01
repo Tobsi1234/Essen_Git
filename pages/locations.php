@@ -106,7 +106,19 @@
                 $('#demoThree').html("");
                 for(i=0; i<locations.length; i++) {
                     var location = JSON.parse(locations[i]);
-                    $('#demoThree').append("<li><a href=\"#locations\" data-trigger=\"focus\" data-toggle=\"popover\" title=\""+location['name']+"\" data-content=\"Link: <a href=\'"+location['link']+"\' >"+location['link']+"</a> \" data-html=\"true\">" + location['name'] +"</a></li>");
+                    var essenString="";
+                    var essen = location['essen'];
+                    if(essen) {
+                        essenString = "Essen: "
+                        essen.forEach(function (s, i, a) {
+                            if(essen[i+1]) essenString = essenString.concat(s + ", ");
+                            else essenString = essenString.concat(s);
+                        });
+                    }
+                    var link = location['link'];
+                    var linkString = "";
+                    if(link) linkString = "Link: <a href=\'"+location['link']+"\' >"+location['link']+"</a><br>";
+                    $('#demoThree').append("<li><a href=\"#locations\" data-trigger=\"focus\" data-toggle=\"popover\" title=\""+location['name']+"\" data-content=\""+ linkString + essenString + "\" data-html=\"true\">" + location['name'] +"</a></li>");
                 }
                 $('[data-toggle="popover"]').popover();
                 $(function(){

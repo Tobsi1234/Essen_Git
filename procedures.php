@@ -232,16 +232,25 @@ function austreten($u_ID) {
 
 function getLocations(){
 	require('includes/includeDatabase.php');
-	
-	$stmt1 = $pdo->prepare("SELECT name,link FROM location ORDER BY name ASC");
-	$stmt1->execute();
-	foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row){
-		if (strpos($row['link'], 'http') !== false) $link = $row['link'];
-		else $link = "http://" . $row['link'];
 
+	$stmt1 = $pdo->prepare("SELECT * FROM location ORDER BY name ASC");
+	$stmt1->execute();
+	foreach ($stmt1->fetchAll(PDO::FETCH_ASSOC) as $row1) {
+		$stmt2 = $pdo->prepare("SELECT name FROM locessen, essen WHERE l_ID = :l_ID AND locessen.e_ID = essen.e_ID ORDER BY name ASC");
+		$stmt2->execute(array('l_ID' => $row1['l_ID']));
+		$essen = null;
+		foreach ($stmt2->fetchAll(PDO::FETCH_ASSOC) as $row2) {
+			$essen[] = $row2['name'];
+		}
+		if ($row1['link']) {
+			if (strpos($row1['link'], 'http') !== false) $link = $row1['link'];
+			else $link = "http://" . $row1['link'];
+		}
+		else $link = "";
 		$location = array(
-			"name" => $row['name'],
-			"link" => $link
+			"name" => $row1['name'],
+			"link" => $link,
+			"essen" => $essen
 		);
 		$arr[] = json_encode($location);
 	}
