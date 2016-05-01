@@ -391,13 +391,16 @@ function calculateErgebnisHeute() {
 
 	// Fülle Array abstimmungen mit allen e_IDs, für die heute abgestimmt wurde
 	for($i = 0; $i < count($sqlSelAbstHeuteRes); $i++) {
-		if (isset($sqlSelAbstHeuteRes[$i]['e_ID1'])) array_push($abstimmungen, $sqlSelAbstHeuteRes[$i]['e_ID1']); else array_push($abstimmungen, null);
-		if (isset($sqlSelAbstHeuteRes[$i]['e_ID2'])) array_push($abstimmungen, $sqlSelAbstHeuteRes[$i]['e_ID2']); else array_push($abstimmungen, null);
-		//error_log($abstimmungen[$i*2]."xxx".$abstimmungen[$i*2+1]);
-		// Hole alle zu diesen zwei Essen passenden Locations
-		$sqlSelLoc = $pdolocal->prepare("SELECT l_ID FROM locessen WHERE e_ID = :e_ID1 OR e_ID = :e_ID2");
-		$sqlSelLoc->execute(array('e_ID1' => $abstimmungen[$i*2], 'e_ID2' => $abstimmungen[$i*2+1]));
+		if (isset($sqlSelAbstHeuteRes[$i]['e_ID1'])) array_push($abstimmungen, $sqlSelAbstHeuteRes[$i]['e_ID1']);
+		if (isset($sqlSelAbstHeuteRes[$i]['e_ID2'])) array_push($abstimmungen, $sqlSelAbstHeuteRes[$i]['e_ID2']);
+	}
+
+	foreach ($abstimmungen as $abst) {
+		// Hole alle zu den Essen, für die abgestimmt wurde, passenden Locations
+		$sqlSelLoc = $pdolocal->prepare("SELECT l_ID FROM locessen WHERE e_ID = :e_ID");
+		$sqlSelLoc->execute(array('e_ID' => $abst));
 		$sqlSelLocRes = $sqlSelLoc->fetchAll();
+		// Diese Locations im Array speichern
 		foreach($sqlSelLocRes as $value) {
 			$locations[]['l_ID'] = $value['l_ID'];
 		}
@@ -407,6 +410,11 @@ function calculateErgebnisHeute() {
 
 	// Berechne, wie oft für jedes Essen abgestimmt wurde
 	$häufigkeiten = array_count_values($abstimmungen);
+
+	foreach($häufigkeiten as $value) {
+		// error_log("Essen ".key($häufigkeiten)." hat ".$value. "Stimmen.");
+		next($häufigkeiten);
+	}
 
 	for($i = 0; $i<count($locations); $i++) {
 		//error_log("Ich komme jetzt zu Location ".$locations[$i]['l_ID']);
@@ -424,52 +432,65 @@ function calculateErgebnisHeute() {
 		//error_log("Die Masterzahl hier ist".$locations[$i]['masterzahl']);
 	}
 
-	// Sortiere die Locations nach der Masterzahl, um die Location zu ermitteln, für die am häufigsten abgestimmt wurde
-	$l_ID = array();
-	$masterzahl = array();
-	// Schleife notwendig, um Daten in richtige Form für multisort zu bringen
-	foreach($locations as $key => $row) {
-		$l_ID[$key] = $row['l_ID'];
-		$masterzahl[$key] = $row['masterzahl'];
-	}
-	array_multisort($masterzahl, SORT_DESC, $l_ID, SORT_ASC, $locations);
-
 	foreach($locations as $value) {
-		error_log($value['l_ID']." hat ".$value['masterzahl']." Abstimmungen.");
+		//error_log("Location ".$value['l_ID']." hat ".$value['masterzahl']." Abstimmungen.");
 	}
-
-	// arsort($häufigkeiten);
-	// echo(key($häufigkeiten));
-	// Hole alle Location-IDs, welches dieses Essen anbieten
-	/*$sqlSelLoc = $pdolocal->prepare("SELECT l_ID FROM locessen WHERE e_ID = :e_ID");
-	$sqlSelLoc->execute(array('e_ID' => key($häufigkeiten)));
-	$sqlSelLocRes = $sqlSelLoc->fetchAll();*/
 
 	// Gibt dem Array, was am Ende zurückgegeben wird, die Information mit, ob es überhaupt Abstimmungen gegeben hat
 	$result = array();
 	if (count($sqlSelAbstHeuteRes) === 0) {
-		$result['abstimmungen'] = false;
+		$result[0]['abstimmungen'] = false;
 	}
-	else $result['abstimmungen'] = true;
+	else $result[0]['abstimmungen'] = true;
 
-	if (count($sqlSelLocRes) > 0) {
+	// Zufallszahl, um eine zufällige der bestimmten Locations auszuwählen, die das ermittelte Essen anbietet
+	// $zufallszahl = mt_rand(0, count($locations) - 1);
 
-		// Zufallszahl, um eine zufällige der bestimmten Locations auszuwählen, die das ermittelte Essen anbietet
-		$zufallszahl = mt_rand(0, count($sqlSelLocRes) - 1);
+	for ($i = 0; $i<count($locations); $i++) {
 
-		// Füge die Location als Abstimmungsergebnis in die Tabelle ein. Wenn es schon ein Ergebnis gibt, überschreibe es.
-		$sqlInsErg = $pdolocal->prepare("INSERT INTO abstimmung_ergebnis (l_ID, datum, g_ID) VALUES (:l_ID, :datum, :g_ID) ON DUPLICATE KEY UPDATE l_ID = :l_ID;");
-		$sqlInsErg->execute(array('l_ID' => $sqlSelLocRes[$zufallszahl]['l_ID'], 'datum' => date("Y-m-d",time()),'g_ID' => $_SESSION['g_ID']));
+		// Ermittle, wie oft die Location für diese Gruppe bisher besucht wurde
+		$sqlSelVerlauf = $pdolocal->prepare("SELECT COUNT(*) FROM abstimmung_ergebnis WHERE l_ID = :l_ID AND g_ID = :g_ID AND datum < :datum ");
+		$sqlSelVerlauf->execute(array('l_ID' => $locations[$i]['l_ID'], 'g_ID' => $_SESSION['g_ID'], 'datum' => date("Y-m-d",time())));
+		$sqlSelVerlaufRes = $sqlSelVerlauf->fetchColumn();
+		error_log("Die Location ".$locations[$i]['l_ID']." mit ".$locations[$i]['masterzahl']." Abstimmungen kam für die Gruppe ".$_SESSION['g_ID']." bisher ".$sqlSelVerlaufRes." Mal vor.");
+
+		$locations[$i]['verlaufzahl'] = $sqlSelVerlaufRes;
+	}
+
+	// Schleife notwendig, um Daten in richtige Form für multisort zu bringen
+	$l_ID = array();
+	$masterzahl = array();
+	$verlaufzahl = array();
+	foreach($locations as $key => $row) {
+		$l_ID[$key] = $row['l_ID'];
+		$verlaufzahl[$key] = $row['verlaufzahl'];
+		$masterzahl[$key] = $row['masterzahl'];
+	}
+
+	// Sortiere die Locations:
+	// 1. nach häufigster Abstimmung, 2. nach geringstem Besuchen der Gruppe, 3. nach Location-ID
+	array_multisort($masterzahl, SORT_DESC, $verlaufzahl, SORT_ASC, $l_ID, SORT_ASC, $locations);
+
+	foreach($locations as $value) {
+		error_log("Location ".$value['l_ID']." hat ".$value['masterzahl']." Abstimmungen.");
+	}
+
+	for ($i = 0; $i<3; $i++) {
+		$result[$i]['l_ID'] = $locations[$i]['l_ID'];
+		$result[$i]['masterzahl'] = $locations[$i]['masterzahl'];
 
 		// Den Namen der Location ermitteln (für die Ausgabe)
 		$sqlSelLocname = $pdolocal->prepare("SELECT name FROM location WHERE l_ID = :l_ID");
-		$sqlSelLocname->execute(array('l_ID' => $sqlSelLocRes[$zufallszahl]['l_ID']));
+		$sqlSelLocname->execute(array('l_ID' => $locations[$i]['l_ID']));
 		$sqlSelLocnameRes = $sqlSelLocname->fetch();
 
-		$result['locname'] = $sqlSelLocnameRes['name'];
-
+		$result[$i]['locname'] = $sqlSelLocnameRes['name'];
 	}
-	//echo json_encode($result);
+	// Füge die Location als Abstimmungsergebnis in die Tabelle ein. Wenn es schon ein Ergebnis gibt, überschreibe es.
+	$sqlInsErg = $pdolocal->prepare("INSERT INTO abstimmung_ergebnis (l_ID, datum, g_ID) VALUES (:l_ID, :datum, :g_ID) ON DUPLICATE KEY UPDATE l_ID = :l_ID;");
+	$sqlInsErg->execute(array('l_ID' => $locations[0]['l_ID'], 'datum' => date("Y-m-d",time()),'g_ID' => $_SESSION['g_ID']));
+
+	echo json_encode($result);
 
 
 }

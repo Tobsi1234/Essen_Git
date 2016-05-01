@@ -29,6 +29,7 @@ require("includes/includeDatabase.php");
 			refDatum = document.getElementById('datum');
 			//refDatum.innerHTML = datum_heute;
 			//$.post('index.php', {variable: datum_heute});
+
 		}
 		// Hole bei jedem Neuladen der Seite die Abstimmung von heute
 		function holeAbstimmungenHeute() {
@@ -72,19 +73,29 @@ require("includes/includeDatabase.php");
 				success : function (data) {
 					// alert(data);
 					var location = JSON.parse(data);
+					var linker = "";
+					// alert(location['abstimmungen']+location[0]['locname']+location[1]['locname']+location[2]['locname']);
+					$('#essenErgebnis').html("");
 
-					// Wenn Abstimmungen vorhanden, aber keine Location für diese Abstimmung da ist
-					if(location['abstimmungen'] === true && location['locname'] === undefined) {
+					// Wenn Abstimmungen vorhanden sind, aber keine Location für diese Abstimmung da ist
+					if(location[0]['abstimmungen'] === true && location[0]['locname'] === undefined) {
 						$('#essenErgebnis').html("<h2>"+"Für diese Abstimmungen existiert leider keine passende Location."+"</h2>");
 					}
 					// Wenn weder Abstimmungen noch Locations da sind
-					else if (location['abstimmungen'] === false){
+					else if (location[0]['abstimmungen'] === false){
 						// do nothing
 					}
-					// Wenn Locations und damit auch Abstimmungen da sind
+
 					else {
-						$('#essenErgebnis').html("<h2>"+"Die heutige Essensempfehlung ist \""+location['locname']+"\""+"</h2>");
+						// Wenn Locations und damit auch Abstimmungen da sind
+							if (location.length > 0)
+								$('#essenErgebnis').append("<h2>"+"Die heutige Essensempfehlung ist \""+location[0]['locname']+"\""+"</h2>");
+							if (location.length > 2)
+								linker = ", "+location[2]['locname'];
+							if (location.length > 1)
+								$('#essenErgebnis').append("<br><h4>Alternative/n: "+location[1]['locname']+linker+"</h4>");
 					}
+
 				}
 			});
 		}
@@ -100,9 +111,7 @@ include ("includes/includeBody.php");
 ?>
 
 
-<script> datum(); //datum init</script>
-<script>holeAbstimmungenHeute();</script>
-<script>berechneErgebnisHeute();</script>
+
 
 <!-- Page Content -->
 <div class="container weiß" id="container" style="display: none">
@@ -134,6 +143,11 @@ include ("includes/includeBody.php");
 		}
 		else { //bereits eine Gruppe
 		?>
+
+		<script> datum(); //datum init</script>
+		<script>holeAbstimmungenHeute();</script>
+		<script>berechneErgebnisHeute();</script>
+
 		<div class="col-md-7">
 			<div id="headline">
 				<h1>Auswertung für Gruppe "<?php echo $gruppenname[0];?>":</h1><br>
