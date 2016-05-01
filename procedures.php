@@ -405,6 +405,7 @@ function calculateErgebnisHeute() {
 	}
 
 	foreach ($abstimmungen as $abst) {
+		error_log("Abstimmung ".$abst);
 		// Hole alle zu den Essen, für die abgestimmt wurde, passenden Locations
 		$sqlSelLoc = $pdolocal->prepare("SELECT l_ID FROM locessen WHERE e_ID = :e_ID");
 		$sqlSelLoc->execute(array('e_ID' => $abst));
@@ -413,6 +414,10 @@ function calculateErgebnisHeute() {
 		foreach($sqlSelLocRes as $value) {
 			$locations[]['l_ID'] = $value['l_ID'];
 		}
+	}
+
+	foreach($locations as $value) {
+		error_log("Hier spricht Location ".$value['l_ID']);
 	}
 	// Entferne mehrfach vorhandene Locations
 	$locations = array_multi_unique($locations);
@@ -426,7 +431,7 @@ function calculateErgebnisHeute() {
 	}
 
 	for($i = 0; $i<count($locations); $i++) {
-		//error_log("Ich komme jetzt zu Location ".$locations[$i]['l_ID']);
+		error_log("Ich komme jetzt zu Location ".$locations[$i]['l_ID']);
 		$masterzahl = 0;
 		//error_log($locations[$i]['l_ID']);
 
@@ -438,11 +443,11 @@ function calculateErgebnisHeute() {
 			if (in_array($value['e_ID'], $abstimmungen)) { $masterzahl = $masterzahl + $häufigkeiten[$value['e_ID']];}
 		}
 		$locations[$i]['masterzahl'] = $masterzahl;
-		//error_log("Die Masterzahl hier ist".$locations[$i]['masterzahl']);
+		error_log("Die Masterzahl hier ist".$locations[$i]['masterzahl']);
 	}
 
 	foreach($locations as $value) {
-		//error_log("Location ".$value['l_ID']." hat ".$value['masterzahl']." Abstimmungen.");
+		error_log("Location ".$value['l_ID']." hat ".$value['masterzahl']." Abstimmungen.");
 	}
 
 	// Gibt dem Array, was am Ende zurückgegeben wird, die Information mit, ob es überhaupt Abstimmungen gegeben hat
@@ -484,7 +489,7 @@ function calculateErgebnisHeute() {
 		error_log("Location ".$value['l_ID']." hat ".$value['masterzahl']." Abstimmungen.");
 	}
 
-	for ($i = 0; $i<3; $i++) {
+	for ($i = 0; $i<3 && $i < count($locations); $i++) {
 		$result[$i]['l_ID'] = $locations[$i]['l_ID'];
 		$result[$i]['masterzahl'] = $locations[$i]['masterzahl'];
 
@@ -500,7 +505,6 @@ function calculateErgebnisHeute() {
 	$sqlInsErg->execute(array('l_ID' => $locations[0]['l_ID'], 'datum' => date("Y-m-d",time()),'g_ID' => $_SESSION['g_ID']));
 
 	echo json_encode($result);
-
 
 }
 
