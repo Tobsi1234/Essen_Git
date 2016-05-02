@@ -83,7 +83,7 @@ require("includes/includeDatabase.php");
 	// zeigt zweiten Selector nur an, wenn erster bereits ausgewählt wurde
 	function validate(){
 
-		if ($('#sonstiges1').is(':checked')){
+		if ($('#sonstiges1').is(':checked') && !$('#top1').is(':checked') && !$('#top2').is(':checked') && !$('#top3').is(':checked')){
 			$('#sonstiges2').css('display', 'inline-block');
 			$('#verfuegbare_essen2').css('display','inline-block');
 
@@ -267,10 +267,15 @@ require("includes/includeDatabase.php");
 						<input class="form-control" type="text" id="name" maxlength="30" value="Name" style="margin-left:20px;" disabled>
 					</div>
 					<script> form_name(); </script> <br><br>
+					<br>
+					<div>
+						<h3><b>Wähle bis zu zwei Essen:</b></h3>
+					</div>
+					<br>
 					<label for=""> Top 3 Essen: </label>
-					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="top1" name="essen" value="top1" style="margin-left:15px; display:none"> <label id="label_top1" for="top1" style="display:none">Top1 </label>
-					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="top2" name="essen" value="top2" style="margin-left:15px; display:none"> <label id="label_top2" for="top2" style="display:none">Top2 </label>
-					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="top3" name="essen" value="top3" style="margin-left:15px; display:none"> <label id="label_top3" for="top3" style="display:none">Top3 </label>
+					<input class="form-control" onclick="validate();countCheckboxes();" type="checkbox" id="top1" name="essen" value="top1" style="margin-left:15px; display:none"> <label id="label_top1" for="top1" style="display:none">Top1 </label>
+					<input class="form-control" onclick="validate();countCheckboxes();" type="checkbox" id="top2" name="essen" value="top2" style="margin-left:15px; display:none"> <label id="label_top2" for="top2" style="display:none">Top2 </label>
+					<input class="form-control" onclick="validate();countCheckboxes();" type="checkbox" id="top3" name="essen" value="top3" style="margin-left:15px; display:none"> <label id="label_top3" for="top3" style="display:none">Top3 </label>
 					<br><label for=""> Weitere Essen: </label>
 					<input class="form-control" onclick="validate();countCheckboxes();" type="checkbox" id="sonstiges1" name="essen" value="Sonstiges1" style="margin-left:15px"> <label for=""></label>
 
