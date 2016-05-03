@@ -67,16 +67,18 @@ require("includes/includeDatabase.php");
 		for (var i=0; i<rObj.length; i++) {
 			if (rObj[i].checked) {
 				if(rObj[i].value == "Sonstiges1") {
-					arr[arr.length] = $('#verfuegbare_essen').val();
+					arr[arr.length] = $('#verfuegbare_essen option:selected').text();
 				}
 				else if(rObj[i].value == "Sonstiges2") {
-					//keine doppelten Werte
-					if($('#verfuegbare_essen2').val() != $('#verfuegbare_essen').val()) arr[arr.length] = $('#verfuegbare_essen2').val();
+					arr[arr.length] = $('#verfuegbare_essen2 option:selected').text();
 				}
 				else {
 					arr[arr.length] = rObj[i].value;
 				}
 			}
+		}
+		if ($('#doppelt').is(':checked')) {
+			arr[1] = arr[0];
 		}
 		return arr;
 	}
@@ -84,7 +86,7 @@ require("includes/includeDatabase.php");
 	// zeigt zweiten Selector nur an, wenn erster bereits ausgewählt wurde
 	function validate(){
 
-		if ($('#sonstiges1').is(':checked') && !$('#top1').is(':checked') && !$('#top2').is(':checked') && !$('#top3').is(':checked')){
+		if ($('#sonstiges1').is(':checked') && !$('#top1').is(':checked') && !$('#top2').is(':checked') && !$('#top3').is(':checked') && !$('#doppelt').is(':checked')){
 			$('#sonstiges2').css('display', 'inline-block');
 			$('#verfuegbare_essen2').css('display','inline-block');
 
@@ -107,7 +109,7 @@ require("includes/includeDatabase.php");
 				}
 			}
 			if (selectBox === 'verfuegbare_essen')
-			$("#verfuegbare_essen2").val(tmp);
+				$("#verfuegbare_essen2").val(tmp);
 		}
 
 
@@ -130,13 +132,17 @@ require("includes/includeDatabase.php");
 		if ($('#top3').is(':checked')) counter += 1;
 		if ($('#sonstiges1').is(':checked')) counter += 1;
 		if ($('#sonstiges2').is(':checked')) counter += 1;
+		if ($('#doppelt').is(':checked')) counter += 1;
 
 		// Button disablen, wenn zu wenig bzw. zu viel Auswahl da ist oder wenn man zweimal dasselbe Essen wählt
-		if(counter > 0 && counter < 3 && !($('#sonstiges1').is(':checked') && $('#sonstiges2').is(':checked') &&
-			$('#verfuegbare_essen option:selected').val() === $('#verfuegbare_essen2 option:selected').val()))  {
+		if(counter > 0 && counter < 3 && !(counter === 1 && $('#doppelt').is(':checked')))  {
 			$('#auswahl_speichern').prop('disabled', false);
 		}
 		else $('#auswahl_speichern').prop('disabled', true);
+
+		if (counter === 1)  $('#doppelt').prop('disabled', false);
+		else $('#doppelt').prop('disabled', true);
+
 	}
 
 	function top3() {
@@ -321,7 +327,7 @@ require("includes/includeDatabase.php");
 					<select class="form-control" id="verfuegbare_essen2" onchange="validate(); coordinateSelects($(this).attr('id')); countCheckboxes();" style="display:none">
 					</select>
 					<br>
-					<input class="form-control" onclick="" type="checkbox" id="doppelt" name="essen" value="doppelt" style=""> <label id="label_doppelt" for="doppelt" style="">Doppelt gewichten</label>
+					<input class="form-control" onclick="validate(); countCheckboxes();" type="checkbox" id="doppelt" name="" value="doppelt" style="" title="Doppelt abstimmen (nur mit einem Essen kombinierbar)"> <label id="label_doppelt" for="doppelt" style=""  title="Doppelt abstimmen (nur mit einem Essen kombinierbar)">Essen doppelt gewichten</label>
 					<br><br>
 					<button type="submit" id="auswahl_speichern" class="btn btn-primary" disabled>Auswahl speichern</button>
 				</form>
