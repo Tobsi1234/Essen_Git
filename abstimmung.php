@@ -101,8 +101,10 @@ require("includes/includeDatabase.php");
 			var tmp = $('#verfuegbare_essen2 option:selected').val();
 			document.getElementById('verfuegbare_essen2').length = 0;
 			for (var i = 0; i < nichtTop3Essen.length; i++) {
-				if (nichtTop3Essen[i] !== $('#verfuegbare_essen option:selected').val())
+				if (nichtTop3Essen[i] !== $('#verfuegbare_essen option:selected').text()) {
+					//alert("Vergleiche "+nichtTop3Essen[i].replace(/ /g,'')+" mit "+($('#verfuegbare_essen option:selected').val()).replace(/ /g,''));
 					$('#verfuegbare_essen2').append("<option value=" + nichtTop3Essen[i] + ">" + nichtTop3Essen[i] + "</option>");
+				}
 			}
 			if (selectBox === 'verfuegbare_essen')
 			$("#verfuegbare_essen2").val(tmp);
@@ -113,7 +115,7 @@ require("includes/includeDatabase.php");
 			tmp = $('#verfuegbare_essen option:selected').val();
 			document.getElementById('verfuegbare_essen').length = 0;
 			for (var i = 0; i < nichtTop3Essen.length; i++) {
-				if (nichtTop3Essen[i] !== $('#verfuegbare_essen2 option:selected').val())
+				if (nichtTop3Essen[i] !== $('#verfuegbare_essen2 option:selected').text())
 					$('#verfuegbare_essen').append("<option value=" + nichtTop3Essen[i] + ">" + nichtTop3Essen[i] + "</option>");
 			}
 			$('#verfuegbare_essen').val(tmp);
@@ -318,6 +320,8 @@ require("includes/includeDatabase.php");
 
 					<select class="form-control" id="verfuegbare_essen2" onchange="validate(); coordinateSelects($(this).attr('id')); countCheckboxes();" style="display:none">
 					</select>
+					<br>
+					<input class="form-control" onclick="" type="checkbox" id="doppelt" name="essen" value="doppelt" style=""> <label id="label_doppelt" for="doppelt" style="">Doppelt gewichten</label>
 					<br><br>
 					<button type="submit" id="auswahl_speichern" class="btn btn-primary" disabled>Auswahl speichern</button>
 				</form>
