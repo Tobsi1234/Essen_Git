@@ -13,6 +13,7 @@ require("includes/includeDatabase.php");
 <script language="javascript"> 
 <!--
 	var name, refEssen, refDatum, refNeu, refMenu1, refVerfügbar, selectedEssen, essen, heute, tag, monat, jahr, datum_heute;
+	var nichtTop3Essen = [];
 	function name_ausgeben() {
 		name = "<?php echo $_SESSION['username'] ?>";
 		u_ID = "<?php echo $_SESSION['userid'] ?>";
@@ -94,6 +95,32 @@ require("includes/includeDatabase.php");
 		}
 	}
 
+	function coordinateSelects(selectBox) {
+
+		if (selectBox === 'verfuegbare_essen' || selectBox === 'start') {
+			var tmp = $('#verfuegbare_essen2 option:selected').val();
+			document.getElementById('verfuegbare_essen2').length = 0;
+			for (var i = 0; i < nichtTop3Essen.length; i++) {
+				if (nichtTop3Essen[i] !== $('#verfuegbare_essen option:selected').val())
+					$('#verfuegbare_essen2').append("<option value=" + nichtTop3Essen[i] + ">" + nichtTop3Essen[i] + "</option>");
+			}
+			if (selectBox === 'verfuegbare_essen')
+			$("#verfuegbare_essen2").val(tmp);
+		}
+
+
+		if (selectBox === 'verfuegbare_essen2') {
+			tmp = $('#verfuegbare_essen option:selected').val();
+			document.getElementById('verfuegbare_essen').length = 0;
+			for (var i = 0; i < nichtTop3Essen.length; i++) {
+				if (nichtTop3Essen[i] !== $('#verfuegbare_essen2 option:selected').val())
+					$('#verfuegbare_essen').append("<option value=" + nichtTop3Essen[i] + ">" + nichtTop3Essen[i] + "</option>");
+			}
+			$('#verfuegbare_essen').val(tmp);
+		}
+
+	}
+
 	function countCheckboxes() {
 		var counter = 0;
 		if ($('#top1').is(':checked')) counter += 1;
@@ -102,7 +129,11 @@ require("includes/includeDatabase.php");
 		if ($('#sonstiges1').is(':checked')) counter += 1;
 		if ($('#sonstiges2').is(':checked')) counter += 1;
 
-		if(counter > 0 && counter < 3) $('#auswahl_speichern').prop('disabled', false);
+		// Button disablen, wenn zu wenig bzw. zu viel Auswahl da ist oder wenn man zweimal dasselbe Essen wählt
+		if(counter > 0 && counter < 3 && !($('#sonstiges1').is(':checked') && $('#sonstiges2').is(':checked') &&
+			$('#verfuegbare_essen option:selected').val() === $('#verfuegbare_essen2 option:selected').val()))  {
+			$('#auswahl_speichern').prop('disabled', false);
+		}
 		else $('#auswahl_speichern').prop('disabled', true);
 	}
 
@@ -150,8 +181,9 @@ require("includes/includeDatabase.php");
 			success: function (data) {
 				var verfuegbare_essen = JSON.parse(data);
 				for(var i=0; i<verfuegbare_essen.length; i++) {
-					$('#verfuegbare_essen').append("<option>" + verfuegbare_essen[i] + "</option>");
-					$('#verfuegbare_essen2').append("<option>" + verfuegbare_essen[i] + "</option>");
+					$('#verfuegbare_essen').append("<option value=" + verfuegbare_essen[i] + ">" + verfuegbare_essen[i] + "</option>");
+					$('#verfuegbare_essen2').append("<option value=" + verfuegbare_essen[i] + ">" + verfuegbare_essen[i] + "</option>");
+					nichtTop3Essen[i] = verfuegbare_essen[i];
 				}
 			}
 		});
@@ -269,22 +301,22 @@ require("includes/includeDatabase.php");
 					<script> form_name(); </script> <br><br>
 					<br>
 					<div>
-						<h3><b>Wähle bis zu zwei Essen:</b></h3>
+						<h3><b>---------------Wähle bis zu zwei Essen---------------</b></h3>
 					</div>
 					<br>
 					<label for=""> Top 3 Essen: </label>
-					<input class="form-control" onclick="validate();countCheckboxes();" type="checkbox" id="top1" name="essen" value="top1" style="margin-left:15px; display:none"> <label id="label_top1" for="top1" style="display:none">Top1 </label>
-					<input class="form-control" onclick="validate();countCheckboxes();" type="checkbox" id="top2" name="essen" value="top2" style="margin-left:15px; display:none"> <label id="label_top2" for="top2" style="display:none">Top2 </label>
-					<input class="form-control" onclick="validate();countCheckboxes();" type="checkbox" id="top3" name="essen" value="top3" style="margin-left:15px; display:none"> <label id="label_top3" for="top3" style="display:none">Top3 </label>
+					<input class="form-control" onclick="validate(); countCheckboxes();" type="checkbox" id="top1" name="essen" value="top1" style="margin-left:15px; display:none"> <label id="label_top1" for="top1" style="display:none">Top1 </label>
+					<input class="form-control" onclick="validate(); countCheckboxes();" type="checkbox" id="top2" name="essen" value="top2" style="margin-left:15px; display:none"> <label id="label_top2" for="top2" style="display:none">Top2 </label>
+					<input class="form-control" onclick="validate(); countCheckboxes();" type="checkbox" id="top3" name="essen" value="top3" style="margin-left:15px; display:none"> <label id="label_top3" for="top3" style="display:none">Top3 </label>
 					<br><label for=""> Weitere Essen: </label>
-					<input class="form-control" onclick="validate();countCheckboxes();" type="checkbox" id="sonstiges1" name="essen" value="Sonstiges1" style="margin-left:15px"> <label for=""></label>
+					<input class="form-control" onclick="validate(); countCheckboxes(); coordinateSelects('start');" type="checkbox" id="sonstiges1" name="essen" value="Sonstiges1" style="margin-left:15px"> <label for=""></label>
 
-					<select class="form-control" id="verfuegbare_essen">
+					<select class="form-control" id="verfuegbare_essen" onchange="validate(); coordinateSelects($(this).attr('id')); countCheckboxes();">
 					</select>
 
-					<input class="form-control" onclick="countCheckboxes();" type="checkbox" id="sonstiges2" name="essen" value="Sonstiges2" style="margin-left:15px; display:none;" >
+					<input class="form-control" onclick="validate(); countCheckboxes();" type="checkbox" id="sonstiges2" name="essen" value="Sonstiges2" style="margin-left:15px; display:none;" >
 
-					<select class="form-control" id="verfuegbare_essen2" style="display:none">
+					<select class="form-control" id="verfuegbare_essen2" onchange="validate(); coordinateSelects($(this).attr('id')); countCheckboxes();" style="display:none">
 					</select>
 					<br><br>
 					<button type="submit" id="auswahl_speichern" class="btn btn-primary" disabled>Auswahl speichern</button>
