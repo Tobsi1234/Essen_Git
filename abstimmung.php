@@ -113,7 +113,7 @@ require("includes/includeDatabase.php");
 		}
 
 
-		if (selectBox === 'verfuegbare_essen2' || selectBox === 'start') {
+		if ((selectBox === 'verfuegbare_essen2') || (selectBox === 'start' && !$('#sonstiges1').is(':checked')) ) {
 			tmp = $('#verfuegbare_essen option:selected').val();
 			document.getElementById('verfuegbare_essen').length = 0;
 			for (var i = 0; i < nichtTop3Essen.length; i++) {
@@ -140,7 +140,7 @@ require("includes/includeDatabase.php");
 		}
 		else $('#auswahl_speichern').prop('disabled', true);
 
-		if (counter === 1)  $('#doppelt').prop('disabled', false);
+		if (counter === 1 || $('#doppelt').is(':checked'))  $('#doppelt').prop('disabled', false);
 		else $('#doppelt').prop('disabled', true);
 
 	}
