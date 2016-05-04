@@ -133,13 +133,14 @@
         });
     }
 
+    function removeBilder() {
+        $('#navbarPages').html("<li><a href=\"#locations\"> <h3>Location hinzufügen</h3></a></li><li><a href=\"#essen\"><h3>Essen hinzufügen</h3></a></li>");
+    }
+
     -->
 </script>
 
-<?php
-require("includes/includeDatabase.php");
-?>
-
+<script> removeBilder();</script>
 <div class="col-md-5">
     <div class="col-md-12">
 
