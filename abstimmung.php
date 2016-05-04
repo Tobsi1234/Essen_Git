@@ -113,7 +113,7 @@ require("includes/includeDatabase.php");
 		}
 
 
-		if (selectBox === 'verfuegbare_essen2') {
+		if (selectBox === 'verfuegbare_essen2' || selectBox === 'start') {
 			tmp = $('#verfuegbare_essen option:selected').val();
 			document.getElementById('verfuegbare_essen').length = 0;
 			for (var i = 0; i < nichtTop3Essen.length; i++) {
