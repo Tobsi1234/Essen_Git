@@ -89,7 +89,7 @@ require("includes/includeDatabase.php");
 					else {
 						// Wenn Locations und damit auch Abstimmungen da sind
 							if (location.length > 0)
-								$('#essenErgebnis').append("<h2>"+"Die heutige Essensempfehlung ist \""+location[0]['locname']+"\""+"</h2>");
+								$('#essenErgebnis').append("<h2 style='text-align: center'>"+"Essensempfehlung heute:</h2><br>"+"<h1 style='text-align: center'>\""+location[0]['locname']+"\""+"</h1>");
 							if (location.length > 2)
 								linker = ", "+location[2]['locname'];
 							if (location.length > 1)
@@ -150,9 +150,9 @@ include ("includes/includeBody.php");
 
 		<div class="col-md-7">
 			<div id="headline">
-				<h1>Auswertung für Gruppe "<?php echo $gruppenname[0];?>":</h1><br>
+				<h1 style="text-align: right">Auswertung für Gruppe "<?php echo $gruppenname[0];?>"</h1><br>
 			</div>
-			<div id="essenErgebnis"> </div><br><br>
+			<div id="essenErgebnis" class="alert alert-success fade in"> </div><br><br>
 			<div id="abstimmungen"></div>
 			<br><br>
 		</div>
