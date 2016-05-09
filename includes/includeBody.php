@@ -77,7 +77,7 @@ if(isset($errorMessage)) {
                         <a href="abstimmung.php">Abstimmung</a>
                     </li>
 					<li class="unterSeiten" style="display: none">
-                        <a href="locationverwaltung.php">Essen hinzufügen</a>
+                        <a href="locationverwaltung.php">Verwaltung</a>
                     </li>
 					<li class="unterSeiten" style="display: none">
                         <a href="verlauf.php">Verlauf</a>

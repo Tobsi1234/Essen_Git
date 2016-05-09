@@ -87,7 +87,7 @@
 
 ?>
 <!-- Passwort ändern -->
-<div class="userchange">
+<div class="userchange weiß">
       <form class="form-horizontal" action="?pwchange=1" method="post">
        <fieldset>
   		<legend>Passwort ändern</legend>
@@ -120,7 +120,7 @@
 </div>
 
 <!-- Benutzerkonto löschen -->
-<div class="userdelete">
+<div class="userdelete weiß">
       <form class="form-horizontal" action="?userdelete=1" method="post">
        <fieldset>
   		<legend>Benutzerkonto löschen</legend>
@@ -141,7 +141,7 @@
             </tbody>
   		</table>
         <p class="labeluser">Ich bin damit einverstanden, dass mein Benutzerkonto endgültig gelöscht wird.</p>
-        <input class="btn btn-default" type="submit" value="löschen" style="float:right; margin-right:8px">
+        <input class="btn btn-danger" type="submit" value="löschen" style="float:right; margin-right:8px">
       </fieldset>
       </form>
 </div>
