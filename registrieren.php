@@ -101,7 +101,7 @@ if(isset($_GET['register'])) {
  
 if($showFormular) {
 ?>
-<div id="register">
+<div class="userchange weiß" id="register">
     <form class="form-horizontal" action="?register=1" method="post">
 	<div class="form-group">
 		<label class="col-lg-4"> Benutzername: </label>
@@ -129,7 +129,7 @@ if($showFormular) {
 	</div>
     <input class="btn btn-default" type="submit" value="Abschicken">
     </form>
-</div> 
+</div>
 <?php
 } //Ende von if($showFormular)
 
