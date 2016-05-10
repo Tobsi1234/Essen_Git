@@ -71,14 +71,16 @@ require("includes/includeDatabase.php");
 				data    : {callFunction: 'calculateErgebnisHeute'},
 				dataType: 'text',
 				success : function (data) {
-					// alert(data);
+					//alert(location[0]['abstimmungen']+" und "+location[0]['locname']);
+					//alert(data);
 					var location = JSON.parse(data);
 					var linker = "";
 					// alert(location['abstimmungen']+location[0]['locname']+location[1]['locname']+location[2]['locname']);
 					$('#essenErgebnis').html("");
 
+					//alert("Am Arsch");
 					// Wenn Abstimmungen vorhanden sind, aber keine Location für diese Abstimmung da ist
-					if(location[0]['abstimmungen'] === true && location[0]['locname'] === undefined) {
+					if(location[0]['abstimmungen'] === true && location[0]['locname'] === false) {
 						$('#essenErgebnis').html("<h2>"+"Für diese Abstimmungen existiert leider keine passende Location."+"</h2>");
 					}
 					// Wenn weder Abstimmungen noch Locations da sind
