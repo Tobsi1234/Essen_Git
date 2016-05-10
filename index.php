@@ -41,24 +41,28 @@ require("includes/includeDatabase.php");
 				success : function (data) {
 					
 					var abstimmungen = JSON.parse(data);
-					
+
 					if(abstimmungen.toString() === '') {
+						$("#essenErgebnis").attr('class', 'alert alert-danger fade in');
 						$('#essenErgebnis').html("<h2>"+"Noch keine Abstimmung für heute vorhanden"+"</h2>");
 					}
+					else {
 
-					$('#abstimmungen').html("");
-					
-					for (var i = 0; i<abstimmungen.length; i++) {
+						$('#abstimmungen').html("");
 
-						if (abstimmungen[i]['essen1'] === abstimmungen[i]['essen2']) {
-							$('#abstimmungen').append("<b>"+abstimmungen[i]['username']+"</b>"+" hat <b>doppelt</b> für das Essen "+"<b>"+abstimmungen[i]['essen1']+"</b>"+"</b>"+" abgestimmt.<br>");
+						for (var i = 0; i < abstimmungen.length; i++) {
+
+							if (abstimmungen[i]['essen1'] === abstimmungen[i]['essen2']) {
+								$('#abstimmungen').append("<h4><b>" + abstimmungen[i]['username'] + "</b>" + " hat <b>doppelt</b> für das Essen " + "<b>" + abstimmungen[i]['essen1'] + "</b>" + "</b>" + " abgestimmt.</h4><br>");
+							}
+							else if (abstimmungen[i]['essen2'] != null) {
+								$('#abstimmungen').append("<h4><b>" + abstimmungen[i]['username'] + "</b>" + " hat für die Essen " + "<b>" + abstimmungen[i]['essen1'] + "</b>" + " und " + "<b>" + abstimmungen[i]['essen2'] + "</b>" + " abgestimmt.</h4><br>");
+							}
+							else {
+								$('#abstimmungen').append("<h4><b>" + abstimmungen[i]['username'] + "</b>" + " hat <b>nur</b> für das Essen " + "<b>" + abstimmungen[i]['essen1'] + "</b>" + "</b>" + " abgestimmt.</h4><br>");
+							}
 						}
-						else if (abstimmungen[i]['essen2'] != null) {
-							$('#abstimmungen').append("<b>"+abstimmungen[i]['username']+"</b>"+" hat für die Essen "+"<b>"+abstimmungen[i]['essen1']+"</b>"+" und "+"<b>"+abstimmungen[i]['essen2']+"</b>"+" abgestimmt.<br>");
-						}
-						else {
-							$('#abstimmungen').append("<b>"+abstimmungen[i]['username']+"</b>"+" hat <b>nur</b> für das Essen "+"<b>"+abstimmungen[i]['essen1']+"</b>"+"</b>"+" abgestimmt.<br>");
-						}
+						berechneErgebnisHeute();
 					}
 				}
 			});
@@ -76,11 +80,11 @@ require("includes/includeDatabase.php");
 					var location = JSON.parse(data);
 					var linker = "";
 					// alert(location['abstimmungen']+location[0]['locname']+location[1]['locname']+location[2]['locname']);
-					$('#essenErgebnis').html("");
 
 					//alert("Am Arsch");
 					// Wenn Abstimmungen vorhanden sind, aber keine Location für diese Abstimmung da ist
 					if(location[0]['abstimmungen'] === true && location[0]['locname'] === false) {
+						$("#essenErgebnis").attr('class', 'alert alert-danger fade in');
 						$('#essenErgebnis').html("<h2>"+"Für diese Abstimmungen existiert leider keine passende Location."+"</h2>");
 					}
 					// Wenn weder Abstimmungen noch Locations da sind
@@ -90,12 +94,12 @@ require("includes/includeDatabase.php");
 
 					else {
 						// Wenn Locations und damit auch Abstimmungen da sind
-							if (location.length > 0)
-								$('#essenErgebnis').append("<h2 style='text-align: center'>"+"Essensempfehlung heute:</h2><br>"+"<h1 style='text-align: center'>\""+location[0]['locname']+"\""+"</h1>");
-							if (location.length > 2)
-								linker = ", "+location[2]['locname'];
-							if (location.length > 1)
-								$('#essenErgebnis').append("<br><h4>Alternative/n: "+location[1]['locname']+linker+"</h4>");
+						if (location.length > 0)
+							$('#essenErgebnis').append("<h2 style='text-align: center'>"+"Essensempfehlung heute:</h2><br>"+"<h1 style='text-align: center'>\""+location[0]['locname']+"\""+"</h1>");
+						if (location.length > 2)
+							linker = ", "+location[2]['locname'];
+						if (location.length > 1)
+							$('#essenErgebnis').append("<br><hr><h4>Alternative/n: "+location[1]['locname']+linker+"</h4>");
 					}
 
 				}
@@ -148,13 +152,12 @@ include ("includes/includeBody.php");
 
 		<script> datum(); //datum init</script>
 		<script>holeAbstimmungenHeute();</script>
-		<script>berechneErgebnisHeute();</script>
 
 		<div class="col-md-7">
-			<div id="headline">
-				<h1 style="text-align: right">Auswertung für Gruppe "<?php echo $gruppenname[0];?>"</h1><br>
+			<div id="headline" style="text-align:center;">
+				<h1>Auswertung für Gruppe "<?php echo $gruppenname[0];?>"</h1><br>
 			</div>
-			<div id="essenErgebnis" class="alert alert-success fade in"> </div><br><br>
+			<div id="essenErgebnis" class="alert alert-success fade in"> </div><br>
 			<div id="abstimmungen"></div>
 			<br><br>
 		</div>
