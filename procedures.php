@@ -454,6 +454,7 @@ function calculateErgebnisHeute() {
 	$result = array();
 	if (count($sqlSelAbstHeuteRes) === 0) {
 		$result[0]['abstimmungen'] = false;
+		$result[0]['locname'] = false;
 	}
 	else $result[0]['abstimmungen'] = true;
 
@@ -489,6 +490,7 @@ function calculateErgebnisHeute() {
 		error_log("Location ".$value['l_ID']." hat ".$value['masterzahl']." Abstimmungen.");
 	}
 
+
 	for ($i = 0; $i<3 && $i < count($locations); $i++) {
 		$result[$i]['l_ID'] = $locations[$i]['l_ID'];
 		$result[$i]['masterzahl'] = $locations[$i]['masterzahl'];
@@ -501,9 +503,15 @@ function calculateErgebnisHeute() {
 		$result[$i]['locname'] = $sqlSelLocnameRes['name'];
 	}
 	// Füge die Location als Abstimmungsergebnis in die Tabelle ein. Wenn es schon ein Ergebnis gibt, überschreibe es.
-	$sqlInsErg = $pdolocal->prepare("INSERT INTO abstimmung_ergebnis (l_ID, datum, g_ID) VALUES (:l_ID, :datum, :g_ID) ON DUPLICATE KEY UPDATE l_ID = :l_ID;");
-	$sqlInsErg->execute(array('l_ID' => $locations[0]['l_ID'], 'datum' => date("Y-m-d",time()),'g_ID' => $_SESSION['g_ID']));
+	if (count($locations) > 0) {
+		$sqlInsErg = $pdolocal->prepare("INSERT INTO abstimmung_ergebnis (l_ID, datum, g_ID) VALUES (:l_ID, :datum, :g_ID) ON DUPLICATE KEY UPDATE l_ID = :l_ID;");
+		$sqlInsErg->execute(array('l_ID' => $locations[0]['l_ID'], 'datum' => date("Y-m-d",time()),'g_ID' => $_SESSION['g_ID']));
+	}
+	else {
+		$result[0]['locname'] = false;
+	}
 
+	error_log("Debug-Ausgabe: ".$result[0]['abstimmungen']." und ".$result[0]['locname']);
 	echo json_encode($result);
 
 }
