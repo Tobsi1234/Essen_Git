@@ -29,7 +29,12 @@
 	<!-- Page Swapper Ajax -->
 	<script type="text/javascript" src="js/pages.js"></script>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script type="text/javascript" src="js/graph/raphael-min.js"></script>
+	<script type="text/javascript" src="js/graph/dracula_graffle.js"></script>
+	<script type="text/javascript" src="js/graph/dracula_graph.js"></script>
+
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
