@@ -61,16 +61,17 @@
                 error = true;
             }
         }
-        if (meinEssen && box.options.length < 10 && error == false) {
-            element = document.createElement("option");
-            element.appendChild(document.createTextNode(meinEssen));
-            box.appendChild(element);
-            $('#gewählt').css('display', 'table-row');
+        if(!error) {
+            if (meinEssen && box.options.length < 10) {
+                element = document.createElement("option");
+                element.appendChild(document.createTextNode(meinEssen));
+                box.appendChild(element);
+                $('#gewählt').css('display', 'table-row');
+            }
+            else {
+                alert("Höchstens 10 Essen pro Location möglich");
+            }
         }
-        else {
-            alert("Höchstens 10 Essen pro Location, keine doppelten Essen und keine leeren Essen hinzufügen, bitte!!");
-        }
-
         return false;
     }
 
