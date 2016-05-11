@@ -86,80 +86,68 @@
 	});
 	
 	function chat_speichern() {
-		if (window.XMLHttpRequest) {
-			XMLreq = new XMLHttpRequest();
-		} else if (window.ActiveXObject) {
-			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
-		}
 		refChatEingabe = document.forms['formChat'].nachricht;
 		nachricht = refChatEingabe.value;
-		if(nachricht) {
-			URL = 'chat_speichern.php?nachricht=' + nachricht + '&name=' + name;
-			XMLreq.open('GET', URL, false); 
-			XMLreq.send(null);
-		
-			//alert(name + " hat " + nachricht + " hinzugefügt. Danke!");
-			chat_laden();
-			refChatEingabe.value = "";
-		}
-		else {
-			//alert("Keine Nachricht :( ");
+		if (nachricht) {
+
+			$.ajax({
+				type: "POST",
+				url: "procedures.php",
+				data: {callFunction: 'chat_speichern', nachricht: nachricht},
+				dataType: 'text',
+				success: function (data) {
+					chat_laden();
+					refChatEingabe.value = "";
+				}
+			});
 		}
 		return false;
 	}
-	
-	function chat_laden() {
+
+		function chat_laden() {
 		refChatAusgabe = document.getElementById('chat_ausgabe');
 
-		if (window.XMLHttpRequest) {
-			XMLreq = new XMLHttpRequest();
-		} else if (window.ActiveXObject) {
-			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		XMLreq.open('GET','chat_laden.php',false);
-		XMLreq.send();
-		if (XMLreq.readyState==4 && XMLreq.status==200) {
-			json1 = XMLreq.responseText;
-			json2 = JSON.parse(json1);
-			refChatAusgabe.innerHTML = "";
-			for(var i=0; i<Object.keys(json2).length; i++) {
-				json3 = JSON.parse(json2[i]);
-				refChatAusgabe.innerHTML += "<b>" + json3.name + "</b>: " + json3.nachricht + "<br>" + "<p style=\"font-size: 10px\" > am: " + json3.ts + "</p>";
+		$.ajax({
+			type: "POST",
+			url: "procedures.php",
+			data: {callFunction: 'chat_laden'},
+			dataType: 'text',
+			success:function(data) {
+				json1 = JSON.parse(data);
+				refChatAusgabe.innerHTML = "";
+				for(var i=0; i<Object.keys(json1).length; i++) {
+					json2 = JSON.parse(json1[i]);
+					refChatAusgabe.innerHTML += "<b>" + json2.name + "</b>: " + json2.nachricht + "<br>" + "<p style=\"font-size: 10px\" > am: " + json2.ts + "</p>";
+				}
+				json2 = JSON.parse(json1[Object.keys(json1).length - 1]);
+				scrollen();
 			}
-			json3 = JSON.parse(json2[Object.keys(json2).length - 1]);
-		}
-		scrollen();
+		});
 	}
-	
+
 	function chat_nachladen() {
 		refChatAusgabe = document.getElementById('chat_ausgabe');
 
-		if (window.XMLHttpRequest) {
-			XMLreq = new XMLHttpRequest();
-		} else if (window.ActiveXObject) {
-			XMLreq = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-
-		XMLreq.onreadystatechange=function() {
-			if (XMLreq.readyState==4 && XMLreq.status==200) {
-				jsonNeu1 = XMLreq.responseText;
-				jsonNeu2 = JSON.parse(jsonNeu1);
-				var jsonTest = json3.nachricht;
-				jsonNeu3 = JSON.parse(jsonNeu2[Object.keys(jsonNeu2).length - 1]);
-				if (jsonTest != jsonNeu3.nachricht) {
+		$.ajax({
+			type: "POST",
+			url: "procedures.php",
+			data: {callFunction: 'chat_laden'},
+			dataType: 'text',
+			success:function(data) {
+				jsonNeu1 = JSON.parse(data);
+				var jsonTest = json2.nachricht;
+				jsonNeu2 = JSON.parse(jsonNeu1[Object.keys(jsonNeu1).length - 1]);
+				if (jsonTest != jsonNeu2.nachricht) {
 					refChatAusgabe.innerHTML = "";
-					chat_laden();					
-					//window.setTimeout(scrollen, 100);
+					chat_laden();
 				}
+				window.setTimeout(chat_nachladen, 500);
 			}
-		}
-		XMLreq.open('GET','chat_laden.php',true);
-		XMLreq.send();
-		window.setTimeout(chat_nachladen, 500);
+		});
 	}
 		
 	function chat_verspätet() {
-		window.setTimeout(chat_nachladen, 500);
+		window.setTimeout(chat_nachladen, 1000);
 	}
 	
 	function scrollen() {
@@ -169,9 +157,7 @@
 		}
 	}
 	
-	function scrollen_verspätet(){
-		window.setTimeout(scrollen, 200);
-	}</script>
+	</script>
 
 </head>
 </html>

@@ -13,7 +13,7 @@ require("includes/includeDatabase.php");
 	<script language="javascript">
 		<!--
 
-		var XMLreq, name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht, json1, json2, json3, jsonNeu2, jsonNeu2, jsonNeu3;
+		var name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht, json1, json2, jsonNeu1, jsonNeu2;
 		var essenNamen = [];
 		function name_ausgeben() { //session in js variable speichern
 			name = "<?php if(isset($_SESSION['username']))echo $_SESSION['username'] ?>";
@@ -233,7 +233,9 @@ include ("includes/includeBody.php");
 		<?php
 		if(!isset($g_ID[0])) { //noch keine Gruppe?
 		?>
-			<h1>Bitte gründe eine Gruppe!</h1>
+		<h1>Herzlich Willkommen auf wir-haben-hunger.ddns.net</h1>
+		<br><br>
+		<h2>Um richtig loszulegen, gründe eine Gruppe und lass dich von Freunden einladen.</h2>
 
 		<?php
 		}
@@ -269,7 +271,6 @@ include ("includes/includeBody.php");
 		<script>
 			chat_laden(); // läd chat jede sekunde neu.
 			chat_verspätet();
-			scrollen_verspätet();
 		</script>
 			<div id="canvas"></div>
 
@@ -281,9 +282,10 @@ include ("includes/includeBody.php");
 	<br><br>
 
 </div>
-<div id="loggedOutSeite" style="display: none">
-	<h1> Willkommen </h1>
-	<h2> Bitte logge dich ein :) </h2>
+<div class="container weiß" id="loggedOutSeite" style="display: none">
+	<h1> Willkommen auf wir-haben-hunger.ddns.net</h1>
+	<br><br>
+	<h2> Jetzt schnell kostenlos <a href="registrieren.php"> registrieren</a>!</h2>
 </div>
 
 <?php
