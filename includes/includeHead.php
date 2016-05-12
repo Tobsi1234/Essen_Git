@@ -29,11 +29,7 @@
 	<!-- Page Swapper Ajax -->
 	<script type="text/javascript" src="js/pages.js"></script>
 
-	<script type="text/javascript" src="js/graph/raphael-min.js"></script>
-	<script type="text/javascript" src="js/graph/dracula_graffle.js"></script>
-	<script type="text/javascript" src="js/graph/dracula_graph.js"></script>
-
-
+	
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -115,12 +111,25 @@
 			success:function(data) {
 				json1 = JSON.parse(data);
 				refChatAusgabe.innerHTML = "";
+				if(Object.keys(json1).length > 40) deleteOldMsgs();
 				for(var i=0; i<Object.keys(json1).length; i++) {
 					json2 = JSON.parse(json1[i]);
 					refChatAusgabe.innerHTML += "<b>" + json2.name + "</b>: " + json2.nachricht + "<br>" + "<p style=\"font-size: 10px\" > am: " + json2.ts + "</p>";
 				}
 				json2 = JSON.parse(json1[Object.keys(json1).length - 1]);
 				scrollen();
+			}
+		});
+	}
+
+	function deleteOldMsgs() {
+		$.ajax({
+			type: "POST",
+			url: "procedures.php",
+			data: {callFunction: 'chat_delete'},
+			dataType: 'text',
+			success: function (data) {
+
 			}
 		});
 	}

@@ -9,6 +9,31 @@ require("includes/includeDatabase.php");
 	<?php
 	include ("includes/includeHead.php");
 	?>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+
+	<style>
+
+		.node {
+			cursor: pointer;
+		}
+
+		.node circle {
+			fill: #fff;
+			stroke: steelblue;
+			stroke-width: 3px;
+		}
+
+		.node text {
+			font: 14px sans-serif;
+		}
+
+		.link {
+			fill: none;
+			stroke: #ccc;
+			stroke-width: 2px;
+		}
+
+	</style>
 
 	<script language="javascript">
 		<!--
@@ -31,6 +56,9 @@ require("includes/includeDatabase.php");
 			//$.post('index.php', {variable: datum_heute});
 
 		}
+
+		var redraw, g, renderer;
+
 		// Hole bei jedem Neuladen der Seite die Abstimmung von heute
 		function holeAbstimmungenHeute() {
 			$.ajax({
@@ -48,6 +76,10 @@ require("includes/includeDatabase.php");
 					}
 					else {
 
+						// quelle: http://dracula.ameisenbar.de/
+
+
+
 						$('#abstimmungen').html("");
 
 						for (var i = 0; i < abstimmungen.length; i++) {
@@ -62,6 +94,7 @@ require("includes/includeDatabase.php");
 								$('#abstimmungen').append("<h4><b>" + abstimmungen[i]['username'] + "</b>" + " hat <b>nur</b> für das Essen " + "<b>" + abstimmungen[i]['essen1'] + "</b>" + "</b>" + " abgestimmt.</h4><br>");
 							}
 						}
+
 						berechneErgebnisHeute();
 					}
 				}
@@ -107,101 +140,45 @@ require("includes/includeDatabase.php");
 		}
 
 
-		var redraw, g, renderer;
 
-		/* only do all this when document has finished loading (needed for RaphaelJS) */
-		window.onload = function() {
+		var treeData = [
+			{
+				"name": "Abstimmungen",
+				"children": [
+					{
+						"name": "Tobsi",
+						"children": [
+							{
+								"name": "Döner"
+							},
+							{
+								"name": "Pizza"
+							}
+						]
+					},
+					{
+						"name": "Domi",
+						"children": [
+							{
+								"name": "Döner"
+							},
+							{
+								"name": "Pizza"
+							}
+						]
+					}
+				]
 
-			var width = $(document).width() - 200;
-			var height = $(document).height() - 300;
+			}
+		];
 
-			g = new Graph();
-
-			/* add a simple node */
-
-			/* add a node with a customized label */
-			g.addNode("1", { label : "Tomato" });
-
-
-			/* add a node with a customized shape
-			 (the Raphael graph drawing implementation can draw this shape, please
-			 consult the RaphaelJS reference for details http://raphaeljs.com/) */
-//    var render = function(r, n) {
-//        var label = r.text(0, 30, n.label).attr({opacity:0});
-			/* the Raphael set is obligatory, containing all you want to display */
-//        var set = r.set().push(
-//            r.rect(-30, -13, 62, 86).attr({"fill": "#fa8", "stroke-width": 2, r : "9px"}))
-//            .push(label);
-			/* make the label show only on hover */
-//        set.hover(function(){ label.animate({opacity:1,"fill-opacity":1}, 500); }, function(){ label.animate({opacity:0},300); });
-
-//        tooltip = r.set()
-//            .push(
-//                r.rect(0, 0, 90, 30).attr({"fill": "#fec", "stroke-width": 1, r : "9px"})
-//            ).push(
-//                r.text(25, 15, "overlay").attr({"fill": "#000000"})
-//            );
-//        for(i in set.items) {
-//            set.items[i].tooltip(tooltip);
-//        };
-//	//            set.tooltip(r.set().push(r.rect(0, 0, 30, 30).attr({"fill": "#fec", "stroke-width": 1, r : "9px"})).hide());
-//        return set;
-//    };
-
-
-			st = { directed: true, label : "Label",
-				"label-style" : {
-					"font-size": 20
-				}
-			};
-			g.addEdge("kiwi", "penguin", st);
-
-			/* connect nodes with edges */
-			g.addEdge("strawberry", "cherry");
-			g.addEdge("cherry", "apple");
-			g.addEdge("cherry", "apple")
-			g.addEdge("1", "id35");
-			g.addEdge("penguin", "id35");
-			g.addEdge("penguin", "apple");
-			g.addEdge("kiwi", "id35");
-
-			/* a directed connection, using an arrow */
-			g.addEdge("1", "cherry", { directed : true } );
-
-			/* customize the colors of that edge */
-			g.addEdge("id35", "apple", { stroke : "#bfa" , fill : "#56f", label : "Meat-to-Apple" });
-
-			/* add an unknown node implicitly by adding an edge */
-			g.addEdge("strawberry", "apple");
-
-			g.removeNode("1");
-
-			/* layout the graph using the Spring layout implementation */
-			var layouter = new Graph.Layout.Spring(g);
-
-			/* draw the graph using the RaphaelJS draw implementation */
-			renderer = new Graph.Renderer.Raphael('canvas', g, width, height);
-
-			redraw = function() {
-				layouter.layout();
-				renderer.draw();
-			};
-			hide = function(id) {
-				g.nodes[id].hide();
-			};
-			show = function(id) {
-				g.nodes[id].show();
-			};
-			//    console.log(g.nodes["kiwi"]);
-		};
 
 
 
 		-->
+
 	</script>
 </head>
-<body>
-
 <?php
 include ("includes/includeBody.php");
 ?>
@@ -235,7 +212,7 @@ include ("includes/includeBody.php");
 		?>
 		<h1>Herzlich Willkommen auf wir-haben-hunger.ddns.net</h1>
 		<br><br>
-		<h2>Um richtig loszulegen, gründe eine Gruppe und lass dich von Freunden einladen.</h2>
+		<h2>Um richtig loszulegen, gründe eine Gruppe oder lass dich von Freunden einladen.</h2>
 
 		<?php
 		}
@@ -244,13 +221,15 @@ include ("includes/includeBody.php");
 
 		<script> datum(); //datum init</script>
 		<script>holeAbstimmungenHeute();</script>
-
+		<div class="col-md-12">
 		<div class="col-md-7">
 			<div id="headline" style="text-align:center;">
 				<h1>Auswertung für Gruppe "<?php echo $gruppenname[0];?>"</h1><br>
 			</div>
 			<div id="essenErgebnis" class="alert alert-success fade in"> </div><br>
-			<div id="abstimmungen"></div>
+			<div id="abstimmungenTree" style="margin-top: -50px"></div>
+			<div id="abstimmungen" style="margin-top: -50px"></div>
+
 			<br><br>
 		</div>
 
@@ -268,12 +247,139 @@ include ("includes/includeBody.php");
 				</div>
 			</div>
 		</div>
+		</div>
 		<script>
 			chat_laden(); // läd chat jede sekunde neu.
 			chat_verspätet();
 		</script>
-			<div id="canvas"></div>
+			<script>
 
+				// ************** Generate the tree diagram	 *****************
+				var margin = {top: 20, right: 120, bottom: 20, left: 120},
+					width = 960 - margin.right - margin.left,
+					height = 500 - margin.top - margin.bottom;
+
+				var i = 0,
+					duration = 750,
+					root;
+
+				var tree = d3.layout.tree()
+					.size([height, width]);
+
+				var diagonal = d3.svg.diagonal()
+					.projection(function(d) { return [d.y, d.x]; });
+
+				var svg = d3.select("#abstimmungenTree").append("svg")
+					.attr("width", width + margin.right + margin.left)
+					.attr("height", height + margin.top + margin.bottom)
+					.append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+				root = treeData[0];
+				root.x0 = height / 2;
+				root.y0 = 0;
+
+				update(root);
+
+				function update(source) {
+
+					// Compute the new tree layout.
+					var nodes = tree.nodes(root).reverse(),
+						links = tree.links(nodes);
+
+					// Normalize for fixed-depth.
+					nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+					// Update the nodes…
+					var node = svg.selectAll("g.node")
+						.data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+					// Enter any new nodes at the parent's previous position.
+					var nodeEnter = node.enter().append("g")
+						.attr("class", "node")
+						.attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+						.on("click", click);
+
+					nodeEnter.append("circle")
+						.attr("r", 1e-6)
+						.style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+					nodeEnter.append("text")
+						.attr("x", function(d) { return d.children || d._children ? -13 : 13; })
+						.attr("dy", ".35em")
+						.attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+						.text(function(d) { return d.name; })
+						.style("fill-opacity", 1e-6);
+
+					// Transition nodes to their new position.
+					var nodeUpdate = node.transition()
+						.duration(duration)
+						.attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+					nodeUpdate.select("circle")
+						.attr("r", 10)
+						.style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+					nodeUpdate.select("text")
+						.style("fill-opacity", 1);
+
+					// Transition exiting nodes to the parent's new position.
+					var nodeExit = node.exit().transition()
+						.duration(duration)
+						.attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+						.remove();
+
+					nodeExit.select("circle")
+						.attr("r", 1e-6);
+
+					nodeExit.select("text")
+						.style("fill-opacity", 1e-6);
+
+					// Update the links…
+					var link = svg.selectAll("path.link")
+						.data(links, function(d) { return d.target.id; });
+
+					// Enter any new links at the parent's previous position.
+					link.enter().insert("path", "g")
+						.attr("class", "link")
+						.attr("d", function(d) {
+							var o = {x: source.x0, y: source.y0};
+							return diagonal({source: o, target: o});
+						});
+
+					// Transition links to their new position.
+					link.transition()
+						.duration(duration)
+						.attr("d", diagonal);
+
+					// Transition exiting nodes to the parent's new position.
+					link.exit().transition()
+						.duration(duration)
+						.attr("d", function(d) {
+							var o = {x: source.x, y: source.y};
+							return diagonal({source: o, target: o});
+						})
+						.remove();
+
+					// Stash the old positions for transition.
+					nodes.forEach(function(d) {
+						d.x0 = d.x;
+						d.y0 = d.y;
+					});
+				}
+
+				// Toggle children on click.
+				function click(d) {
+					if (d.children) {
+						d._children = d.children;
+						d.children = null;
+					} else {
+						d.children = d._children;
+						d._children = null;
+					}
+					update(d);
+				}
+			</script>
 			<?php
 		} //ende php abfrage
 		?>
