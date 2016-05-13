@@ -179,6 +179,7 @@ require("includes/includeDatabase.php");
 
 	</script>
 </head>
+<body>
 <?php
 include ("includes/includeBody.php");
 ?>

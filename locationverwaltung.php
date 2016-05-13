@@ -19,7 +19,6 @@ require("includes/includeDatabase.php");
 include("includes/includeBody.php");
 ?>
 <!-- Page Content -->
-<div class="">
         <div id="main" class="container weiß">
             <ul class="nav navbar-nav" id="navbarPages">
                 <li><a href="#locations"><img src="https://cdn.aldingerwolf.com/wp-content/uploads/2012/06/Stuttgart_Europaviertel_2.jpg" style="height: 250px; weight: 300px;"><br> <h3>Location hinzufügen</h3></a></li>
@@ -31,7 +30,6 @@ include("includes/includeBody.php");
             </div>
         </div>
         <div class="clear"></div>
-</div>
 
 <?php
 include("includes/includeFooter.php");
