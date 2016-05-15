@@ -1,7 +1,22 @@
 // ************** Generate the tree diagram	 *****************
-var margin = {top: 20, right: 120, bottom: 20, left: 120},
+var currentDiv = "#abstimmungenTree";
+function generateTree(pTreeData) {
+
+	for (var index = 0; index<pTreeData.length; index++) {
+
+		//$('#contentAbstimmungen').append("<div id='abstimmungenTree"+index+"' style='margin-top: -50px' </div>");
+		
+		root = pTreeData[index];
+		root.x0 = height / 2;
+		root.y0 = 0;
+
+		update(root);
+	}
+
+}
+var margin = {top: 120, right: 120, bottom: 120, left: 120},
 	width = 960 - margin.right - margin.left,
-	height = 500 - margin.top - margin.bottom;
+	height = 400 - margin.top - margin.bottom;
 
 var i = 0,
 	duration = 750,
@@ -10,29 +25,25 @@ var i = 0,
 var tree = d3.layout.tree()
 	.size([height, width]);
 
-var diagonal = d3.svg.diagonal()
-	.projection(function(d) { return [d.y, d.x]; });
-
-var svg = d3.select("#abstimmungenTree").append("svg")
-	.attr("width", width + margin.right + margin.left)
-	.attr("height", height + margin.top + margin.bottom)
-	.append("g")
-	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-root = treeData[0];
-root.x0 = height / 2;
-root.y0 = 0;
-
-update(root);
+generateTree();
 
 function update(source) {
+
+	var diagonal = d3.svg.diagonal()
+		.projection(function(d) { return [d.y, d.x]; });
+
+	var svg = d3.select(currentDiv).append("svg")
+		.attr("width", width + margin.right + margin.left)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 	// Compute the new tree layout.
 	var nodes = tree.nodes(root).reverse(),
 		links = tree.links(nodes);
 
 	// Normalize for fixed-depth.
-	nodes.forEach(function(d) { d.y = d.depth * 180; });
+	nodes.forEach(function(d) { d.y = d.depth * 150; });
 
 	// Update the nodes…
 	var node = svg.selectAll("g.node")
@@ -114,12 +125,12 @@ function update(source) {
 
 // Toggle children on click.
 function click(d) {
-	if (d.children) {
+	/*if (d.children) {
 		d._children = d.children;
 		d.children = null;
 	} else {
 		d.children = d._children;
 		d._children = null;
 	}
-	update(d);
+	update(d);*/
 }

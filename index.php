@@ -40,6 +40,7 @@ require("includes/includeDatabase.php");
 
 		var name, refDatum, refEssenErgebnis, refNeu, refChatAusgabe, refChatEingabe, essen, heute, tag, monat, jahr, datum_heute, nachricht, json1, json2, jsonNeu1, jsonNeu2;
 		var essenNamen = [];
+
 		function name_ausgeben() { //session in js variable speichern
 			name = "<?php if(isset($_SESSION['username']))echo $_SESSION['username'] ?>";
 			//alert("Hallo " + name);
@@ -61,6 +62,7 @@ require("includes/includeDatabase.php");
 
 		// Hole bei jedem Neuladen der Seite die Abstimmung von heute
 		function holeAbstimmungenHeute() {
+
 			$.ajax({
 				type    : "POST",
 				url     : "procedures.php",
@@ -69,6 +71,7 @@ require("includes/includeDatabase.php");
 				success : function (data) {
 					
 					var abstimmungen = JSON.parse(data);
+					var treeData = [];
 
 					if(abstimmungen.toString() === '') {
 						$("#essenErgebnis").attr('class', 'alert alert-danger fade in');
@@ -80,11 +83,15 @@ require("includes/includeDatabase.php");
 
 
 
-						$('#abstimmungen').html("");
+						//$('#abstimmungen').html("");
 
 						for (var i = 0; i < abstimmungen.length; i++) {
 
-							if (abstimmungen[i]['essen1'] === abstimmungen[i]['essen2']) {
+							var username = abstimmungen[i]['username'];
+							var essen1 = abstimmungen[i]['essen1'];
+
+							if (abstimmungen[i]['essen2'] != null) var essen2 = abstimmungen[i]['essen2'];
+							/*if (abstimmungen[i]['essen1'] === abstimmungen[i]['essen2']) {
 								$('#abstimmungen').append("<h4><b>" + abstimmungen[i]['username'] + "</b>" + " hat <b>doppelt</b> für das Essen " + "<b>" + abstimmungen[i]['essen1'] + "</b>" + "</b>" + " abgestimmt.</h4><br>");
 							}
 							else if (abstimmungen[i]['essen2'] != null) {
@@ -92,9 +99,23 @@ require("includes/includeDatabase.php");
 							}
 							else {
 								$('#abstimmungen').append("<h4><b>" + abstimmungen[i]['username'] + "</b>" + " hat <b>nur</b> für das Essen " + "<b>" + abstimmungen[i]['essen1'] + "</b>" + "</b>" + " abgestimmt.</h4><br>");
-							}
-						}
+							}*/
 
+							treeData[i] = [];
+							treeData[i]['name'] = username;
+							treeData[i]['children'] = [];
+							treeData[i]['children'][0] = [];
+							treeData[i]['children'][0]['name'] = essen1;
+							if (abstimmungen[i]['essen2'] != null) {
+								treeData[i]['children'][1] = [];
+								treeData[i]['children'][1]['name'] = essen2;
+							}
+
+							/*alert(treeData[i]['name']);
+							alert(treeData[i]['children'][0]);
+							alert(treeData[i]['children'][1]);*/
+						}
+						generateTree(treeData);
 						berechneErgebnisHeute();
 					}
 				}
@@ -138,42 +159,6 @@ require("includes/includeDatabase.php");
 				}
 			});
 		}
-
-
-
-		var treeData = [
-			{
-				"name": "Abstimmungen",
-				"children": [
-					{
-						"name": "Tobsi",
-						"children": [
-							{
-								"name": "Döner"
-							},
-							{
-								"name": "Pizza"
-							}
-						]
-					},
-					{
-						"name": "Domi",
-						"children": [
-							{
-								"name": "Döner"
-							},
-							{
-								"name": "Pizza"
-							}
-						]
-					}
-				]
-
-			}
-		];
-
-
-
 
 		-->
 
@@ -223,13 +208,13 @@ include ("includes/includeBody.php");
 		<script> datum(); //datum init</script>
 		<script>holeAbstimmungenHeute();</script>
 		<div class="col-md-12">
-		<div class="col-md-7">
+		<div class="col-md-7" id="contentAbstimmungen">
 			<div id="headline" style="text-align:center;">
 				<h1>Auswertung für Gruppe "<?php echo $gruppenname[0];?>"</h1><br>
 			</div>
 			<div id="essenErgebnis" class="alert alert-success fade in"> </div><br>
 			<div id="abstimmungenTree" style="margin-top: -50px"></div>
-			<div id="abstimmungen" style="margin-top: -50px"></div>
+			<!--<div id="abstimmungen" style="margin-top: -50px"></div>-->
 
 			<br><br>
 		</div>
@@ -255,6 +240,7 @@ include ("includes/includeBody.php");
 		</script>
  	
 		<script src="js/tree.js"></script>
+		<script>//generateTree(treeData);</script>
 			<?php
 		} //ende php abfrage
 		?>
