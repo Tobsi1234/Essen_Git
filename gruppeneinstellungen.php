@@ -136,7 +136,8 @@ else {
 			?>
 			<div class="info">
 				<legend>Gruppeneinstellungen</legend>
-				Auf dieser Seite kann eine Gruppe angelegt und Mitglieder hinzugefügt werden.
+				Auf dieser Seite kann man Gruppenmitglieder hinzufügen oder aus der Gruppe austreten.
+				Tritt der Gruppenadmin aus, wird die Gruppe gelöscht.
 			</div>
 			<br>
 			<div class="form-horizontal">

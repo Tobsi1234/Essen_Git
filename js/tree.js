@@ -14,9 +14,9 @@ function generateTree(pTreeData) {
 	}
 
 }
-var margin = {top: 120, right: 120, bottom: 120, left: 120},
+var margin = {top: 0, right: 100, bottom: 0, left: 100},
 	width = 960 - margin.right - margin.left,
-	height = 400 - margin.top - margin.bottom;
+	height = 200 - margin.top - margin.bottom;
 
 var i = 0,
 	duration = 750,

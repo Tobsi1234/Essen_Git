@@ -79,10 +79,6 @@ require("includes/includeDatabase.php");
 					}
 					else {
 
-						// quelle: http://dracula.ameisenbar.de/
-
-
-
 						//$('#abstimmungen').html("");
 
 						for (var i = 0; i < abstimmungen.length; i++) {
@@ -213,7 +209,7 @@ include ("includes/includeBody.php");
 				<h1>Auswertung für Gruppe "<?php echo $gruppenname[0];?>"</h1><br>
 			</div>
 			<div id="essenErgebnis" class="alert alert-success fade in"> </div><br>
-			<div id="abstimmungenTree" style="margin-top: -50px"></div>
+			<div id="abstimmungenTree" style="margin-top: -10px"></div>
 			<!--<div id="abstimmungen" style="margin-top: -50px"></div>-->
 
 			<br><br>

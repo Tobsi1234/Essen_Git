@@ -547,7 +547,9 @@ function top3() {
 			}
 		}
 	}
-	else $arr[] = "Gebäck"; $_SESSION['top1'] = "Gebäck";
+	else {
+		$arr[] = "Gebäck"; $_SESSION['top1'] = "Gebäck";
+	}
 	print json_encode($arr);
 }
 
