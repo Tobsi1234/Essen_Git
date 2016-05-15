@@ -175,30 +175,41 @@ require("includes/includeDatabase.php");
 <div class="container weiß" id="container" style="display: none">
 
 	<!-- First Featurette -->
-	<div class="featurette" id="about">
+	<div class="featurette" id="about" style="font-size: 17px">
+		<br>
+		<?php
+		if(!isset($_SESSION['g_ID'])) { //noch keine Gruppe?
+			?>
+			<h1>Herzlich Willkommen auf wir-haben-hunger.ddns.net!</h1>
+			<br><br>
+			<h2>Um richtig loszulegen, gründe eine Gruppe oder lass dich von Freunden einladen.</h2>
 
-		<br><br>
-		<div class="col-md-7">
-			<div>
-				<h1>Verlauf</h1>
-				<div></div>
-				<br><br>
-
-				<form id="verlauf" name="verlauf" action="" method="post" onsubmit="">
-					<label for="woche">Woche auswählen:</label>
-					<select id="woche" class="fancyform" name="woche">
-					</select>
-					<button type="button" class="btn btn-primary" onclick="datum_refreshen();">Anwenden</button>
-					<div></div>
-					<div class="abstimmungen" id="abstimmungen">
-					</div>
-					<br><br><br><br>
-
-				</form>
-
+			<?php
+		}
+		else { //bereits eine Gruppe
+		?>
+		<div>
+			<div class="info">
+				<legend>Verlauf</legend>
+				Auf dieser Seite werden alle Ergebnisse der Gruppe sowie die einzelnen Abstimmungen der Gruppenteilnehmer angezeigt.
 			</div>
+			<br>
+			<form id="verlauf" name="verlauf" action="" method="post" onsubmit="">
+				<label for="woche">Woche auswählen:</label>
+				<select id="woche" class="fancyform" name="woche">
+				</select>
+				<button type="button" class="btn btn-primary" onclick="datum_refreshen();">Anwenden</button>
+				<div></div>
+				<div class="abstimmungen" id="abstimmungen">
+				</div>
+				<br><br><br><br>
+
+			</form>
 
 		</div>
+		<?php
+		} //ende php abfrage
+		?>
 	</div>
 </div>
 
