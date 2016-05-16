@@ -23,7 +23,7 @@ include("includes/includeBody.php");
             <br>
             <div class="info">
                 <legend>Verwaltung</legend>
-                Auf dieser Seite wird eine Übersicht über alle Locations und Essen angezeigt. Außerdem können noch fehlende Essen oder Locations hinzugefügt werden.
+                Diese Seite enthält eine Übersicht über alle Locations und Essen. Außerdem können noch fehlende Locations oder Essen hinzugefügt werden.
             </div>
             <ul class="nav navbar-nav" id="navbarPages">
                 <li><a href="#locations"><img src="https://cdn.aldingerwolf.com/wp-content/uploads/2012/06/Stuttgart_Europaviertel_2.jpg" style="height: 250px; weight: 300px;"><br> <h3>Locationsverwaltung</h3></a></li>

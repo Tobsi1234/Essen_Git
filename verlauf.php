@@ -191,7 +191,7 @@ require("includes/includeDatabase.php");
 		<div>
 			<div class="info">
 				<legend>Verlauf</legend>
-				Auf dieser Seite werden alle Ergebnisse der Gruppe sowie die einzelnen Abstimmungen der Gruppenteilnehmer angezeigt.
+				Hier können alle vergangenen Ergebnisse eurer Gruppe sowie die einzelnen Abstimmungen der Gruppenteilnehmer eingesehen werden. Wähle einen Zeitraum, um die zugehörigen Abstimmungsergebnisse anzuzeigen.
 			</div>
 			<br>
 			<form id="verlauf" name="verlauf" action="" method="post" onsubmit="">

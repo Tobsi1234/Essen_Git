@@ -297,7 +297,7 @@ require("includes/includeDatabase.php");
 			<div class="col-md-7" style="font-size: 15px">
 				<div class="info">
 					<legend>Abstimmung</legend>
-					Auf dieser Seite kann für heute, morgen oder übermorgen abgestimmt werden. Es kann für bis zu zwei Essen abgestimmt werden.
+					Auf dieser Seite kann für heute, morgen oder übermorgen abgestimmt werden. Jeder Benutzer kann bis zu zwei Essen wählen.
 				</div>
 				<div style="float:left; width:30px;"><label>Datum: </label>
 				</div>
