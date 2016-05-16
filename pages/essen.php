@@ -26,6 +26,7 @@
                 $('#demoThree').html("");
                 for(i=0; i<essen.length; i++) {
                     $('#demoThree').append("<li>"+ essen[i] +"</li>");
+                    //$('#sDeleteEssen').append("<option value=" + essen[i] + ">" + essen[i] + "</option>");
                 }
                 $(function(){
                     $('#demoThree').listnav({
@@ -35,6 +36,24 @@
                         noMatchText: 'Keine Einträge für diesen Buchstaben vorhanden.'
                     });
                 });
+            }
+        });
+    }
+
+    function deleteEssen() {
+        var selectedEssen = $('#sDeleteEssen :selected').text();
+
+        $.ajax({
+            type    : "POST",
+            url     : "procedures.php",
+            data    : {callFunction: 'deleteEssen', p1: selectedEssen},
+            dataType: 'text',
+            success : function (data) {
+                alert(data);
+                alert("Vorher");
+                window.location.reload();
+                alert("Nachher");
+
             }
         });
     }
@@ -64,6 +83,22 @@
 
         </form><br>
     </div>
+    <!--<div class="col-md-12" id="deleteEssen">
+        <h2>Essen löschen</h2>
+        <br>
+        <form id="deleteFood" name="deleteFood" action="" method="post" onsubmit="deleteEssen(); return false;">
+            <table class="usertable">
+                <tbody>
+                <tr>
+                    <td></td>
+                    <td><select id="sDeleteEssen"></select></td>
+                    <td><button type="submit" class="btn btn-primary">Essen löschen</button></td>
+                </tr>
+
+            </table>
+
+        </form><br>
+    </div>-->
 </div>
 <!-- Alphabet -->
 <div class="col-md-7">

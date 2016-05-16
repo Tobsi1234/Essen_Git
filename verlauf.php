@@ -56,9 +56,7 @@ require("includes/includeDatabase.php");
 
 		var firstdate = firstDay+"."+firstMonth+".";
 		var lastdate = lastDay+"."+lastMonth+".";
-
-		// var dropdownInhalt = "KW "+weeknumberString+" ("+firstdate+" - "+lastdate+")";
-		// var dropdownInhalt = firstdate+week[0].getFullYear()+" - "+lastdate+week[1].getFullYear()+" (KW "+weeknumber[0]+")";
+		
 		var dropdownInhalt = firstdate+" - "+lastdate+" (KW "+weeknumberString+")";
 
 		return dropdownInhalt;

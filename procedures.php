@@ -88,6 +88,9 @@ switch ($_POST['callFunction']) {
 	case 'chat_delete':
 		chat_delete();
 		break;
+	case 'deleteEssen':
+		deleteEssen($_POST['p1']);
+		break;
 	default:
 		echo "Keine Funktion zum Aufrufen gefunden!";
 		break;
@@ -575,42 +578,6 @@ function verfuegbare_essen() {
 	print json_encode($arr);
 }
 
-
-/*
- * HILFSFUNKTIONEN!!!
- *
- * Die Hilfsfunktionen werden ausschließlich serverseitig verwendet und benötigen deshalb KEINEN Eintrag im Switch-Statement!!
- */
-
-
-
-// Funktion, die doppelte Einträge auch aus mehrdimensionalen Arrays entfernen kann
-function array_multi_unique($multiArray){
-
-	$uniqueArray = array();
-	foreach($multiArray as $subArray){
-		if(!in_array($subArray, $uniqueArray)){
-			$uniqueArray[] = $subArray;
-		}
-	}
-	return $uniqueArray;
-}
-
-
-// Holt alle Abstimmungen von heute (per Join :P )
-function selectAbstimmungenHeute() {
-	global $pdo;
-	$pdolocal = $pdo;
-	date_default_timezone_set("Europe/Berlin");
-
-	// Hole alle heutigen Abstimmungen von allen Usern der Gruppe  (,der der aktuelle User angehört)
-	$sqlSelAbstHeute = $pdolocal->prepare("SELECT abstimmen.u_ID, abstimmen.g_ID, e_ID1, e_ID2 FROM abstimmen WHERE datum = :datum AND abstimmen.g_ID = :g_ID");
-	$sqlSelAbstHeute->execute(array('datum' => date("Y-m-d",time()),'g_ID' => $_SESSION['g_ID']));
-	$sqlSelAbstHeuteRes = $sqlSelAbstHeute->fetchAll();
-
-	return $sqlSelAbstHeuteRes;
-}
-
 function chat_laden() {
 	require('includes/includeDatabase.php');
 	$arr = array();
@@ -645,5 +612,66 @@ function chat_delete() {
 	$stmt1 = $pdo->prepare("DELETE FROM chat WHERE g_ID = :g_ID LIMIT 20");
 	$stmt1->execute(array('g_ID' => $_SESSION['g_ID']));
 }
+
+
+function deleteEssen($essenName) {
+	global $pdo;
+	$pdolocal = $pdo;
+
+	$sqlDelEssen = $pdolocal->prepare("DELETE FROM essen WHERE name = :name");
+	$sqlDelEssen->execute(array('name' => $essenName));
+	echo $sqlDelEssen->fetch();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ * HILFSFUNKTIONEN!!!
+ *
+ * Die Hilfsfunktionen werden ausschließlich serverseitig verwendet und benötigen deshalb KEINEN Eintrag im Switch-Statement!!
+ */
+
+
+// Funktion, die doppelte Einträge auch aus mehrdimensionalen Arrays entfernen kann
+function array_multi_unique($multiArray){
+
+	$uniqueArray = array();
+	foreach($multiArray as $subArray){
+		if(!in_array($subArray, $uniqueArray)){
+			$uniqueArray[] = $subArray;
+		}
+	}
+	return $uniqueArray;
+}
+
+
+// Holt alle Abstimmungen von heute (per Join :P )
+function selectAbstimmungenHeute() {
+	global $pdo;
+	$pdolocal = $pdo;
+	date_default_timezone_set("Europe/Berlin");
+
+	// Hole alle heutigen Abstimmungen von allen Usern der Gruppe  (,der der aktuelle User angehört)
+	$sqlSelAbstHeute = $pdolocal->prepare("SELECT abstimmen.u_ID, abstimmen.g_ID, e_ID1, e_ID2 FROM abstimmen WHERE datum = :datum AND abstimmen.g_ID = :g_ID");
+	$sqlSelAbstHeute->execute(array('datum' => date("Y-m-d",time()),'g_ID' => $_SESSION['g_ID']));
+	$sqlSelAbstHeuteRes = $sqlSelAbstHeute->fetchAll();
+
+	return $sqlSelAbstHeuteRes;
+}
+
+/**
+ * ENDE HILFSFUNKTIONEN
+ */
 
 ?>
