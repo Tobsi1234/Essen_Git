@@ -248,6 +248,7 @@ include ("includes/includeBody.php");
 <div class="container weiß" id="loggedOutSeite" style="display: none">
 	<h1> Willkommen auf wir-haben-hunger.ddns.net</h1>
 	<br><br>
+	<img src="Sonstiges/restaurant.jpg"/><br><br><br>
 	<h2> Jetzt schnell kostenlos <a href="registrieren.php"> registrieren</a>!</h2>
 </div>
 
