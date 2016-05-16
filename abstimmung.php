@@ -322,7 +322,7 @@ require("includes/includeDatabase.php");
 					<input onclick="validate(); countCheckboxes();" type="checkbox" id="top1" name="essen" value="top1" style="margin-left:15px; display:none"> <label id="label_top1" for="top1" style="display:none">Top1 </label>
 					<input onclick="validate(); countCheckboxes();" type="checkbox" id="top2" name="essen" value="top2" style="margin-left:15px; display:none"> <label id="label_top2" for="top2" style="display:none">Top2 </label>
 					<input onclick="validate(); countCheckboxes();" type="checkbox" id="top3" name="essen" value="top3" style="margin-left:15px; display:none"> <label id="label_top3" for="top3" style="display:none">Top3 </label>
-					<br><label for=""> Weitere Essen: </label>
+					<br><br><label for=""> Weitere Essen: </label>
 					<input onclick="validate(); countCheckboxes(); coordinateSelects('start');" type="checkbox" id="sonstiges1" name="essen" value="Sonstiges1" style="margin-left:15px"> <label for=""></label>
 
 					<select class="form-control" id="verfuegbare_essen" onchange="validate(); coordinateSelects($(this).attr('id')); countCheckboxes();">
@@ -332,7 +332,7 @@ require("includes/includeDatabase.php");
 
 					<select class="form-control" id="verfuegbare_essen2" onchange="validate(); coordinateSelects($(this).attr('id')); countCheckboxes();" style="display:none">
 					</select>
-					<br>
+					<br><br>
 					<input onclick="validate(); countCheckboxes();" type="checkbox" id="doppelt" name="" value="doppelt" style="" title="Doppelt abstimmen (nur mit einem Essen kombinierbar)"> <label id="label_doppelt" for="doppelt" style=""  title="Doppelt abstimmen (nur mit einem Essen kombinierbar)">Essen doppelt gewichten</label>
 					<br><br>
 					<button type="submit" id="auswahl_speichern" class="btn btn-primary" disabled>Auswahl speichern</button>

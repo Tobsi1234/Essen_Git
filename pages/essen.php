@@ -40,7 +40,7 @@
     }
 
     function removeBilder() {
-        $('#navbarPages').html("<li><a href=\"#locations\"> <h3>Locationsverwaltung</h3></a></li><li><a href=\"#essen\"><h3>Essensverwaltung</h3></a></li>");
+        $('#navbarPages').html("<li><a href=\"#locations\"> <h3>Locationverwaltung</h3></a></li><li><a href=\"#essen\"><h3>Essensverwaltung</h3></a></li>");
     }
     -->
 </script>
